@@ -1,0 +1,204 @@
+{
+  "profile": {
+    "name": "Jakub Heidtke",
+    "email": "mailto:jakub.heidtke@gmail.com",
+    "hero": {
+      "tagline": "Senior software engineer spanning .NET, Azure, and React",
+      "title": "Full-stack Engineer (.NET + React)",
+      "description": "I build dependable, production-ready platforms: secure .NET services, event-driven messaging, and React UIs that ship with CI/CD.",
+      "primaryCta": {
+        "label": "See my projects",
+        "href": "#projects"
+      },
+      "secondaryCta": {
+        "label": "Email me",
+        "href": "mailto:jakub.heidtke@gmail.com"
+      }
+    },
+    "photo": {
+      "src": "/profile.jpg",
+      "alt": "Jakub Heidtke"
+    }
+  },
+  "navigation": [
+    { "label": "About", "href": "#about" },
+    { "label": "Projects", "href": "#projects" },
+    { "label": "Experience", "href": "#experience" },
+    { "label": "Education", "href": "#education" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "about": {
+    "heading": "About",
+    "paragraphs": [
+      "I'm an experienced software engineer with a focus on C# and .NET for cloud-native systems, paired with React frontends when the work calls for a full-stack touch. I am comfortable shaping ambiguous product ideas, delivering the code, and owning the deployment and support story.",
+      "Recent roles at Notino, Devteam.sro, mScore, and Oriflame highlight my drive to optimise performance, establish resilient messaging, and keep teams aligned through architecture and review rituals."
+    ],
+    "summaryPoints": [
+      "8+ years building cloud-ready products across retail, fintech, and consulting engagements.",
+      "Full ownership of the software lifecycle from requirements through deployment, monitoring, and support.",
+      "Hands-on leader comfortable with architecture decisions, code reviews, and mentoring engineers."
+    ],
+    "skills": [
+      ".NET 8",
+      ".NET 6",
+      "ASP.NET Core",
+      "C#",
+      "Entity Framework Core",
+      "Dapper",
+      "Moq",
+      "xUnit",
+      "NUnit",
+      "React",
+      "TypeScript",
+      "Kafka",
+      "Azure Service Bus",
+      "RabbitMQ",
+      "Hangfire",
+      "Azure Kubernetes Service",
+      "Docker",
+      "Azure SQL",
+      "SQL Server",
+      "PostgreSQL",
+      "Oracle",
+      "Camunda BPM",
+      "Azure DevOps",
+      "GitLab CI/CD",
+      "GitHub",
+      "Windows",
+      "Linux"
+    ]
+  },
+  "projects": {
+    "heading": "Selected projects",
+    "items": [
+      {
+        "name": "I18n Process Tools",
+        "description": "Localization workflow for Notino: GitHub/GitLab integration, bulk translation requests, PR/MR automation.",
+        "tags": ["React", "TypeScript", ".NET", "Octokit", "GitLab API"]
+      },
+      {
+        "name": "Logistics Order Service (LOS)",
+        "description": "High-throughput .NET service with Dapper, manual transactions, observability (New Relic).",
+        "tags": [".NET", "Dapper", "xUnit", "New Relic"]
+      },
+      {
+        "name": "YouTubester",
+        "description": "Automation toolkit for channel ops: bulk title/description/tag updates, Shorts hashtag presets.",
+        "tags": ["C#", "YouTube API", "CLI"]
+      }
+    ]
+  },
+  "experience": {
+    "heading": "Experience",
+    "items": [
+      {
+        "role": "Senior Software Developer",
+        "company": "Notino (Contract)",
+        "period": "Jan 2023 - Present | Remote / Brno, Czechia",
+        "highlights": [
+          "Designed and delivered translation microservices, driving asynchronous communication across Azure Service Bus, RabbitMQ, and Kafka.",
+          "Authored an inbox-pattern background processing framework with Hangfire for resilient job orchestration.",
+          "Optimised critical data access paths and supported frontend implementation in React and TypeScript.",
+          "Led architectural discussions and code reviews to align cross-team delivery with GDPR obligations."
+        ]
+      },
+      {
+        "role": "Senior Software Developer",
+        "company": "Devteam.sro (Contract)",
+        "period": "Sep 2021 - Jul 2025 | Prague, Czechia",
+        "highlights": [
+          "Delivered Azure-hosted microservices on .NET 6 and AKS for e-commerce and fintech clients.",
+          "Optimised data workloads with Azure Data Factory, Azure SQL, PostgreSQL, and EF Core.",
+          "Introduced resilient integrations with Camunda BPM, Polly-based retries, and CI/CD through Azure DevOps."
+        ]
+      },
+      {
+        "role": "Software Engineer",
+        "company": "Oriflame Sweden Cosmetics (Contract)",
+        "period": "Sep 2021 - Dec 2022 | Prague, Czechia",
+        "highlights": [
+          "Built scalable event-driven microservices on .NET 6 hosted in Azure Kubernetes Service.",
+          "Reduced database resource usage by nearly 90 percent through targeted data layer optimisation.",
+          "Integrated Camunda process orchestration with Azure Service Bus and designed a custom DLQ on Azure Blob Storage.",
+          "Delivered Azure Data Factory migrations while supporting architecture decisions and peer reviews."
+        ]
+      },
+      {
+        "role": "Senior Full-stack Consultant",
+        "company": "mScore (Freelance)",
+        "period": "Jan 2023 - Feb 2023 | Remote / London, UK",
+        "highlights": [
+          "Improved data layer performance and refined SQL Server queries for a high-traffic analytics product.",
+          "Delivered rapid UI enhancements in React with accessibility-minded component updates."
+        ]
+      },
+      {
+        "role": "Senior Software Developer",
+        "company": "Unicorn Systems",
+        "period": "Jun 2017 - Aug 2021 | Pilsen, Czechia",
+        "highlights": [
+          "Designed REST APIs and auction evaluation algorithms powering enterprise procurement platforms.",
+          "Integrated with partner systems via web services, FTP transfers, and automated notification flows.",
+          "Mentored junior developers and drove clean coding standards across .NET teams."
+        ]
+      },
+      {
+        "role": "Junior Software Developer",
+        "company": "Unicorn Systems",
+        "period": "May 2016 - Jun 2017 | Pilsen, Czechia",
+        "highlights": [
+          "Implemented new use cases, fixed production issues, and enhanced web applications built on .NET and Oracle.",
+          "Collaborated closely with analysts to refine requirements and harden releases before promotion to senior roles."
+        ]
+      },
+      {
+        "role": "Global Technical Support Engineer",
+        "company": "Korn Ferry (Hay Group)",
+        "period": "Jun 2014 - Apr 2016 | Pilsen, Czechia",
+        "highlights": [
+          "Resolved complex incidents for business analysts in 50+ countries while coordinating with UK and US engineering teams.",
+          "Developed a WinForms automation tool that eliminated manual workloads and accelerated service delivery."
+        ]
+      }
+    ]
+  },
+  "education": {
+    "heading": "Education",
+    "items": [
+      {
+        "school": "University of West Bohemia - Faculty of Applied Sciences",
+        "period": "2016 - 2017",
+        "details": [
+          "Postgraduate coursework in applied sciences supporting advanced software engineering practice."
+        ]
+      },
+      {
+        "school": "University of West Bohemia - Faculty of Education",
+        "period": "2013 - 2016",
+        "details": [
+          "Bachelor's degree in Informatics; thesis focused on Oracle 12c Express SQL modelling tooling.",
+          "Completed final two years while working full-time at Korn Ferry in global technical support."
+        ]
+      },
+      {
+        "school": "Tertiary College in Pilsen - Information Technologies",
+        "period": "2009 - 2012",
+        "details": [
+          "Specialised in software development and IT systems fundamentals."
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Let's talk",
+    "description": "I'm available for senior engineering roles, contract engagements, and complex integration work.",
+    "links": [
+      { "label": "Email", "href": "mailto:jakub.heidtke@gmail.com" },
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/jakub-heidtke" },
+      { "label": "GitHub", "href": "https://github.com/kubaak" }
+    ]
+  },
+  "footer": {
+    "text": "Built with React, Vite & Tailwind v4."
+  }
+}
