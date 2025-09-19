@@ -3,7 +3,7 @@
     "name": "Jakub Heidtke",
     "email": "mailto:jakub.heidtke@gmail.com",
     "hero": {
-      "tagline": "Open to remote opportunities in EU/US",
+      "tagline": "Open to remote opportunities",
       "title": "Full-stack Engineer",
       "description": "I help companies scale by building production-ready platforms: secure .NET backends, event-driven messaging, and user-friendly React applications.",
       "primaryCta": {
@@ -30,8 +30,9 @@
   "about": {
     "heading": "About",
     "paragraphs": [
-      "I'm an experienced software engineer specializing in C# and .NET for cloud-native systems, with React frontends when full-stack delivery is needed. Skilled at shaping ambiguous product ideas into solutions, delivering production-ready code, and owning deployment and support.",
-      "Recent roles at Notino, Oriflame and Unicorn Systems highlight my drive to optimise performance, establish resilient messaging, and keep teams aligned through architecture and review rituals."
+      "I'm a senior software engineer with a decade of experience turning complex ideas into production-ready systems. My core stack is C#/.NET for secure, cloud-native backends and React for responsive, user-friendly UIs.",
+      "I've built and optimized platforms in e-commerce, logistics, and energy trading. I enjoy shaping ambiguous requirements into real solutions and taking full ownership of the software lifecycle: from design and development to deployment, monitoring, and support.",
+      "Beyond coding, I contribute by leading architecture discussions, running code reviews, and mentoring engineers, helping teams align and grow. What excites me most is building software that not only scales but also empowers businesses to move faster with confidence."
     ],
     "summaryPoints": [
       "Building cloud-ready products for e-commerce, and consulting engagements.",
@@ -71,7 +72,7 @@
     "heading": "Latest projects",
     "items": [
       {
-        "name": "Logistics Order Service (LOS)",
+        "name": "Logistics Order Service",
         "description": "High-throughput .NET service powering logistics order processing, using Dapper with manual transaction control for reliability, and full observability through New Relic.",
         "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React"]
       },
