@@ -35,9 +35,7 @@
       "Beyond coding, I contribute by leading architecture discussions, running code reviews, and mentoring engineers, helping teams align and grow. What excites me most is building software that not only scales but also empowers businesses to move faster with confidence."
     ],
     "summaryPoints": [
-      "Building cloud-ready products for e-commerce, and consulting engagements.",
-      "Full ownership of the software lifecycle from requirements through deployment, monitoring, and support.",
-      "Comfortable with architecture decisions, code reviews, and mentoring engineers."
+
     ],
     "skills": [
       ".NET",
@@ -69,7 +67,7 @@
     ]
   },
   "projects": {
-    "heading": "Latest projects",
+    "heading": "Recent projects",
     "items": [
       {
         "name": "Logistics Order Service",
