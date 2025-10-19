@@ -70,6 +70,11 @@
     "heading": "Recent projects",
     "items": [
       {
+        "name": "YouTubester",
+        "description": "Personal open source project that automates YouTube metadata updates and comment management using AI",
+        "tags": [".NET", "Hangfire", "React", "Google API", "Ollama"]
+      },
+      {
         "name": "Logistics Order Service",
         "description": "High-throughput .NET service powering logistics order processing, using Dapper with manual transaction control for reliability, and full observability through New Relic.",
         "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React"]
