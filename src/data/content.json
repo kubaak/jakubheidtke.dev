@@ -70,7 +70,7 @@
     "heading": "Recent projects",
     "items": [
       {
-        "name": "YouTubester",
+        "name": "Tubester",
         "description": "Personal open source project that automates YouTube metadata updates and comment management using AI",
         "tags": [".NET", "Hangfire", "React", "Google API", "Ollama"]
       },
