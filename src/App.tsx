@@ -6,7 +6,7 @@ export default function App() {
   const { profile, navigation, about, projects, experience, education, contact, footer } = content;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white text-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
       {/* Nav */}
       <header className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b border-transparent">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
@@ -27,13 +27,13 @@ export default function App() {
       <Section id="home" className="pt-14 pb-16 grid gap-10 md:grid-cols-2 md:items-center">
         {/* Left side: text */}
         <div>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-indigo-600">{profile.hero.tagline}</p>
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-600">{profile.hero.tagline}</p>
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">{profile.hero.title}</h1>
           <p className="mt-4 max-w-prose text-lg text-gray-600">{profile.hero.description}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={profile.hero.primaryCta.href}
-              className="inline-flex items-center gap-2 rounded-xl border border-indigo-600 bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
+              className="inline-flex items-center gap-2 rounded-xl border border-brand-600 bg-brand-600 px-4 py-2 text-white hover:bg-brand-700"
             >
               {profile.hero.primaryCta.label}
             </a>
@@ -51,7 +51,7 @@ export default function App() {
           <img
             src={profile.photo.src}
             alt={profile.photo.alt}
-            className="h-48 w-48 rounded-full border-4 border-indigo-200 shadow-lg object-cover"
+            className="h-48 w-48 rounded-full border-4 border-brand-200 shadow-lg object-cover"
           />
         </div>
       </Section>
@@ -82,19 +82,63 @@ export default function App() {
       <Section id="projects">
         <h2 className="text-3xl font-extrabold">{projects.heading}</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {projects.items.map((project) => (
-            <Card key={project.name} className="hover:shadow">
-              <h3 className="text-lg font-semibold">{project.name}</h3>
-              <p className="mt-2 text-sm text-gray-600">{project.description}</p>
-              <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                {project.tags.map((tag) => (
-                  <span key={tag} className="rounded-full bg-gray-100 px-2 py-1">
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </Card>
-          ))}
+          {projects.items.map((project, index) => {
+            const isTubester = index === 0 || project.name?.toLowerCase() === "tubester";
+            const href = isTubester ? "https://tubester.app" : undefined;
+
+            const cardInner = (
+              <Card
+                className={[
+                  "transition",
+                  isTubester
+                    ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-lg ring-2 ring-brand-200 hover:ring-brand-400"
+                    : "hover:shadow",
+                ].join(" ")}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className={["text-lg font-semibold", isTubester ? "underline underline-offset-4" : ""].join(" ")}>
+                    {project.name}
+                  </h3>
+
+                  {isTubester && (
+                    <span className="shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700 border border-brand-200">
+                      Visit
+                    </span>
+                  )}
+                </div>
+
+                <p className="mt-2 text-sm text-gray-600">{project.description}</p>
+
+                <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="rounded-full bg-gray-100 px-2 py-1">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {isTubester && (
+                  <p className="mt-4 text-xs text-brand-700">
+                    tubester.com <span aria-hidden="true">↗</span>
+                  </p>
+                )}
+              </Card>
+            );
+
+            return href ? (
+              <a
+                key={project.name}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="block rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
+              >
+                {cardInner}
+              </a>
+            ) : (
+              <div key={project.name}>{cardInner}</div>
+            );
+          })}
         </div>
       </Section>
 
