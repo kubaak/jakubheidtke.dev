@@ -83,27 +83,26 @@ export default function App() {
       <Section id="projects">
         <h2 className="text-3xl font-extrabold">{projects.heading}</h2>
         <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {projects.items.map((project, index) => {
-            const isTubester = index === 0 || project.name?.toLowerCase() === "tubester";
-            const href = isTubester ? "https://tubester.app" : undefined;
+          {projects.items.map((project) => {
+            const isLink = Boolean(project.href);
 
-            const cardInner = (
+            const card = (
               <Card
                 className={[
                   "transition",
-                  isTubester
+                  isLink
                     ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-lg ring-2 ring-brand-200 hover:ring-brand-400"
                     : "hover:shadow",
                 ].join(" ")}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className={["text-lg font-semibold", isTubester ? "underline underline-offset-4" : ""].join(" ")}>
+                  <h3 className={["text-lg font-semibold", isLink ? "underline underline-offset-4" : ""].join(" ")}>
                     {project.name}
                   </h3>
 
-                  {isTubester && (
+                  {isLink && (
                     <span className="shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700 border border-brand-200">
-                      Visit
+                      {project.ctaLabel ?? "Visit"}
                     </span>
                   )}
                 </div>
@@ -118,26 +117,26 @@ export default function App() {
                   ))}
                 </div>
 
-                {isTubester && (
+                {isLink && (
                   <p className="mt-4 text-xs text-brand-700">
-                    tubester.com <span aria-hidden="true">↗</span>
+                    {new URL(project.href!).host} <span aria-hidden="true">↗</span>
                   </p>
                 )}
               </Card>
             );
 
-            return href ? (
+            return isLink ? (
               <a
                 key={project.name}
-                href={href}
+                href={project.href}
                 target="_blank"
                 rel="noreferrer"
                 className="block rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
               >
-                {cardInner}
+                {card}
               </a>
             ) : (
-              <div key={project.name}>{cardInner}</div>
+              <div key={project.name}>{card}</div>
             );
           })}
         </div>

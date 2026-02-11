@@ -72,7 +72,8 @@
       {
         "name": "Tubester",
         "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "Hangfire", "React", "Google API", "Ollama"]
+        "tags": ["AI",".NET", "Hangfire", "React", "Google API", "Ollama"],
+        "href": "https://tubester.app"
       },
       {
         "name": "Logistics Order Service",
