@@ -106,7 +106,7 @@
         "period": "Jan 2023 - Aug 2025 | Remote",
         "highlights": [
           "Designed and delivered microservices, driving asynchronous communication across Azure Service Bus, and Kafka.",
-          "Authored an inbox-pattern background processing framework with Hangfire for resilient job orchestration.",
+          "Authored an inbox-pattern background processing framework for resilient job orchestration.",
           "Optimised critical data access paths and supported frontend implementation in React and TypeScript.",
           "Led architectural discussions and code reviews to align cross-team delivery."
         ]
