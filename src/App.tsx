@@ -102,7 +102,7 @@ export default function App() {
 
                   {isLink && (
                     <span className="shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700 border border-brand-200">
-                      {project.ctaLabel ?? "Visit"}
+                      Visit
                     </span>
                   )}
                 </div>
