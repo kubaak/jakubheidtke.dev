@@ -72,28 +72,28 @@
       {
         "name": "Tubester",
         "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "Hangfire", "React", "Google API", "Ollama"],
+        "tags": ["AI",".NET", "Hangfire", "React", "k8s", "Google API", "Ollama"],
         "href": "https://tubester.app"
       },
       {
         "name": "Logistics Order Service",
         "description": "High-throughput .NET service powering logistics order processing, using Dapper with manual transaction control for reliability, and full observability through New Relic.",
-        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React"]
+        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "k8s"]
       },
       {
         "name": "I18n Process Tools",
         "description": "Localization platform that automated translation workflows (GitHub/GitLab integration, bulk requests, PR/MR automation), helping Notino scale content delivery across multiple markets.",
-        "tags": [".NET", "Entity Framework Core", "Octokit", "GitLab API", "React"]
+        "tags": [".NET", "Entity Framework Core", "Octokit", "GitLab API", "React", "k8s"]
       },
       {
         "name": "Product Availability and Reservations",
         "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
-        "tags": [".NET", "Dapper", "Hangfire", "Kafka"]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "k8s"]
       },
       {
         "name": "GDPR Management",
         "description": "Delivered a GDPR-compliant consent management system by replacing a legacy solution, enabling secure handling of customer data and honoring consent expiry or revocation.",
-        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React"]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "k8s"]
       }
     ]
   },
@@ -119,7 +119,7 @@
           "Built scalable event-driven microservices on .NET hosted in Azure Kubernetes Service.",
           "Reduced database resource usage by nearly 90 percent through targeted data layer optimisation.",
           "Integrated Camunda process orchestration with Azure Service Bus and designed a custom DLQ on Azure Blob Storage.",
-          "Delivered Azure Data Factory migrations while.",
+          "Delivered Azure Data Factory migrations.",
           "Supported architecture decisions and peer reviews."
         ]
       },
