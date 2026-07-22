@@ -5,7 +5,7 @@
     "hero": {
       "tagline": "Open to remote opportunities",
       "title": "Full-stack Engineer",
-      "description": "I help companies scale by building production-ready platforms: secure .NET backends, event-driven messaging, and user-friendly React applications.",
+      "description": "I help companies scale by building production-ready platforms: secure .NET or Node.js backends, event-driven messaging, and user-friendly React.js applications.",
       "primaryCta": {
         "label": "See my projects",
         "href": "#projects"
@@ -30,7 +30,7 @@
   "about": {
     "heading": "About",
     "paragraphs": [
-      "I'm a senior software engineer with a decade of experience turning complex ideas into production-ready systems. My core stack is C#/.NET for secure, cloud-native backends and React for responsive, user-friendly UIs.",
+      "I'm a senior software engineer with a decade of experience turning complex ideas into production-ready systems. My core stack is C#/.NET and Node.js for secure, cloud-native backends and React for responsive, user-friendly UIs.",
       "I've built and optimized platforms in e-commerce, logistics, and energy trading. I enjoy shaping ambiguous requirements into real solutions and taking full ownership of the software lifecycle: from design and development to deployment, monitoring, and support.",
       "Beyond coding, I contribute by leading architecture discussions, running code reviews, and mentoring engineers, helping teams align and grow. What excites me most is building software that not only scales but also empowers businesses to move faster with confidence."
     ],
@@ -40,14 +40,18 @@
     "skills": [
       ".NET",
       "C#",
+      "JavaScript",
+      "TypeScript",
+      "Nest.js",
+      "Node.js",
       "Entity Framework Core",
       "Dapper",
       "Moq",
       "xUnit",
       "NUnit",
-      "React",
-      "JavaScript",
-      "TypeScript",
+      "React.js",
+      "Mongoose",
+      "Jest",
       "Kafka",
       "Azure Service Bus",
       "Hangfire",
@@ -56,6 +60,7 @@
       "Azure SQL",
       "SQL Server",
       "PostgreSQL",
+      "MongoDB",
       "Oracle",
       "Azure DevOps",
       "GitLab CI/CD",
@@ -70,9 +75,15 @@
     "heading": "Recent projects",
     "items": [
       {
+        "name": "Hostomat",
+        "description": "NestJS API for accommodation providers to manage bookings and collect guest registration details through secure shareable links",
+        "tags": ["NestJS", "Node.js","MongoDB", "Mongoose", "Jest"],
+        "href": "https://github.com/kubaak/hostomat-api"
+      },
+      {
         "name": "Tubester",
         "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "Hangfire", "React", "k8s", "Google API", "Ollama"],
+        "tags": ["AI",".NET", "Hangfire", "React", "k8s", "Google API", "RAG"],
         "href": "https://tubester.app"
       },
       {
