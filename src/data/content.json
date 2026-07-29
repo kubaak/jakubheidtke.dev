@@ -77,14 +77,15 @@
       {
         "name": "Hostomat",
         "description": "NestJS API for accommodation providers to manage bookings and collect guest registration details through secure shareable links",
-        "tags": ["NestJS", "Node.js","MongoDB", "Mongoose", "Jest"],
-        "href": "https://github.com/kubaak/hostomat-api"
+        "tags": ["NestJS", "Node.js","TypeScript","MongoDB", "Mongoose", "Jest"],
+        "githubHref": "https://github.com/kubaak/hostomat-api"
       },
       {
         "name": "Tubester",
         "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "Hangfire", "React", "k8s", "Google API", "RAG"],
-        "href": "https://tubester.app"
+        "tags": ["AI",".NET", "C#", "Hangfire", "React", "k8s", "Google API", "RAG"],
+        "appHref": "https://tubester.app",
+        "githubHref": "https://github.com/kubaak/tubester-client"
       },
       {
         "name": "Logistics Order Service",
@@ -112,8 +113,17 @@
     "heading": "Experience",
     "items": [
       {
+        "role":"Independent Software Engineer - Personal Products",
+        "period":"Sep 2025 - Present | Remote",
+        "highlights":[
+          "Designed and developed full-stack SaaS products using .NET, NestJS, React, PostgreSQL, and MongoDB",
+          "Built production-style authentication, background processing, API integrations, testing, and containerized deployment workflows",
+          "Developed Tubester, a platform for YouTube creators using .NET, React, PostgreSQL, Kubernetes, and AI integrations"
+        ]
+      },
+      {
         "role": "Senior Software Developer",
-        "company": "Notino",
+        "company": "Notino (devteam s.r.o.)",
         "period": "Jan 2023 - Aug 2025 | Remote",
         "highlights": [
           "Designed and delivered microservices, driving asynchronous communication across Azure Service Bus, and Kafka.",
@@ -124,7 +134,7 @@
       },
       {
         "role": "Senior Software Developer",
-        "company": "Oriflame Sweden Cosmetics",
+        "company": "Oriflame Sweden Cosmetics (devteam s.r.o.)",
         "period": "Sep 2021 - Dec 2022 | Remote",
         "highlights": [
           "Built scalable event-driven microservices on .NET hosted in Azure Kubernetes Service.",

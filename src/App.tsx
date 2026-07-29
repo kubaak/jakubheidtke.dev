@@ -1,5 +1,7 @@
 import content from "./data/content.json";
 import { Card } from "./components/Card";
+import { Navbar } from "./components/Navbar";
+import { Projects } from "./components/Projects";
 import { Section } from "./components/Section";
 
 export default function App() {
@@ -7,22 +9,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
-      {/* Nav */}
-      <header className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b border-transparent">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-          <a href="#home" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold tracking-tight">
-            <img src="/JHGradientMaroon.svg" alt="JH" className="h-6 w-6 shrink-0" />
-            <span className="leading-none">{profile.name}</span>
-          </a>
-          <nav className="hidden md:flex gap-6 text-sm">
-            {navigation.map((item) => (
-              <a key={item.href} href={item.href} className="text-gray-600 hover:text-gray-900">
-                {item.label}
-              </a>
-            ))}
-          </nav>
-        </div>
-      </header>
+      <Navbar profile={profile} navigation={navigation} />
 
       {/* Hero */}
       <Section id="home" className="pt-14 pb-16 grid gap-10 md:grid-cols-2 md:items-center">
@@ -79,68 +66,7 @@ export default function App() {
         </div>
       </Section>
 
-      {/* Projects */}
-      <Section id="projects">
-        <h2 className="text-3xl font-extrabold">{projects.heading}</h2>
-        <div className="mt-6 grid gap-6 md:grid-cols-3">
-          {projects.items.map((project) => {
-            const isLink = Boolean(project.href);
-
-            const card = (
-              <Card
-                className={[
-                  "transition",
-                  isLink
-                    ? "cursor-pointer hover:-translate-y-0.5 hover:shadow-lg ring-2 ring-brand-200 hover:ring-brand-400"
-                    : "hover:shadow",
-                ].join(" ")}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <h3 className={["text-lg font-semibold", isLink ? "underline underline-offset-4" : ""].join(" ")}>
-                    {project.name}
-                  </h3>
-
-                  {isLink && (
-                    <span className="shrink-0 rounded-full bg-brand-50 px-2 py-1 text-xs font-semibold text-brand-700 border border-brand-200">
-                      Visit
-                    </span>
-                  )}
-                </div>
-
-                <p className="mt-2 text-sm text-gray-600">{project.description}</p>
-
-                <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-gray-100 px-2 py-1">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {isLink && (
-                  <p className="mt-4 text-xs text-brand-700">
-                    {new URL(project.href!).host} <span aria-hidden="true">↗</span>
-                  </p>
-                )}
-              </Card>
-            );
-
-            return isLink ? (
-              <a
-                key={project.name}
-                href={project.href}
-                target="_blank"
-                rel="noreferrer"
-                className="block rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-brand-300"
-              >
-                {card}
-              </a>
-            ) : (
-              <div key={project.name}>{card}</div>
-            );
-          })}
-        </div>
-      </Section>
+      <Projects heading={projects.heading} items={projects.items} />
 
       {/* Experience */}
       <Section id="experience">
@@ -150,7 +76,7 @@ export default function App() {
             <Card key={`${item.role}-${item.company}`}>
               <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-2">
                 <h3 className="text-lg font-semibold">
-                  {item.role} at {item.company}
+                  {item.role} {item.company ? "at " + item.company : ""}
                 </h3>
                 <p className="text-sm text-gray-500">{item.period}</p>
               </div>
