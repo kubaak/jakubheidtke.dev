@@ -83,7 +83,7 @@
       {
         "name": "Tubester",
         "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "C#", "Hangfire", "React", "k8s", "Google API", "RAG"],
+        "tags": ["AI",".NET", "C#", "Hangfire", "React", "k8s", "Google API", "RAG", "Serilog", "Prometheus", "Loki", "Grafana"],
         "appHref": "https://tubester.app",
         "githubHref": "https://github.com/kubaak/tubester-client"
       },
@@ -221,6 +221,6 @@
     ]
   },
   "footer": {
-    "text": "Built with React, Vite & Tailwind v4."
+    "text": "Built with Next.js & Tailwind v4."
   }
 }
