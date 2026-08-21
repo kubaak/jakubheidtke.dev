@@ -62,12 +62,42 @@ export interface Experience {
 export interface EducationItem {
   school: string;
   period: string;
-  details: string[];
+  degree: string;
+  description?: string;
 }
 
 export interface Education {
   heading: string;
   items: EducationItem[];
+}
+
+export interface Certification {
+  name: string;
+  issuer: string;
+  issuedAt?: string;
+  credentialUrl?: string;
+  skills?: string[];
+}
+
+export interface Course {
+  name: string;
+  topics?: string[];
+  certificateUrl?: string;
+}
+
+export interface Learning {
+  heading: string;
+  formalEducation: {
+    heading: string;
+  };
+  certifications: {
+    heading: string;
+    items: Certification[];
+  };
+  courses: {
+    heading: string;
+    items: Course[];
+  };
 }
 
 export interface ContactLink {
@@ -92,6 +122,7 @@ export interface Content {
   projects: Projects;
   experience: Experience;
   education: Education;
+  learning: Learning;
   contact: Contact;
   footer: Footer;
 }

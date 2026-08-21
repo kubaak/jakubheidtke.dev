@@ -21,11 +21,11 @@
     }
   },
   "navigation": [
-    { "label": "About", "href": "#about" },
-    { "label": "Projects", "href": "#projects" },
-    { "label": "Experience", "href": "#experience" },
-    { "label": "Education", "href": "#education" },
-    { "label": "Contact", "href": "#contact" }
+    { "label": "About", "href": "/#about" },
+    { "label": "Projects", "href": "/#projects" },
+    { "label": "Experience", "href": "/#experience" },
+    { "label": "Learning", "href": "/learning" },
+    { "label": "Contact", "href": "/#contact" }
   ],
   "about": {
     "heading": "About",
@@ -188,28 +188,72 @@
       {
         "school": "University of West Bohemia - Faculty of Applied Sciences",
         "period": "2016 - 2017",
-        "details": [
-          "Master's degree studies in Applied Sciences (1 year completed).",
-          "Semester projects included an internet banking app, a health evaluation app, and a simple game."
-        ]
+        "degree": "Master's degree studies in Applied Sciences",
+        "description": "One year completed."
       },
       {
         "school": "University of West Bohemia - Faculty of Education",
         "period": "2013 - 2016",
-        "details": [
-          "Bachelor's degree in Informatics, thesis on data modeling with Oracle.",
-          "Completed final two years while working full-time at Korn Ferry in global technical support."
-        ]
+        "degree": "Bachelor's degree in Informatics",
+        "description": "Thesis on data modeling with Oracle."
       },
       {
         "school": "Higher Professional School in Pilsen - Information Technologies",
         "period": "2009 - 2012",
-        "details": [
-            "Diploma Specialist (DiS.) post-secondary qualification in Information Technologies.",
-            "Specialised in software development and IT systems fundamentals."
-          ]
-        }
+        "degree": "Diploma Specialist (DiS.) in Information Technologies",
+        "description": "Focus on software development and IT systems fundamentals."
+      }
     ]
+  },
+  "learning": {
+    "heading": "Education & Professional Development",
+    "formalEducation": {
+      "heading": "Formal Education"
+    },
+    "certifications": {
+      "heading": "Professional Certifications",
+      "items": []
+    },
+    "courses": {
+      "heading": "Selected Courses",
+      "items": [
+        {
+          "name": "Redis: The Complete Developer's Guide",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-e6689370-8d23-46e6-b984-c537e72af619/",
+          "topics": ["Redis", "Caching", "Data Structures", "Streams", "Pub/Sub"]
+        },
+        {
+          "name": "NodeJS - The Complete Guide (MVC, REST APIs, GraphQL, Deno)",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-62c3b77d-53c5-42b4-912e-cd362a629283/",
+          "topics": ["Node.js", "REST APIs", "GraphQL", "Authentication", "Backend Development"]
+        },
+        {
+          "name": "NestJS: The Complete Developer's Guide",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-ea6057ea-ae6a-415d-a927-395a9bc93fd5/",
+          "topics": ["NestJS", "TypeScript", "REST APIs", "Dependency Injection", "Backend Architecture"]
+        },
+        {
+          "name": "The Nuts and Bolts of OAuth 2.0",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-e0b8385e-0e43-4444-ad76-29073e18181f/",
+          "topics": ["OAuth 2.0", "OpenID Connect", "Authentication", "Authorization", "Security"]
+        },
+        {
+          "name": "Asp.Net Core : The Complete Guide To Build RESTful Api's",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-02e9ee4d-8a7b-45e8-bb9e-ee303fae1a36/",
+          "topics": ["ASP.NET Core", "REST APIs", "Entity Framework Core", "Authentication & Authorization", "Azure Deployment"]
+        },
+        {
+          "name": ".NET Core Microservices",
+          "topics": ["Microservices", "RabbitMQ", "MongoDB", "JWT", "Docker Compose"],
+          "certificateUrl": "https://www.udemy.com/certificate/UC-abd82dcd-51da-4b57-9949-d22f4f702c27/"
+        },
+        {
+          "name": "SQL Server Administration Part1",
+          "topics": ["SQL Server", "Backup & Restore", "Security", "SQL Server Agent", "Database Storage"],
+          "certificateUrl": "https://www.udemy.com/certificate/UC-QOG4YRVW/"
+        }
+      ]
+    }
   },
   "contact": {
     "heading": "Let's talk",

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface NavigationItem {
   label: string;
@@ -19,10 +20,10 @@ export function Navbar({ profile, navigation }: NavbarProps) {
     <header className="sticky top-0 z-50 border-b border-transparent bg-white/70 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center justify-between py-3">
-          <a href="#home" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold tracking-tight">
+          <Link href="/" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold tracking-tight">
             <Image src="/JHGradientMaroon.svg" alt="" width={24} height={24} className="shrink-0" />
             <span className="leading-none">{profile.name}</span>
-          </a>
+          </Link>
 
           <nav aria-label="Primary navigation" className="hidden gap-6 text-sm md:flex">
             {navigation.map((item) => (

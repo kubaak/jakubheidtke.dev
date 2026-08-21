@@ -6,14 +6,14 @@ import { Projects } from "@/components/Projects";
 import { Section } from "@/components/Section";
 
 export default function Home() {
-  const { profile, navigation, about, projects, experience, education, contact, footer } = content;
+  const { profile, navigation, about, projects, experience, contact, footer } = content;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
       <Navbar profile={profile} navigation={navigation} />
 
       <main>
-          {/* Left side: text */}
+        {/* Left side: text */}
         <Section id="home" className="grid gap-10 pt-14 pb-16 md:grid-cols-2 md:items-center">
           <div>
             <p className="mb-3 text-sm font-semibold tracking-wider text-brand-600 uppercase">{profile.hero.tagline}</p>
@@ -98,27 +98,6 @@ export default function Home() {
                 <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-gray-700">
                   {item.highlights.map((highlight, index) => (
                     <li key={`${index}-${highlight}`}>{highlight}</li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="education">
-          <h2 className="text-3xl font-extrabold">{education.heading}</h2>
-
-          <div className="mt-4 space-y-4">
-            {education.items.map((item) => (
-              <Card key={`${item.school}-${item.period}`}>
-                <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                  <h3 className="text-lg font-semibold">{item.school}</h3>
-                  <p className="text-sm text-gray-500">{item.period}</p>
-                </div>
-
-                <ul className="mt-3 list-inside list-disc space-y-1 text-sm text-gray-700">
-                  {item.details.map((detail, index) => (
-                    <li key={`${index}-${detail}`}>{detail}</li>
                   ))}
                 </ul>
               </Card>
