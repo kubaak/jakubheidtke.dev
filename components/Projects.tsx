@@ -15,12 +15,13 @@ export function Projects({ heading, items, className }: ProjectsProps) {
     <Section id="projects" className={cn(className)}>
       <h2 className="text-3xl font-extrabold">{heading}</h2>
       <div className="mt-6 grid gap-6 md:grid-cols-3">
-        {items.map((project) => (
+        {items.map((project, index) => (
           <FeaturedProject
             key={project.name}
             name={project.name}
             description={project.description}
             detailsHref={`/projects/${project.slug}`}
+            index={index}
           />
         ))}
       </div>

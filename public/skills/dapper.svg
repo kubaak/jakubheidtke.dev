@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Dapper</title>
+  <path fill="#ed1b6f" d="M22 18h42c23.2 0 42 18.8 42 42s-18.8 42-42 42H22V18Zm22 22v40h20c11 0 20-9 20-20s-9-20-20-20H44Z"/>
+  <path fill="#f58b28" d="M22 18h42v22H44v40H22V18Z"/>
+  <path fill="#00a9a5" d="M22 80h42c11 0 20-9 20-20h22c0 23.2-18.8 42-42 42H22V80Z"/>
+</svg>

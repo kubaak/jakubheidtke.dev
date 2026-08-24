@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fffafc;
+}
+
 @theme {
   --color-brand-50:  #f7ecf0;
   --color-brand-100: #f0dbe3;

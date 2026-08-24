@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">MediatR</title>
+  <path fill="#1267a5" d="M24 25h28v18H24zm52 0h28v18H76zM50 85h28v18H50z"/>
+  <path d="M38 43v18h52V43M64 61v24" fill="none" stroke="#43b4c9" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="64" cy="61" r="9" fill="#43b4c9"/>
+</svg>

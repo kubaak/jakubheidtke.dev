@@ -5,7 +5,7 @@
     "hero": {
       "tagline": "Open to remote opportunities",
       "title": "Full-stack Engineer",
-      "description": "I help companies scale by building production-ready platforms: secure .NET or Node.js backends, event-driven messaging, and user-friendly React.js applications.",
+      "description": "I help companies scale by building production-ready platforms: secure .NET or Node.js backends, event-driven messaging, and user-friendly React applications.",
       "primaryCta": {
         "label": "See my projects",
         "href": "/projects"
@@ -43,9 +43,13 @@
       "JavaScript",
       "TypeScript",
       "Nest.js",
+      "Express.js",
       "Node.js",
+      "ASP.NET Core",
       "Entity Framework Core",
       "Dapper",
+      "TypeORM",
+      "MediatR",
       "Moq",
       "xUnit",
       "NUnit",
@@ -61,10 +65,16 @@
       "SQL Server",
       "PostgreSQL",
       "MongoDB",
+      "Redis",
       "Oracle",
+      "RabbitMQ",
       "Azure DevOps",
-      "GitLab CI/CD",
+      "GitLab",
       "GitHub",
+      "Vite",
+      "Next.js",
+      "Tailwind CSS",
+      "AWS",
       "New Relic",
       "Grafana",
       "Windows",
@@ -227,7 +237,7 @@
       {
         "name": "Logistics Order Service",
         "description": "High-throughput .NET service for logistics order processing, built around reliable asynchronous messaging, durable background work, explicit transaction control, and production observability.",
-        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "k8s"],
+        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "Kubernetes"],
         "slug": "logistics-order-service",
         "featured": false,
         "context": "Professional Project",
@@ -274,12 +284,12 @@
       {
         "name": "Product Availability and Reservations",
         "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
-        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "k8s"]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "Kubernetes"]
       },
       {
         "name": "GDPR Management",
         "description": "Delivered a GDPR-compliant consent management system by replacing a legacy solution, enabling secure handling of customer data and honoring consent expiry or revocation.",
-        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "k8s"]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "Kubernetes"]
       }
     ]
   },

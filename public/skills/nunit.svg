@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">NUnit</title>
+  <circle cx="64" cy="64" r="53" fill="#2f9f4b"/>
+  <circle cx="64" cy="64" r="37" fill="none" stroke="#fff" stroke-width="4"/>
+  <circle cx="29" cy="50" r="6" fill="#fff"/><circle cx="87" cy="31" r="6" fill="#fff"/><circle cx="89" cy="96" r="6" fill="#fff"/>
+  <path fill="#fff" d="M48 91V44h12l20 26V44h12v47H80L60 65v26H48Z"/>
+</svg>

@@ -1,38 +1,46 @@
+"use client";
+
 import Link from "next/link";
-import { cn } from "@/lib/cn";
-import { Card } from "./Card";
+import { motion, useReducedMotion } from "motion/react";
 
 interface FeaturedProjectProps {
   name: string;
   description: string;
   detailsHref: string;
+  index: number;
 }
 
-export function FeaturedProject({ name, description, detailsHref }: FeaturedProjectProps) {
+export function FeaturedProject({ name, description, detailsHref, index }: FeaturedProjectProps) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <Card className="group ring-2 ring-brand-200 transition hover:ring-brand-400">
-      <h3 className="text-lg font-semibold">{name}</h3>
+    <Link
+      href={detailsHref}
+      aria-label={`View details for ${name}`}
+      className="group block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
+    >
+      <motion.article
+        whileHover={reduceMotion ? undefined : { y: -6 }}
+        transition={{ type: "spring", stiffness: 360, damping: 24 }}
+        className="relative flex min-h-60 h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors group-hover:border-brand-300 group-hover:shadow-xl group-hover:shadow-brand-900/10"
+      >
+        <span className="mb-8 inline-flex size-9 items-center justify-center rounded-xl bg-brand-100 text-sm font-bold text-brand-700">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <h3 className="text-xl font-bold tracking-tight text-gray-950">{name}</h3>
 
-      <p className="mt-2 text-sm text-gray-600">{description}</p>
+        <p className="mt-3 text-sm leading-6 text-gray-600">{description}</p>
 
-      <div className="mt-4">
-        <Link
-          href={detailsHref}
-          aria-label={`View details for ${name}`}
-          className={cn(
-            "group/link inline-flex items-center gap-1.5 rounded-md border border-transparent px-3 py-1.5",
-            "text-sm font-medium text-brand-700 transition-all duration-200",
-            "group-hover:border-brand-300 group-hover:bg-brand-100 group-hover:shadow-sm",
-            "hover:scale-105 hover:border-brand-400 hover:bg-brand-200 hover:shadow-sm",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
-          )}
-        >
-          Project details
-          <span aria-hidden="true" className="transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5">
+        <div className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-bold text-brand-700 transition-colors group-hover:text-brand-900">
+          Learn more
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          >
             →
           </span>
-        </Link>
-      </div>
-    </Card>
+        </div>
+      </motion.article>
+    </Link>
   );
 }

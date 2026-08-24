@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import content from "@/data/content.json";
 import { Navbar } from "@/components/Navbar";
 import { Section } from "@/components/Section";
+import { TechnologyList } from "@/components/TechnologyList";
 import type { Content, Project } from "@/data/content";
 
 const siteContent = content as Content;
@@ -80,13 +81,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <main>
         <Section className="pt-10 pb-8">
-          <Link href="/projects" className="inline-flex text-sm font-medium text-gray-600 hover:text-brand-700 hover:underline">
+          <Link
+            href="/projects"
+            className="inline-flex text-sm font-medium text-gray-600 hover:text-brand-700 hover:underline"
+          >
             ← All projects
           </Link>
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-12">
             <div>
-              {project.context && <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">{project.context}</p>}
+              {project.context && (
+                <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">{project.context}</p>
+              )}
 
               <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{project.name}</h1>
 
@@ -99,7 +105,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                       rel="noopener noreferrer"
                       className="rounded-xl border border-brand-600 bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
                     >
-                      Live app ↗
+                      Live app →
                     </a>
                   )}
                   {project.githubHref && (
@@ -109,7 +115,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                       rel="noopener noreferrer"
                       className="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-gray-50"
                     >
-                      GitHub ↗
+                      GitHub →
                     </a>
                   )}
                 </div>
@@ -131,13 +137,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             <aside aria-label="Project technologies" className="lg:pt-1">
               <h2 className="text-sm font-semibold tracking-wider text-brand-600 uppercase">Technologies</h2>
-              <ul className="mt-3 flex flex-col items-start gap-2 text-sm">
-                {project.tags.map((tag) => (
-                  <li key={tag} className="rounded-full border bg-white/70 px-3 py-1">
-                    {tag}
-                  </li>
-                ))}
-              </ul>
+              <TechnologyList technologies={project.tags} />
             </aside>
           </div>
         </Section>

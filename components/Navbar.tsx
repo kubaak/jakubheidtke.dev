@@ -17,17 +17,20 @@ interface NavbarProps {
 
 export function Navbar({ profile, navigation }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-50 border-b border-transparent bg-white/70 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-gray-200/70 bg-white/80 backdrop-blur-xl">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-center justify-between py-3">
-          <Link href="/" className="inline-flex items-center gap-2 whitespace-nowrap font-semibold tracking-tight">
-            <Image src="/JHGradientMaroon.svg" alt="" width={24} height={24} className="shrink-0" />
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2.5 whitespace-nowrap font-bold tracking-tight text-gray-950"
+          >
+            <Image src="/JHGradientMaroon.svg" alt="logo" width={28} height={28} className="shrink-0" />
             <span className="leading-none">{profile.name}</span>
           </Link>
 
-          <nav aria-label="Primary navigation" className="hidden gap-6 text-sm md:flex">
+          <nav aria-label="Primary navigation" className="hidden gap-7 text-sm font-medium md:flex">
             {navigation.map((item) => (
-              <a key={item.href} href={item.href} className="text-gray-600 hover:text-gray-900">
+              <a key={item.href} href={item.href} className="text-gray-500 transition-colors hover:text-brand-700">
                 {item.label}
               </a>
             ))}
