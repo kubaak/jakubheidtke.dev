@@ -36,10 +36,21 @@ export interface About {
 
 export interface Project {
   name: string;
+  slug?: string;
   description: string;
   tags: string[];
+  featured?: boolean;
+  context?: string;
   appHref?: string;
   githubHref?: string;
+  details?: {
+    overview?: string;
+    role?: string[];
+    architecture?: string[];
+    challenges?: string[];
+    decisions?: string[];
+    results?: string[];
+  };
 }
 
 export interface Projects {

@@ -8,7 +8,7 @@
       "description": "I help companies scale by building production-ready platforms: secure .NET or Node.js backends, event-driven messaging, and user-friendly React.js applications.",
       "primaryCta": {
         "label": "See my projects",
-        "href": "#projects"
+        "href": "/projects"
       },
       "secondaryCta": {
         "label": "Email me",
@@ -22,7 +22,7 @@
   },
   "navigation": [
     { "label": "About", "href": "/#about" },
-    { "label": "Projects", "href": "/#projects" },
+    { "label": "Projects", "href": "/projects" },
     { "label": "Experience", "href": "/#experience" },
     { "label": "Learning", "href": "/learning" },
     { "label": "Contact", "href": "/#contact" }
@@ -72,31 +72,205 @@
     ]
   },
   "projects": {
-    "heading": "Recent projects",
+    "heading": "Featured Projects",
     "items": [
       {
         "name": "Hostomat",
-        "description": "NestJS API for accommodation providers to manage bookings and collect guest registration details through secure shareable links",
-        "tags": ["NestJS", "Node.js","TypeScript","MongoDB", "Mongoose", "Jest"],
-        "githubHref": "https://github.com/kubaak/hostomat-api"
+        "description": "NestJS API for accommodation providers to manage bookings and collect guest registration details through secure, shareable links",
+        "tags": [
+          "NestJS",
+          "Node.js",
+          "TypeScript",
+          "MongoDB",
+          "Mongoose",
+          "Jest"
+        ],
+        "githubHref": "https://github.com/kubaak/hostomat-api",
+        "slug": "hostomat",
+        "featured": true,
+        "details": {
+          "overview": "Hostomat is a backend application for accommodation providers that manages accommodations and bookings while simplifying guest registration through secure, shareable registration links. It separates host-facing administration from guest-facing registration flows and is designed as a foundation for automating accommodation reporting workflows.",
+          "role": [
+            "Designed and developed the application architecture and REST API with NestJS and TypeScript.",
+            "Implemented domain workflows for hosts, accommodations, bookings, coordinator sessions, guest sessions, and guest registrations.",
+            "Built MongoDB persistence with Mongoose and automated testing with Jest, including end-to-end coverage of complete registration flows."
+          ],
+          "architecture": [
+            "Modular NestJS REST API with TypeScript",
+            "MongoDB persistence through Mongoose repositories and domain-oriented models",
+            "Authenticated host workflows for managing accommodations and bookings",
+            "Token-based coordinator and guest sessions for secure, limited-access registration flows",
+            "Separation between host administration and public guest-registration endpoints",
+            "Unit and end-to-end testing with Jest against an isolated test database"
+          ],
+          "challenges": [
+            "Designing a registration flow that allows guests to submit personal details without requiring an account while keeping access scoped and secure.",
+            "Modelling the lifecycle between bookings, coordinator sessions, guest sessions, and completed registrations without tightly coupling the individual workflows.",
+            "Keeping persistence concerns isolated from application logic while working with MongoDB and Mongoose.",
+            "Testing multi-step workflows end to end, including authentication, session creation, registration completion, and database state changes."
+          ],
+          "results": [
+            "Built a working API foundation covering the complete flow from host onboarding and booking creation to guest registration.",
+            "Created a secure shareable-link workflow that lets accommodation providers collect registration details directly from guests.",
+            "Established automated test coverage for critical application and persistence workflows.",
+            "Created an extensible backend foundation for future accommodation reporting and city-tax automation."
+          ]
+        }
       },
       {
         "name": "Tubester",
-        "description": "Personal project that automates YouTube metadata updates and comment management using AI",
-        "tags": ["AI",".NET", "C#", "Hangfire", "React", "k8s", "Google API", "RAG", "Serilog", "Prometheus", "Loki", "Grafana"],
+        "description": "Full-stack SaaS for YouTube creators that uses AI to improve video metadata and automate comment management",
+        "tags": [
+          ".NET",
+          "C#",
+          "React",
+          "TypeScript",
+          "PostgreSQL",
+          "Hangfire",
+          "AI",
+          "RAG",
+          "pgvector",
+          "YouTube API",
+          "Docker",
+          "Kubernetes",
+          "Prometheus",
+          "Loki",
+          "Grafana"
+        ],
         "appHref": "https://tubester.app",
-        "githubHref": "https://github.com/kubaak/tubester-client"
-      },
-      {
-        "name": "Logistics Order Service",
-        "description": "High-throughput .NET service powering logistics order processing, using Dapper with manual transaction control for reliability, and full observability through New Relic.",
-        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "k8s"]
+        "githubHref": "https://github.com/kubaak/tubester-client",
+        "slug": "tubester",
+        "featured": true,
+        "context": "Personal Project",
+        "details": {
+          "overview": "Tubester is a full-stack SaaS for YouTube creators that combines AI-assisted video optimisation with automated comment management. It integrates directly with YouTube to synchronise channel data, improve video metadata, generate contextual comment replies, and manage creator workflows from a single application.",
+          "role": [
+            "Designed and built the product end to end, including the .NET backend, React and TypeScript frontend, PostgreSQL data model, background workers, external integrations, and deployment infrastructure.",
+            "Implemented Google OAuth and YouTube API integration, AI-powered workflows, retrieval-augmented generation, asynchronous background processing, CI/CD, and production observability."
+          ],
+          "architecture": [
+            "ASP.NET Core backend with a React and TypeScript client",
+            "PostgreSQL persistence with EF Core and pgvector for vector similarity search",
+            "Two-stage Google OAuth flow using progressive consent: read-only YouTube access during initial onboarding, with write permissions requested only when write-enabled features are used",
+            "Hangfire background jobs for channel synchronisation, comment scanning, AI processing, and other long-running workloads",
+            "AI-assisted video metadata generation and contextual comment replies using RAG over creator-specific content",
+            "Docker-based services deployed to Kubernetes with automated CI/CD through GitHub Actions",
+            "Structured logging and production observability using Serilog, Prometheus, Loki, and Grafana"
+          ],
+          "challenges": [
+            "Integrating OAuth-protected YouTube operations while correctly handling user permissions, API scopes, token-dependent workflows, and external API constraints.",
+            "Designing long-running AI and YouTube operations as resilient background jobs instead of blocking interactive HTTP requests.",
+            "Building a RAG pipeline that retrieves relevant creator-specific context from PostgreSQL and pgvector to produce more useful AI-generated replies.",
+            "Operating a multi-service application in Kubernetes with sufficient logging, metrics, and observability to diagnose failures outside the local development environment."
+          ],
+          "decisions": [
+            "YouTube permissions use a two-stage OAuth flow: users initially grant read-only access, while write access is requested separately only when they use features that modify YouTube data. This reduces the initial permission footprint and follows the principle of least privilege.",
+            "Long-running and failure-prone YouTube and AI operations are processed asynchronously through background jobs, keeping HTTP endpoints responsive and allowing work to be retried independently.",
+            "PostgreSQL with pgvector is used for both relational application data and vector search, avoiding the operational complexity of introducing a separate vector database.",
+            "Structured logs, metrics, and dashboards are treated as part of the application architecture rather than added only for debugging."
+          ],
+          "results": [
+            "Built and deployed a functional end-to-end SaaS that synchronises real YouTube channel data and supports AI-assisted metadata optimisation and comment reply workflows.",
+            "Created a production-style architecture covering authentication, third-party APIs, asynchronous processing, vector search, CI/CD, Kubernetes deployment, and observability."
+          ]
+        }
       },
       {
         "name": "I18n Process Tools",
-        "description": "Localization platform that automated translation workflows (GitHub/GitLab integration, bulk requests, PR/MR automation), helping Notino scale content delivery across multiple markets.",
-        "tags": [".NET", "Entity Framework Core", "Octokit", "GitLab API", "React", "k8s"]
+        "description": "Localization platform that synchronizes UI labels from GitLab and GitHub, coordinates bulk human or AI-assisted translation, and delivers completed translations through automated merge and pull requests.",
+        "tags": [
+          ".NET",
+          "Entity Framework Core",
+          "GitLab API",
+          "Octokit",
+          "React",
+          "Kubernetes"
+        ],
+        "slug": "i18n-process-tools",
+        "featured": true,
+        "context": "Professional Project",
+        "details": {
+          "overview": "I18n Process Tools streamlined the full localization lifecycle: it collected labels from GitLab and GitHub repositories, tracked their translation state, grouped work into bulk requests, and converted completed translations into reviewable source-control changes.",
+          "role": [
+            "Designed the core concept for the i18n backend, including repository synchronization, translation-state tracking, and bulk translation workflows.",
+            "Implemented the GitLab integration for importing localization files and creating merge requests with translated values.",
+            "Led the migration to GitHub and added GitHub support during the company repository migration.",
+            "One of two developers who built the React frontend for managing localization workflows."
+          ],
+          "architecture": [
+            ".NET backend with Entity Framework Core data access",
+            "React frontend for managing projects, labels, and translation requests",
+            "GitLab API and GitHub/Octokit integrations for repository synchronization and delivery",
+            "Bulk translation integration with Notino's Localization Service and TargetProcess",
+            "Optional AI-assisted translation path",
+            "Kubernetes deployment"
+          ],
+          "challenges": [
+            "Synchronizing localization files and label changes across repositories and markets.",
+            "Tracking whether each label was untranslated, awaiting translation, or completed.",
+            "Migrating repository automation from GitLab to GitHub without disrupting translation delivery."
+          ],
+          "decisions": [
+            "Model translation as an explicit workflow with Dirty, Pending, and Translated states. This added synchronization complexity but made missing, in-progress, and completed translations visible and prevented duplicate requests.",
+            "Deliver completed translations through dedicated branches and automated merge or pull requests. This required reliable repository integrations, but kept changes reviewable, auditable, and aligned with standard engineering workflows.",
+            "Abstract repository operations to support both GitLab and GitHub. Supporting platform-specific APIs increased implementation effort, but allowed the workflow to survive the company-wide repository migration."
+
+          
+          ],
+          "results": [
+            "Automated the workflow from repository labels to translation requests and reviewable translated changes.",
+            "Enabled translation delivery through both GitLab merge requests and GitHub pull requests.",
+            "Provided a scalable, consistent process for localized UI content across multiple markets."
+          ]
+        }
       },
+      {
+        "name": "Logistics Order Service",
+        "description": "High-throughput .NET service for logistics order processing, built around reliable asynchronous messaging, durable background work, explicit transaction control, and production observability.",
+        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "k8s"],
+        "slug": "logistics-order-service",
+        "featured": false,
+        "context": "Professional Project",
+        "details": {
+          "overview": "A high-throughput logistics order-processing service designed for reliable data changes and resilient event-driven workflows. The service combines Dapper-based data access, Azure Service Bus and Kafka messaging, durable background tasks, and New Relic observability.",
+          "role": [
+            "Developed reliable messaging and background-processing capabilities for a .NET logistics service.",
+            "Built reusable Azure Service Bus publishing and consumer infrastructure based on CloudEvents.",
+            "Implemented a SQL-backed persistent-task framework with durable state, retries, and recovery.",
+            "Migrated the team from a custom Kafka integration to the company-standard messaging library and helped harden its initial rollout.",
+            "Used Dapper with explicit transaction control in reliability-critical data-access paths."
+          ],
+          "architecture": [
+            ".NET service for logistics order processing",
+            "Dapper-based data access with explicit transaction boundaries",
+            "Azure Service Bus publishers and consumers using CloudEvents",
+            "Dynamic CloudEvent type resolution and dispatch to typed handlers",
+            "Kafka integration through the company-standard Notino.Messaging library",
+            "SQL-backed persistent tasks with atomic batch claiming, retries, and zombie recovery",
+            "Hangfire background processing",
+            "Structured logs, metrics, and production observability through New Relic"
+          ],
+          "challenges": [
+            "Process high volumes of logistics orders while preserving consistency across data changes and asynchronous work.",
+            "Handle transient messaging failures safely without creating duplicate side effects.",
+            "Prevent slow or failing downstream consumers from blocking message-topic processing.",
+            "Adopt a new Kafka library while addressing early performance and memory issues."
+          ],
+          "decisions": [
+            "Used an explicit event-type registry and typed handlers for predictable, safe message processing, where new event types require an intentional code change.",
+            "Used durable tasks to decouple message acknowledgement from slower downstream processing, allowing failed work to be retried without blocking message consumption. Tasks and related database changes were persisted in the same transaction to prevent lost follow-up work.",
+            "Used atomic batch claiming for persistent tasks to support concurrent high-throughput workers without losing durable task state."     
+          ],
+          "results": [
+            "Reliable Azure Service Bus event delivery and processing with typed CloudEvent handlers, retries, logging, and metrics.",
+            "Durable background-task execution with retries and recovery from abandoned or zombie work.",
+            "Improved correctness through atomic task-and-data persistence, alongside more resilient downstream processing.",
+            "First-team adoption of the company-standard Kafka library, contributing performance and memory improvements during rollout.",
+            "A reliability-focused, observable logistics order-processing service."
+          ]
+        }
+      },
+      
       {
         "name": "Product Availability and Reservations",
         "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
@@ -188,8 +362,7 @@
       {
         "school": "University of West Bohemia - Faculty of Applied Sciences",
         "period": "2016 - 2017",
-        "degree": "Master's degree studies in Applied Sciences",
-        "description": "One year completed."
+        "description": "Master's studies in Applied Sciences — one year completed"
       },
       {
         "school": "University of West Bohemia - Faculty of Education",

@@ -1,12 +1,10 @@
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { Card } from "./Card";
+import type { Project } from "@/data/content";
 
-interface ProjectCardProps {
-  name: string;
-  description: string;
-  tags: string[];
-  appHref?: string;
-  githubHref?: string;
+interface ProjectCardProps extends Project {
+  detailsHref?: string;
 }
 
 const linkBaseClasses = cn(
@@ -25,8 +23,8 @@ const arrowClasses = cn(
   "group-hover/link:-translate-y-0.5",
 );
 
-export function ProjectCard({ name, description, tags, appHref, githubHref }: ProjectCardProps) {
-  const hasAnyLink = Boolean(appHref || githubHref);
+export function ProjectCard({ name, description, tags, appHref, githubHref, detailsHref }: ProjectCardProps) {
+  const hasAnyLink = Boolean(detailsHref || appHref || githubHref);
 
   return (
     <Card
@@ -46,6 +44,28 @@ export function ProjectCard({ name, description, tags, appHref, githubHref }: Pr
 
       {hasAnyLink && (
         <div className="mt-4 flex flex-wrap gap-3">
+          {detailsHref && (
+            <Link
+              href={detailsHref}
+              aria-label={`View details for ${name}`}
+              className={cn(
+                linkBaseClasses,
+                "text-brand-700",
+                "group-hover:border-brand-300",
+                "group-hover:bg-brand-100",
+                "group-hover:shadow-sm",
+                "hover:border-brand-400",
+                "hover:bg-brand-200",
+                "focus-visible:outline-brand-600",
+              )}
+            >
+              Project details
+              <span aria-hidden="true" className={arrowClasses}>
+                →
+              </span>
+            </Link>
+          )}
+
           {appHref && (
             <a
               href={appHref}
