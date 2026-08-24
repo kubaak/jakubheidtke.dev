@@ -10,13 +10,13 @@ import type { Content, Project } from "@/data/content";
 const siteContent = content as Content;
 
 function getProject(slug: string): Project | undefined {
-  return siteContent.projects.items.find((project) => project.slug === slug && project.details);
+  return siteContent.projects.items.find((project) => project.slug === slug);
 }
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return siteContent.projects.items.filter((project) => project.slug && project.details).map(({ slug }) => ({ slug }));
+  return siteContent.projects.items.filter((project) => project.slug).map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
@@ -68,12 +68,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = getProject(slug);
 
-  if (!project || !project.details) {
+  if (!project) {
     notFound();
   }
 
   const { profile, navigation, footer } = siteContent;
-  const { details } = project;
+  const details = project.details ?? { overview: project.description };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">

@@ -106,8 +106,22 @@ export default function Home() {
             aria-label="Skills"
             className="order-first border-t border-gray-200/80 py-12 lg:order-none lg:sticky lg:top-[4.5rem] lg:h-fit lg:border-t-0 lg:pt-[4.1rem]"
           >
-            <h2 className="mt-3 text-2xl font-black tracking-tight text-gray-950">Skills</h2>
-            <Skills skills={about.skills} />
+            <details className="group lg:hidden">
+              <summary className="mt-3 flex cursor-pointer list-none items-center justify-between gap-3 text-2xl font-black tracking-tight text-gray-950 marker:content-none">
+                <span>Skills</span>
+                <span
+                  aria-hidden="true"
+                  className="text-brand-600 transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <Skills skills={about.skills} />
+            </details>
+            <div className="hidden lg:block">
+              <h2 className="mt-3 text-2xl font-black tracking-tight text-gray-950">Skills</h2>
+              <Skills skills={about.skills} />
+            </div>
           </aside>
         </div>
       </main>

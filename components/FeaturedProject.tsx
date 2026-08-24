@@ -24,9 +24,6 @@ export function FeaturedProject({ name, description, detailsHref, index }: Featu
         transition={{ type: "spring", stiffness: 360, damping: 24 }}
         className="relative flex min-h-60 h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors group-hover:border-brand-300 group-hover:shadow-xl group-hover:shadow-brand-900/10"
       >
-        <span className="mb-8 inline-flex size-9 items-center justify-center rounded-xl bg-brand-100 text-sm font-bold text-brand-700">
-          {String(index + 1).padStart(2, "0")}
-        </span>
         <h3 className="text-xl font-bold tracking-tight text-gray-950">{name}</h3>
 
         <p className="mt-3 text-sm leading-6 text-gray-600">{description}</p>

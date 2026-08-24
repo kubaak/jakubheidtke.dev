@@ -27,7 +27,7 @@ export default function ProjectsPage() {
           <div className="absolute top-0 right-0 -z-10 h-72 w-2/3 rounded-full bg-brand-100/65 blur-3xl" />
           <Reveal>
             <h1 className="mt-4 max-w-3xl text-5xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-6xl">
-              Projects built for real-world complexity.
+              Projects
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">
               Selected product and engineering work spanning SaaS development, distributed systems, integrations,

@@ -284,11 +284,13 @@
       {
         "name": "Product Availability and Reservations",
         "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
+        "slug": "product-availability-and-reservations",
         "tags": [".NET", "Dapper", "Hangfire", "Kafka", "Kubernetes"]
       },
       {
         "name": "GDPR Management",
         "description": "Delivered a GDPR-compliant consent management system by replacing a legacy solution, enabling secure handling of customer data and honoring consent expiry or revocation.",
+        "slug": "gdpr-management",
         "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "Kubernetes"]
       }
     ]
@@ -318,7 +320,7 @@
       },
       {
         "role": "Senior Software Engineer",
-        "company": "Oriflame Sweden Cosmetics (devteam s.r.o.)",
+        "company": "Oriflame (devteam s.r.o.)",
         "period": "Sep 2021 - Dec 2022 | Remote",
         "highlights": [
           "Built scalable event-driven microservices on .NET hosted in Azure Kubernetes Service.",
