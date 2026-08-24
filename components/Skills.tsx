@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
+import { useEffect, useId, useState } from "react";
 import type { IconType } from "react-icons";
 import {
   SiApachekafka,
@@ -93,12 +94,175 @@ const skillGroups = [
   { label: "Languages", skills: ["C#", "JavaScript", "TypeScript"] },
   { label: "Backend development", skills: [".NET", "ASP.NET Core", "Node.js", "Nest.js", "Express.js"] },
   { label: "Frontend development", skills: ["React.js", "Next.js", "Vite", "Tailwind CSS"] },
-  { label: "Data & persistence", skills: ["Entity Framework Core", "Dapper", "TypeORM", "PostgreSQL", "Azure SQL", "SQL Server", "MongoDB", "Mongoose", "Redis", "Oracle"] },
+  {
+    label: "Data & persistence",
+    skills: [
+      "Entity Framework Core",
+      "Dapper",
+      "TypeORM",
+      "PostgreSQL",
+      "Azure SQL",
+      "SQL Server",
+      "MongoDB",
+      "Mongoose",
+      "Redis",
+      "Oracle",
+    ],
+  },
   { label: "Quality & testing", skills: ["Moq", "xUnit", "NUnit", "Jest"] },
   { label: "Source control & CI/CD", skills: ["GitHub", "GitLab", "Azure DevOps"] },
   { label: "Distributed systems", skills: ["MediatR", "Kafka", "RabbitMQ", "Azure Service Bus", "Hangfire"] },
-  { label: "Platform & observability", skills: ["Docker", "Kubernetes", "AWS", "New Relic", "Grafana", "Windows", "Linux"] },
+  {
+    label: "Platform & observability",
+    skills: ["Docker", "Kubernetes", "AWS", "New Relic", "Grafana", "Windows", "Linux"],
+  },
 ];
+
+interface SkillCarouselProps {
+  label: string;
+  skills: string[];
+  sequence: number;
+  reduceMotion: boolean | null;
+}
+
+function SkillCard({ skill, iconOnly = false }: { skill: string; iconOnly?: boolean }) {
+  const item = brandedSkills[skill];
+  const Icon = item?.icon;
+
+  return (
+    <div
+      aria-label={iconOnly ? skill : undefined}
+      title={iconOnly ? skill : undefined}
+      className={`flex h-12 w-fit max-w-full items-center rounded-xl border border-gray-200 bg-white py-2 text-xl shadow-sm ${
+        iconOnly ? "justify-center px-2.5" : "gap-3 px-2.5"
+      }`}
+    >
+      {item?.src ? (
+        <Image src={item.src} alt="" width={28} height={28} className="size-7 shrink-0 object-contain" />
+      ) : Icon ? (
+        <Icon aria-hidden="true" focusable="false" className="size-7 shrink-0" style={{ color: item?.color }} />
+      ) : null}
+      {!iconOnly && <span className="min-w-0 truncate text-sm font-semibold text-gray-700">{skill}</span>}
+    </div>
+  );
+}
+
+function SkillCarousel({ label, skills, sequence, reduceMotion }: SkillCarouselProps) {
+  const [activeIndex, setActiveIndex] = useState(() => sequence % skills.length);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const contentId = useId();
+
+  function offsetFromActive(index: number) {
+    const directOffset = index - activeIndex;
+    const halfLength = skills.length / 2;
+
+    if (directOffset > halfLength) {
+      return directOffset - skills.length;
+    }
+
+    if (directOffset < -halfLength) {
+      return directOffset + skills.length;
+    }
+
+    return directOffset;
+  }
+
+  useEffect(() => {
+    if (isExpanded || reduceMotion || skills.length < 2) {
+      return;
+    }
+
+    const interval = window.setInterval(
+      () => {
+        setActiveIndex((currentIndex) => (currentIndex + 1) % skills.length);
+      },
+      5000 + sequence * 200,
+    );
+
+    return () => window.clearInterval(interval);
+  }, [isExpanded, reduceMotion, sequence, skills.length]);
+
+  return (
+    <section aria-label={label}>
+      <h3>
+        <button
+          type="button"
+          aria-expanded={isExpanded}
+          aria-controls={contentId}
+          onClick={() => setIsExpanded((expanded) => !expanded)}
+          className="flex w-full items-center justify-between gap-3 text-left text-xs font-bold tracking-[0.12em] text-brand-600 uppercase"
+        >
+          <span>{label}</span>
+          <span
+            aria-hidden="true"
+            className={`text-lg leading-none transition-transform ${isExpanded ? "rotate-45" : ""}`}
+          >
+            +
+          </span>
+        </button>
+      </h3>
+
+      <AnimatePresence initial={false} mode="wait">
+        {isExpanded ? (
+          <motion.ul
+            key="all-skills"
+            id={contentId}
+            initial={reduceMotion ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={reduceMotion ? undefined : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.24, ease: "easeOut" }}
+            className="mt-2 flex flex-wrap gap-1 overflow-hidden"
+          >
+            {skills.map((skill) => (
+              <li key={skill}>
+                <SkillCard skill={skill} />
+              </li>
+            ))}
+          </motion.ul>
+        ) : (
+          <motion.div
+            key="carousel"
+            id={contentId}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="relative mt-2 h-12"
+            style={{ perspective: "600px" }}
+          >
+            <div className="absolute inset-0" style={{ transformStyle: "preserve-3d" }}>
+              {skills.map((skill, index) => {
+                const offset = offsetFromActive(index);
+                const angle = offset * 36;
+                const isVisible = Math.abs(offset) <= 1;
+                const radians = (angle * Math.PI) / 180;
+
+                return (
+                  <motion.div
+                    key={skill}
+                    aria-hidden={offset !== 0}
+                    animate={{
+                      x: Math.sin(radians) * 76,
+                      z: Math.cos(radians) * 76 - 76,
+                      rotateY: -angle,
+                      opacity: isVisible ? (offset === 0 ? 1 : 0.42) : 0,
+                      scale: offset === 0 ? 1 : 0.92,
+                    }}
+                    transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 24 }}
+                    className="absolute top-0 left-1/2 -ml-6"
+                    style={{ backfaceVisibility: "hidden", transformStyle: "preserve-3d", zIndex: 10 - Math.abs(offset) }}
+                  >
+                    <SkillCard skill={skill} iconOnly />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
 
 export function Skills({ skills }: SkillsProps) {
   const reduceMotion = useReducedMotion();
@@ -108,43 +272,26 @@ export function Skills({ skills }: SkillsProps) {
   const listedSkills = new Set(groupedSkills.flatMap((group) => group.skills));
   const remainingSkills = skills.filter((skill) => !listedSkills.has(skill));
 
-  function renderSkill(skill: string) {
-    const item = brandedSkills[skill];
-    const Icon = item?.icon;
-
-    return (
-      <li key={skill}>
-        <motion.div
-          whileHover={reduceMotion ? undefined : { y: -2, x: 2 }}
-          transition={{ type: "spring", stiffness: 420, damping: 22 }}
-          className="flex h-10 items-center gap-3 rounded-xl border border-gray-200 bg-white px-2.5 py-1.5 text-xl shadow-sm transition-colors hover:border-brand-300 hover:bg-brand-50"
-        >
-          {item?.src ? (
-            <Image src={item.src} alt="" width={28} height={28} className="size-7 shrink-0 object-contain" />
-          ) : Icon ? (
-            <Icon aria-hidden="true" focusable="false" className="size-7 shrink-0" style={{ color: item?.color }} />
-          ) : null}
-          <span className="truncate text-sm font-semibold text-gray-700">{skill}</span>
-        </motion.div>
-      </li>
-    );
-  }
-
   return (
     <>
-      <div className="mt-5 space-y-6">
-        {groupedSkills.map((group) => (
-          <section key={group.label} aria-label={group.label}>
-            <h3 className="text-xs font-bold tracking-[0.12em] text-brand-600 uppercase">{group.label}</h3>
-            <ul className="mt-2 space-y-1.5">{group.skills.map(renderSkill)}</ul>
-          </section>
+      <div className="mt-5 grid gap-x-6 gap-y-8 md:grid-cols-2 xl:grid-cols-4">
+        {groupedSkills.map((group, index) => (
+          <SkillCarousel
+            key={group.label}
+            label={group.label}
+            skills={group.skills}
+            sequence={index}
+            reduceMotion={reduceMotion}
+          />
         ))}
 
         {remainingSkills.length > 0 && (
-          <section aria-label="Additional technologies">
-            <h3 className="text-xs font-bold tracking-[0.12em] text-brand-600 uppercase">Additional tools</h3>
-            <ul className="mt-2 space-y-1.5">{remainingSkills.map(renderSkill)}</ul>
-          </section>
+          <SkillCarousel
+            label="Additional tools"
+            skills={remainingSkills}
+            sequence={groupedSkills.length}
+            reduceMotion={reduceMotion}
+          />
         )}
       </div>
     </>

@@ -21,9 +21,9 @@
     }
   },
   "navigation": [
-    { "label": "About", "href": "/#about" },
+    { "label": "About", "href": "/about" },
     { "label": "Projects", "href": "/projects" },
-    { "label": "Experience", "href": "/#experience" },
+    { "label": "Experience", "href": "/experience" },
     { "label": "Learning", "href": "/learning" },
     { "label": "Contact", "href": "/#contact" }
   ],
