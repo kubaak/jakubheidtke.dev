@@ -2,11 +2,59 @@
 
 html {
   scroll-behavior: smooth;
+  background: #fffafc;
 }
 
 body {
   background: #fffafc;
 }
+
+html.dark {
+  color-scheme: dark;
+  --color-brand-50: #2a111b;
+  --color-brand-100: #3a1524;
+  --color-brand-200: #572038;
+  --color-brand-300: #7d3154;
+  --color-brand-400: #b85a80;
+  --color-brand-500: #d7447a;
+  --color-brand-600: #ec6996;
+  --color-brand-700: #f58ab0;
+  --color-brand-800: #fab0c9;
+  --color-brand-900: #ffd9e6;
+}
+
+html.dark body {
+  background: #120d10;
+}
+
+html.dark {
+  background: #120d10;
+}
+
+/* Keep the existing utility-first components visually consistent in dark mode. */
+html.dark .bg-white { background-color: #1d1419; }
+html.dark .bg-white\/70 { background-color: rgb(29 20 25 / 0.7); }
+html.dark .bg-white\/75 { background-color: rgb(29 20 25 / 0.75); }
+html.dark .bg-white\/80 { background-color: rgb(29 20 25 / 0.8); }
+html.dark .bg-white\/90 { background-color: rgb(29 20 25 / 0.9); }
+html.dark .bg-gray-50 { background-color: #261a20; }
+html.dark .bg-\[\#fffafc\] { background-color: #120d10; }
+html.dark .bg-\[\#fff7fa\] { background-color: #1a1015; }
+html.dark .text-gray-950 { color: #fff5f8; }
+html.dark .text-gray-900 { color: #f4e5eb; }
+html.dark .text-gray-800 { color: #e6d6dd; }
+html.dark .text-gray-700 { color: #d1bdc6; }
+html.dark .text-gray-600 { color: #bdaab3; }
+html.dark .text-gray-500 { color: #9c8992; }
+html.dark .border-gray-200 { border-color: #4c3842; }
+html.dark .border-gray-200\/70 { border-color: rgb(76 56 66 / 0.7); }
+html.dark .border-gray-200\/80 { border-color: rgb(76 56 66 / 0.8); }
+html.dark .border-white { border-color: #3c2932; }
+html.dark .border-white\/90 { border-color: rgb(60 41 50 / 0.9); }
+html.dark .bg-gray-300 { background-color: #725c67; }
+html.dark .from-brand-50 { --tw-gradient-from: #2a111b var(--tw-gradient-from-position); --tw-gradient-to: rgb(42 17 27 / 0) var(--tw-gradient-to-position); }
+html.dark .via-\[\#fff7fa\] { --tw-gradient-via: #1a1015 var(--tw-gradient-via-position); --tw-gradient-to: rgb(26 16 21 / 0) var(--tw-gradient-to-position); }
+html.dark .to-white { --tw-gradient-to: #1d1419 var(--tw-gradient-to-position); }
 
 @theme {
   --color-brand-50:  #f7ecf0;

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ThemeToggle } from "./ThemeToggle";
 
 interface NavigationItem {
   label: string;
@@ -28,20 +29,23 @@ export function Navbar({ profile, navigation }: NavbarProps) {
             <span className="leading-none">{profile.name}</span>
           </Link>
 
-          <nav aria-label="Primary navigation" className="hidden gap-7 text-sm font-medium md:flex">
-            {navigation.map((item) => (
-              <a key={item.href} href={item.href} className="text-gray-500 transition-colors hover:text-brand-700">
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <div className="flex items-center gap-3">
+            <nav aria-label="Primary navigation" className="hidden gap-7 text-sm font-medium md:flex">
+              {navigation.map((item) => (
+                <Link key={item.href} href={item.href} className="text-gray-500 transition-colors hover:text-brand-700">
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <ThemeToggle />
+          </div>
         </div>
 
         <nav aria-label="Mobile navigation" className="flex gap-5 overflow-x-auto pb-3 text-sm md:hidden">
           {navigation.map((item) => (
-            <a key={item.href} href={item.href} className="shrink-0 text-gray-600 hover:text-gray-900">
+            <Link key={item.href} href={item.href} className="shrink-0 text-gray-600 hover:text-gray-900">
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>
