@@ -5,6 +5,7 @@ import content from "@/data/content.json";
 import { Navbar } from "@/components/Navbar";
 import { Section } from "@/components/Section";
 import { TechnologyList } from "@/components/TechnologyList";
+import { ProjectLinks } from "@/components/ProjectLinks";
 import type { Content, Project } from "@/data/content";
 
 const siteContent = content as Content;
@@ -96,21 +97,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
               <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{project.name}</h1>
 
-              {project.links.length > 0 && (
-                <div className="mt-7 flex flex-wrap gap-3">
-                  {project.links.map(({ name, link }) => (
-                    <a
-                      key={link}
-                      href={link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-gray-50"
-                    >
-                      {name} →
-                    </a>
-                  ))}
-                </div>
-              )}
+              <ProjectLinks links={project.links} />
 
               <div className="mt-12">
                 <section className="border-t pt-8 pb-8">
