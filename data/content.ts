@@ -41,8 +41,10 @@ export interface Project {
   tags: string[];
   featured?: boolean;
   context?: string;
-  appHref?: string;
-  githubHref?: string;
+  links: {
+    name: string;
+    link: string;
+  }[];
   details?: {
     overview?: string;
     role?: string[];

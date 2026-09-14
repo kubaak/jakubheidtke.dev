@@ -96,28 +96,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
               <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{project.name}</h1>
 
-              {(project.appHref || project.githubHref) && (
+              {project.links.length > 0 && (
                 <div className="mt-7 flex flex-wrap gap-3">
-                  {project.appHref && (
+                  {project.links.map(({ name, link }) => (
                     <a
-                      href={project.appHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="rounded-xl border border-brand-600 bg-brand-600 px-4 py-2 text-sm font-medium text-white hover:bg-brand-700"
-                    >
-                      Live app →
-                    </a>
-                  )}
-                  {project.githubHref && (
-                    <a
-                      href={project.githubHref}
+                      key={link}
+                      href={link}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="rounded-xl border px-4 py-2 text-sm font-medium hover:bg-gray-50"
                     >
-                      GitHub →
+                      {name} →
                     </a>
-                  )}
+                  ))}
                 </div>
               )}
 

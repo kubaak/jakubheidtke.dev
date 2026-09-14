@@ -95,7 +95,9 @@
           "Mongoose",
           "Jest"
         ],
-        "githubHref": "https://github.com/kubaak/hostomat-api",
+        "links": [
+          { "name": "GitHub", "link": "https://github.com/kubaak/hostomat-api" }
+        ],
         "slug": "hostomat",
         "featured": true,
         "details": {
@@ -147,8 +149,11 @@
           "Loki",
           "Grafana"
         ],
-        "appHref": "https://tubester.app",
-        "githubHref": "https://github.com/kubaak/tubester-client",
+        "links": [
+          { "name": "Live app", "link": "https://tubester.app" },
+          { "name": "Client", "link": "https://github.com/kubaak/tubester-client" },
+          { "name": "Backend", "link": "https://github.com/kubaak/tubester" }
+        ],
         "slug": "tubester",
         "featured": true,
         "context": "Personal Project",
@@ -197,6 +202,7 @@
           "Kubernetes"
         ],
         "slug": "i18n-process-tools",
+        "links": [],
         "featured": true,
         "context": "Professional Project",
         "details": {
@@ -239,6 +245,7 @@
         "description": "High-throughput .NET service for logistics order processing, built around reliable asynchronous messaging, durable background work, explicit transaction control, and production observability.",
         "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "Kubernetes"],
         "slug": "logistics-order-service",
+        "links": [],
         "featured": false,
         "context": "Professional Project",
         "details": {
@@ -285,12 +292,14 @@
         "name": "Product Availability and Reservations",
         "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
         "slug": "product-availability-and-reservations",
+        "links": [],
         "tags": [".NET", "Dapper", "Hangfire", "Kafka", "Kubernetes"]
       },
       {
         "name": "GDPR Management",
         "description": "Delivered a GDPR-compliant consent management system by replacing a legacy solution, enabling secure handling of customer data and honoring consent expiry or revocation.",
         "slug": "gdpr-management",
+        "links": [],
         "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "Kubernetes"]
       }
     ]
