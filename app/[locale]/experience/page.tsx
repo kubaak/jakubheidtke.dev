@@ -1,25 +1,24 @@
-import type { Metadata } from "next";
-import content from "@/data/content.json";
+import { getContent } from "@/data/getContent";
+import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { pageMetadata } from "@/i18n/metadata";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/Card";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
-import type { Content } from "@/data/content";
 
 function timelineDate(period: string) {
   return period.split("|")[0].trim();
 }
 
-export const metadata: Metadata = {
-  title: "Experience",
-  description: "Professional software engineering experience of Jakub Heidtke.",
-  alternates: {
-    canonical: "/experience",
-  },
-};
+export async function generateMetadata({ params }: LocalePageProps) {
+  return pageMetadata(await pageLocale(params), "experience");
+}
 
-export default function ExperiencePage() {
-  const { profile, navigation, experience, footer } = content as Content;
+export default async function ExperiencePage({ params }: LocalePageProps) {
+  const locale = await pageLocale(params);
+  const t = await getTranslations();
+  const { profile, navigation, experience, footer } = getContent(locale);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -32,9 +31,7 @@ export default function ExperiencePage() {
             <h1 className="mt-4 text-5xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-6xl">
               {experience.heading}
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">
-              A timeline of roles and the engineering work I&apos;ve built or contributed to.
-            </p>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">{t("pages.experienceIntro")}</p>
           </Reveal>
         </Section>
 
@@ -51,7 +48,7 @@ export default function ExperiencePage() {
                 <Card className="border-gray-200 bg-white p-6 shadow-none transition-shadow hover:shadow-lg hover:shadow-brand-900/5">
                   <h2 className="text-lg font-bold tracking-tight text-gray-950">
                     {item.role}
-                    {item.company && ` at ${item.company}`}
+                    {item.company && t("ui.company", { company: item.company })}
                   </h2>
 
                   <ul className="mt-4 list-inside list-disc space-y-1.5 text-sm leading-6 text-gray-600">

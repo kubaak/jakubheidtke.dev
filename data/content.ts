@@ -75,7 +75,7 @@ export interface Experience {
 export interface EducationItem {
   school: string;
   period: string;
-  degree: string;
+  degree?: string;
   description?: string;
 }
 

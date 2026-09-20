@@ -1,34 +1,30 @@
 import type { MetadataRoute } from "next";
+import { routing } from "@/i18n/routing";
+import { getPathname } from "@/i18n/navigation";
+import { getContent } from "@/data/getContent";
+import { siteUrl } from "@/i18n/metadata";
 
 export const dynamic = "force-static";
 
-const siteUrl = "https://jakubheidtke.com";
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: siteUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: `${siteUrl}/learning`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
-    {
-      url: `${siteUrl}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    ...["tubester", "hostomat", "logistics-order-service"].map((slug) => ({
-      url: `${siteUrl}/projects/${slug}`,
-      lastModified: new Date(),
+  return routing.locales.flatMap((locale) => {
+    const paths = [
+      "/",
+      "/about",
+      "/experience",
+      "/learning",
+      "/projects",
+      ...getContent(locale).projects.items.flatMap((project) => (project.slug ? ["/projects/" + project.slug] : [])),
+    ];
+    return paths.map((href) => ({
+      url: siteUrl + getPathname({ locale, href }),
       changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
-  ];
+      priority: href === "/" ? 1 : 0.7,
+      alternates: {
+        languages: Object.fromEntries(
+          routing.locales.map((language) => [language, siteUrl + getPathname({ locale: language, href })]),
+        ),
+      },
+    }));
+  });
 }

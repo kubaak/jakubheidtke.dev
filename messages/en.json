@@ -1,0 +1,81 @@
+{
+  "ui": {
+    "language": "Language",
+    "en": "Switch to English",
+    "cs": "Switch to Czech",
+    "primaryNav": "Primary navigation",
+    "mobileNav": "Mobile navigation",
+    "logo": "Jakub Heidtke logo",
+    "learnMore": "Learn more",
+    "projectDetails": "View details for {name}",
+    "certificate": "View completion certificate for {name}",
+    "allProjects": "All projects",
+    "viewAll": "View all projects",
+    "overview": "Overview",
+    "role": "My Role",
+    "architecture": "Architecture & Technology",
+    "challenges": "Engineering Challenges",
+    "decisions": "Decisions & Trade-offs",
+    "results": "Results & Impact",
+    "technologies": "Technologies",
+    "projectTechnologies": "Project technologies",
+    "skills": "Skills",
+    "credentials": "Credentials",
+    "credential": "View credential",
+    "emptyCourses": "Selected course details will be added here as they are completed.",
+    "company": " at {company}",
+    "toggleTheme": "Toggle color theme",
+    "lightTheme": "Switch to light mode",
+    "darkTheme": "Switch to dark mode",
+    "engineer": "Engineer",
+    "years": "years shipping software",
+    "location": "Remote · Czechia, EU",
+    "flags": "European Union and Czech Republic",
+    "euFlag": "European Union flag",
+    "csFlag": "Czech Republic flag"
+  },
+  "nav": {
+    "about": "About",
+    "projects": "Projects",
+    "experience": "Experience",
+    "learning": "Learning",
+    "contact": "Contact"
+  },
+  "home": {
+    "projectsTitle": "Software built to solve real business problems.",
+    "projectsDescription": "Browse selected work across SaaS products, distributed systems, integrations, backend architecture, and full-stack applications.",
+    "projectsLink": "View my projects",
+    "experienceTitle": "A decade of turning complex ideas into production-ready software.",
+    "experienceDescription": "Explore my professional timeline, from full-stack product development to building scalable backend platforms and leading technical delivery.",
+    "experienceLink": "View my experience"
+  },
+  "pages": {
+    "projectsTitle": "Projects",
+    "projectsIntro": "Selected product and engineering work spanning SaaS development, distributed systems, integrations, backend architecture, and full-stack applications.",
+    "learningIntro": "A concise overview of my formal education and ongoing professional development as a senior full-stack engineer.",
+    "coursesIntro": "Selected courses covering backend engineering, distributed systems, security, and technologies that complement my core experience.",
+    "experienceIntro": "A timeline of roles and the engineering work I've built or contributed to."
+  },
+  "meta": {
+    "home": {
+      "title": "Jakub Heidtke Full-stack Engineer",
+      "description": "Jakub Heidtke, a senior full-stack engineer specializing in .NET, Node.js, and React."
+    },
+    "projects": {
+      "title": "Projects",
+      "description": "Selected software engineering projects by Jakub Heidtke, covering .NET, distributed systems, TypeScript, React, backend architecture and SaaS development."
+    },
+    "learning": {
+      "title": "Education & Professional Development",
+      "description": "Education and selected professional development courses by Jakub Heidtke, Senior Full-Stack Engineer."
+    },
+    "about": {
+      "title": "About",
+      "description": "About Jakub Heidtke, a full-stack software engineer specializing in scalable production systems."
+    },
+    "experience": {
+      "title": "Experience",
+      "description": "Professional software engineering experience of Jakub Heidtke."
+    }
+  }
+}

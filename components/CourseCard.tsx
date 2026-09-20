@@ -1,10 +1,12 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { motion, useReducedMotion } from "motion/react";
 import type { Course } from "@/data/content";
 import { Card } from "./Card";
 
 export function CourseCard({ name, topics, certificateUrl }: Course) {
+  const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
   const card = (
     <Card className="h-full border-gray-200 bg-white p-5 shadow-sm transition-colors hover:border-brand-300 hover:shadow-lg hover:shadow-brand-900/5 group-focus-visible:border-brand-400 group-focus-visible:ring-2 group-focus-visible:ring-brand-600 group-focus-visible:ring-offset-2">
@@ -46,8 +48,8 @@ export function CourseCard({ name, topics, certificateUrl }: Course) {
           href={certificateUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`View completion certificate for ${name}`}
-          title={`View completion certificate for ${name}`}
+          aria-label={t("certificate", { name })}
+          title={t("certificate", { name })}
           className="group block h-full rounded-2xl"
         >
           {card}

@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 type Theme = "light" | "dark";
 
@@ -33,18 +33,19 @@ function getStoredTheme(): Theme | null {
   }
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export function ThemeProvider({ children, locale }: { children: ReactNode; locale: string }) {
   const [theme, setThemeState] = useState<Theme | null>(null);
   const explicitTheme = useRef<Theme | null>(null);
 
-  useEffect(() => {
-    explicitTheme.current = getStoredTheme();
-
-    // Adopt the theme applied by the pre-hydration script.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setThemeState(getDomTheme());
-
+  useLayoutEffect(() => {
+    explicitTheme.current = explicitTheme.current ?? getStoredTheme();
     const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const nextTheme = explicitTheme.current ?? (colorScheme.matches ? "dark" : "light");
+
+    // Locale navigation updates the root document without rerunning its startup script.
+    // Restore the theme before paint, including an in-memory choice if storage is blocked.
+    applyTheme(nextTheme);
+    setThemeState(nextTheme);
 
     const onSystemThemeChange = (event: MediaQueryListEvent) => {
       if (explicitTheme.current === null) {
@@ -60,7 +61,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     return () => {
       colorScheme.removeEventListener("change", onSystemThemeChange);
     };
-  }, []);
+  }, [locale]);
 
   const setTheme = (nextTheme: Theme) => {
     explicitTheme.current = nextTheme;

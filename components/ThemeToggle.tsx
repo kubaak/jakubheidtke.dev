@@ -1,14 +1,16 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import { FiMoon, FiSun } from "react-icons/fi";
 import { useTheme } from "@/components/ThemeProvider";
 
 export function ThemeToggle() {
+  const t = useTranslations("ui");
   const { theme, toggleTheme } = useTheme();
 
   const isDark = theme === "dark";
 
-  const label = theme === null ? "Toggle color theme" : isDark ? "Switch to light mode" : "Switch to dark mode";
+  const label = theme === null ? t("toggleTheme") : isDark ? t("lightTheme") : t("darkTheme");
 
   return (
     <button

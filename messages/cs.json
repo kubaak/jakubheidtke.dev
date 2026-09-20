@@ -1,0 +1,81 @@
+{
+  "ui": {
+    "language": "Jazyk",
+    "en": "Přepnout do angličtiny",
+    "cs": "Přepnout do češtiny",
+    "primaryNav": "Hlavní navigace",
+    "mobileNav": "Mobilní navigace",
+    "logo": "Logo Jakuba Heidtkeho",
+    "learnMore": "Zjistit více",
+    "projectDetails": "Zobrazit podrobnosti projektu {name}",
+    "certificate": "Zobrazit certifikát o absolvování kurzu {name}",
+    "allProjects": "Všechny projekty",
+    "viewAll": "Zobrazit všechny projekty",
+    "overview": "Přehled",
+    "role": "Moje role",
+    "architecture": "Architektura a technologie",
+    "challenges": "Technické výzvy",
+    "decisions": "Rozhodnutí a kompromisy",
+    "results": "Výsledky a přínos",
+    "technologies": "Technologie",
+    "projectTechnologies": "Technologie projektu",
+    "skills": "Dovednosti",
+    "credentials": "Osvědčení",
+    "credential": "Zobrazit osvědčení",
+    "emptyCourses": "Podrobnosti o vybraných kurzech budou doplněny po jejich dokončení.",
+    "company": " ve společnosti {company}",
+    "toggleTheme": "Přepnout barevný motiv",
+    "lightTheme": "Přepnout na světlý motiv",
+    "darkTheme": "Přepnout na tmavý motiv",
+    "engineer": "vývojář",
+    "years": "let vývoje softwaru",
+    "location": "Na dálku · Česko, EU",
+    "flags": "Evropská unie a Česká republika",
+    "euFlag": "Vlajka Evropské unie",
+    "csFlag": "Vlajka České republiky"
+  },
+  "nav": {
+    "about": "O mně",
+    "projects": "Projekty",
+    "experience": "Zkušenosti",
+    "learning": "Vzdělávání",
+    "contact": "Kontakt"
+  },
+  "home": {
+    "projectsTitle": "Software, který řeší skutečné potřeby firem.",
+    "projectsDescription": "Prohlédněte si vybrané SaaS produkty, distribuované systémy, integrace, backendové architektury a full-stack aplikace.",
+    "projectsLink": "Prohlédnout projekty",
+    "experienceTitle": "Deset let proměňuji složité nápady v software připravený pro produkci.",
+    "experienceDescription": "Projděte si mou profesní cestu od full-stack vývoje produktů po tvorbu škálovatelných backendových platforem a technické vedení projektů.",
+    "experienceLink": "Prohlédnout zkušenosti"
+  },
+  "pages": {
+    "projectsTitle": "Projekty",
+    "projectsIntro": "Vybrané projekty z oblasti SaaS, distribuovaných systémů, integrací, backendové architektury a full-stack aplikací.",
+    "learningIntro": "Stručný přehled mého vzdělání a průběžného profesního rozvoje v oblasti full-stack vývoje.",
+    "coursesIntro": "Vybrané kurzy zaměřené na backendový vývoj, distribuované systémy, bezpečnost a technologie, které doplňují mé hlavní zkušenosti.",
+    "experienceIntro": "Přehled pracovních pozic a projektů, které jsem vytvořil nebo na kterých jsem se podílel."
+  },
+  "meta": {
+    "home": {
+      "title": "Jakub Heidtke – full-stack vývojář",
+      "description": "Jakub Heidtke, seniorní full-stack vývojář se zaměřením na .NET, Node.js a React."
+    },
+    "projects": {
+      "title": "Projekty",
+      "description": "Vybrané softwarové projekty Jakuba Heidtkeho: .NET, distribuované systémy, TypeScript, React, backendová architektura a SaaS."
+    },
+    "learning": {
+      "title": "Vzdělání a profesní rozvoj",
+      "description": "Vzdělání a vybrané odborné kurzy Jakuba Heidtkeho, seniorního full-stack vývojáře."
+    },
+    "about": {
+      "title": "O mně",
+      "description": "O Jakubu Heidtkem, full-stack vývojáři se zaměřením na škálovatelné produkční systémy."
+    },
+    "experience": {
+      "title": "Zkušenosti",
+      "description": "Profesní zkušenosti Jakuba Heidtkeho v oblasti vývoje softwaru."
+    }
+  }
+}

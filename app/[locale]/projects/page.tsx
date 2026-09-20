@@ -1,22 +1,20 @@
-import type { Metadata } from "next";
-import content from "@/data/content.json";
+import { getContent } from "@/data/getContent";
+import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { pageMetadata } from "@/i18n/metadata";
+import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/Navbar";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
-import type { Content } from "@/data/content";
 
-export const metadata: Metadata = {
-  title: "Projects",
-  description:
-    "Selected software engineering projects by Jakub Heidtke, covering .NET, distributed systems, TypeScript, React, backend architecture and SaaS development.",
-  alternates: {
-    canonical: "/projects",
-  },
-};
+export async function generateMetadata({ params }: LocalePageProps) {
+  return pageMetadata(await pageLocale(params), "projects");
+}
 
-export default function ProjectsPage() {
-  const { profile, navigation, projects, footer } = content as Content;
+export default async function ProjectsPage({ params }: LocalePageProps) {
+  const locale = await pageLocale(params);
+  const t = await getTranslations();
+  const { profile, navigation, projects, footer } = getContent(locale);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -27,12 +25,9 @@ export default function ProjectsPage() {
           <div className="absolute top-0 right-0 -z-10 h-72 w-2/3 rounded-full bg-brand-100/65 blur-3xl" />
           <Reveal>
             <h1 className="mt-4 max-w-3xl text-5xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-6xl">
-              Projects
+              {t("pages.projectsTitle")}
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">
-              Selected product and engineering work spanning SaaS development, distributed systems, integrations,
-              backend architecture, and full-stack applications.
-            </p>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-600">{t("pages.projectsIntro")}</p>
           </Reveal>
         </Section>
 

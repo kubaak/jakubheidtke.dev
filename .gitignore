@@ -39,3 +39,7 @@ logs/
 
 # Optional eslint cache
 .eslintcache
+
+# Browser test output
+test-results/
+playwright-report/

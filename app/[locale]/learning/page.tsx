@@ -1,22 +1,21 @@
-import type { Metadata } from "next";
-import content from "@/data/content.json";
+import { getContent } from "@/data/getContent";
+import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { pageMetadata } from "@/i18n/metadata";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/Card";
 import { CourseCard } from "@/components/CourseCard";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
-import type { Content } from "@/data/content";
 
-export const metadata: Metadata = {
-  title: "Education & Professional Development",
-  description: "Education and selected professional development courses by Jakub Heidtke, Senior Full-Stack Engineer.",
-  alternates: {
-    canonical: "/learning",
-  },
-};
+export async function generateMetadata({ params }: LocalePageProps) {
+  return pageMetadata(await pageLocale(params), "learning");
+}
 
-export default function LearningPage() {
-  const { profile, navigation, education, learning, footer } = content as Content;
+export default async function LearningPage({ params }: LocalePageProps) {
+  const locale = await pageLocale(params);
+  const t = await getTranslations();
+  const { profile, navigation, education, learning, footer } = getContent(locale);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -29,10 +28,7 @@ export default function LearningPage() {
             <h1 className="mt-4 max-w-4xl text-5xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-6xl">
               {learning.heading}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
-              A concise overview of my formal education and ongoing professional development as a senior full-stack
-              engineer.
-            </p>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">{t("pages.learningIntro")}</p>
           </Reveal>
         </Section>
 
@@ -69,7 +65,7 @@ export default function LearningPage() {
         {learning.certifications.items.length > 0 && (
           <Section>
             <Reveal>
-              <p className="text-xs font-bold tracking-[0.16em] text-brand-600 uppercase">Credentials</p>
+              <p className="text-xs font-bold tracking-[0.16em] text-brand-600 uppercase">{t("ui.credentials")}</p>
               <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">
                 {learning.certifications.heading}
               </h2>
@@ -97,7 +93,7 @@ export default function LearningPage() {
                         rel="noopener noreferrer"
                         className="mt-4 inline-flex text-sm font-medium text-brand-700 hover:text-brand-800 hover:underline"
                       >
-                        View credential →
+                        {t("ui.credential")} →
                       </a>
                     )}
                   </Card>
@@ -111,10 +107,7 @@ export default function LearningPage() {
           <Reveal>
             <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">{learning.courses.heading}</h2>
 
-            <p className="mt-4 max-w-2xl leading-7 text-gray-600">
-              Selected courses covering backend engineering, distributed systems, security, and technologies that
-              complement my core experience.
-            </p>
+            <p className="mt-4 max-w-2xl leading-7 text-gray-600">{t("pages.coursesIntro")}</p>
           </Reveal>
 
           {learning.courses.items.length > 0 ? (
@@ -127,7 +120,7 @@ export default function LearningPage() {
             </div>
           ) : (
             <div className="mt-6 max-w-2xl border-t pt-5 text-gray-700">
-              <p>Selected course details will be added here as they are completed.</p>
+              <p>{t("ui.emptyCourses")}</p>
             </div>
           )}
         </Section>

@@ -1,13 +1,21 @@
-import content from "@/data/content.json";
-import Link from "next/link";
+import { getContent } from "@/data/getContent";
+import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { pageMetadata } from "@/i18n/metadata";
+import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
-import type { Content } from "@/data/content";
 
-export default function Home() {
-  const { profile, navigation, contact, footer } = content as Content;
+export async function generateMetadata({ params }: LocalePageProps) {
+  return pageMetadata(await pageLocale(params), "home");
+}
+
+export default async function Home({ params }: LocalePageProps) {
+  const locale = await pageLocale(params);
+  const t = await getTranslations();
+  const { profile, navigation, contact, footer } = getContent(locale);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -24,14 +32,11 @@ export default function Home() {
                 className="group block rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-100 via-[#fff7fa] to-white p-7 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-900/5 sm:p-10"
               >
                 <h2 className="mt-2 text-3xl font-black tracking-[-0.04em] text-gray-950 sm:text-4xl">
-                  Software built to solve real business problems.
+                  {t("home.projectsTitle")}
                 </h2>
-                <p className="mt-4 max-w-2xl leading-7 text-gray-600">
-                  Browse selected work across SaaS products, distributed systems, integrations, backend architecture,
-                  and full-stack applications.
-                </p>
+                <p className="mt-4 max-w-2xl leading-7 text-gray-600">{t("home.projectsDescription")}</p>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition group-hover:text-brand-900">
-                  View my projects <span aria-hidden="true">→</span>
+                  {t("home.projectsLink")} <span aria-hidden="true">→</span>
                 </span>
               </Link>
             </Reveal>
@@ -44,14 +49,11 @@ export default function Home() {
                 className="group block rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-100 via-[#fff7fa] to-white p-7 transition hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-900/5 sm:p-10"
               >
                 <h2 className="mt-2 text-3xl font-black tracking-[-0.04em] text-gray-950 sm:text-4xl">
-                  A decade of turning complex ideas into production-ready software.
+                  {t("home.experienceTitle")}
                 </h2>
-                <p className="mt-4 max-w-2xl leading-7 text-gray-600">
-                  Explore my professional timeline, from full-stack product development to building scalable backend
-                  platforms and leading technical delivery.
-                </p>
+                <p className="mt-4 max-w-2xl leading-7 text-gray-600">{t("home.experienceDescription")}</p>
                 <span className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-700 transition group-hover:text-brand-900">
-                  View my experience <span aria-hidden="true">→</span>
+                  {t("home.experienceLink")} <span aria-hidden="true">→</span>
                 </span>
               </Link>
             </Reveal>

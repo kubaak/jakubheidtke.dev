@@ -1,6 +1,7 @@
 "use client";
+import { useTranslations } from "next-intl";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/cn";
 import { Card } from "./Card";
@@ -11,6 +12,7 @@ interface ProjectCardProps extends Project {
 }
 
 export function ProjectCard({ name, description, tags, detailsHref }: ProjectCardProps) {
+  const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
 
   const card = (
@@ -37,7 +39,7 @@ export function ProjectCard({ name, description, tags, detailsHref }: ProjectCar
 
       {detailsHref && (
         <div className="mt-auto inline-flex items-center gap-1.5 pt-6 text-sm font-bold text-brand-700 transition-colors group-hover:text-brand-900">
-          Learn more
+          {t("learnMore")}
           <span
             aria-hidden="true"
             className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
@@ -58,7 +60,7 @@ export function ProjectCard({ name, description, tags, detailsHref }: ProjectCar
       {detailsHref ? (
         <Link
           href={detailsHref}
-          aria-label={`View details for ${name}`}
+          aria-label={t("projectDetails", { name })}
           className="block h-full rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
         >
           {card}

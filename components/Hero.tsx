@@ -1,9 +1,13 @@
 "use client";
+import { useTranslations } from "next-intl";
 
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import type { Profile } from "@/data/content";
+
+const MotionLink = motion.create(Link);
 
 interface HeroProps {
   profile: Profile;
@@ -15,6 +19,7 @@ const rise = {
 };
 
 export function Hero({ profile }: HeroProps) {
+  const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
   const [photoLoaded, setPhotoLoaded] = useState(false);
 
@@ -41,7 +46,7 @@ export function Hero({ profile }: HeroProps) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-2xl text-4xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-5xl lg:text-6xl"
           >
-            <span className="text-brand-600">Full-stack</span> Engineer
+            <span className="text-brand-600">Full-stack</span> {t("engineer")}
           </motion.h1>
 
           <motion.p
@@ -57,14 +62,14 @@ export function Hero({ profile }: HeroProps) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="mt-9 flex flex-wrap gap-3"
           >
-            <motion.a
+            <MotionLink
               href={profile.hero.primaryCta.href}
               whileHover={reduceMotion ? undefined : { y: -2 }}
               whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/20 transition-colors hover:bg-brand-700"
             >
               {profile.hero.primaryCta.label} <span aria-hidden="true">→</span>
-            </motion.a>
+            </MotionLink>
             <motion.a
               href={profile.hero.secondaryCta.href}
               whileHover={reduceMotion ? undefined : { y: -2 }}
@@ -81,16 +86,16 @@ export function Hero({ profile }: HeroProps) {
             className="mt-10 flex items-center gap-5 text-sm text-gray-500"
           >
             <span>
-              <strong className="font-bold text-gray-900">10+</strong> years shipping software
+              <strong className="font-bold text-gray-900">10+</strong> {t("years")}
             </span>
             <span className="h-4 w-px bg-gray-300" />
             <span className="flex items-center gap-2">
-              Remote · Czechia, EU
-              <span className="flex -space-x-1.5" aria-label="European Union and Czech Republic">
+              {t("location")}
+              <span className="flex -space-x-1.5" aria-label={t("flags")}>
                 <span
                   className="size-8 overflow-hidden rounded-full border-2 border-white shadow-sm"
                   role="img"
-                  aria-label="European Union flag"
+                  aria-label={t("euFlag")}
                 >
                   <Image
                     src="/flags/european-union.svg"
@@ -103,7 +108,7 @@ export function Hero({ profile }: HeroProps) {
                 <span
                   className="size-8 overflow-hidden rounded-full border-2 border-white shadow-sm"
                   role="img"
-                  aria-label="Czech Republic flag"
+                  aria-label={t("csFlag")}
                 >
                   <Image
                     src="/flags/czech-republic.svg"

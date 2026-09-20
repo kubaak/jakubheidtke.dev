@@ -1,21 +1,20 @@
-import type { Metadata } from "next";
-import content from "@/data/content.json";
+import { getContent } from "@/data/getContent";
+import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { pageMetadata } from "@/i18n/metadata";
+import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/Navbar";
 import { Reveal } from "@/components/Reveal";
 import { Section } from "@/components/Section";
 import { Skills } from "@/components/Skills";
-import type { Content } from "@/data/content";
 
-export const metadata: Metadata = {
-  title: "About",
-  description: "About Jakub Heidtke, a full-stack software engineer specializing in scalable production systems.",
-  alternates: {
-    canonical: "/about",
-  },
-};
+export async function generateMetadata({ params }: LocalePageProps) {
+  return pageMetadata(await pageLocale(params), "about");
+}
 
-export default function AboutPage() {
-  const { profile, navigation, about, footer } = content as Content;
+export default async function AboutPage({ params }: LocalePageProps) {
+  const locale = await pageLocale(params);
+  const t = await getTranslations();
+  const { profile, navigation, about, footer } = getContent(locale);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -49,7 +48,7 @@ export default function AboutPage() {
           </div>
 
           <Reveal className="mt-14 border-t border-gray-200 pt-12">
-            <h2 className="text-3xl font-black tracking-[-0.04em] text-gray-950">Skills</h2>
+            <h2 className="text-3xl font-black tracking-[-0.04em] text-gray-950">{t("ui.skills")}</h2>
             <Skills skills={about.skills} />
           </Reveal>
         </Section>

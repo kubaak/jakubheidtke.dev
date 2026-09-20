@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import { FeaturedProject } from "./FeaturedProject";
 import { Section } from "./Section";
@@ -11,6 +12,7 @@ interface ProjectsProps {
 }
 
 export function Projects({ heading, items, className }: ProjectsProps) {
+  const t = useTranslations("ui");
   return (
     <Section id="projects" className={cn(className)}>
       <h2 className="text-3xl font-extrabold">{heading}</h2>
@@ -26,8 +28,11 @@ export function Projects({ heading, items, className }: ProjectsProps) {
         ))}
       </div>
 
-      <Link href="/projects" className="mt-8 inline-flex text-sm font-semibold text-brand-700 hover:text-brand-800 hover:underline">
-        View all projects →
+      <Link
+        href="/projects"
+        className="mt-8 inline-flex text-sm font-semibold text-brand-700 hover:text-brand-800 hover:underline"
+      >
+        {t("viewAll")} →
       </Link>
     </Section>
   );
