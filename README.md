@@ -65,6 +65,13 @@ and layout, plus `generateStaticParams`, following the supported
 It does not enable experimental root params or introduce middleware, cookies or
 server-side language detection. Project parameters are generated for each parent locale.
 
+## Project logos
+
+Projects in `data/content.en.json` and `data/content.cs.json` can include an
+optional `"logo": "/projects/my-project.svg"` field. Place the corresponding file
+at `public/projects/my-project.svg`. The logo appears to the left of the title in the
+project list card; omit the field to show the card without a logo.
+
 ## Validation
 
 ```bash

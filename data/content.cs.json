@@ -98,16 +98,65 @@
     "heading": "Vybrané projekty",
     "items": [
       {
+        "name": "PlainlySmart",
+        "logo": "https://plainlysmart.com/icon.svg?icon.2dfw3bn2t1fcx.svg",
+        "description": "Dvojjazyčný marketingový web pro custom software business, postavený jako plně statická Next.js aplikace s lokalizovaným obsahem, interaktivním consultation flow, bot protection a campaign attribution",
+        "tags": [
+          "Next.js",
+          "React",
+          "TypeScript",
+          "Tailwind CSS",
+          "next-intl",
+          "React Hook Form",
+          "Zod",
+          "Cloudflare Turnstile",
+          "Playwright"
+        ],
+        "links": [
+          {
+            "name": "Website",
+            "link": "https://plainlysmart.com"
+          }
+        ],
+        "slug": "plainlysmart",
+        "featured": true,
+        "context": "Osobní projekt",
+        "details": {
+          "overview": "PlainlySmart začal jako jednoduchý marketingový web pro custom software business, ale od začátku jsem k němu přistupoval spíš jako k production aplikaci než jen jako k sadě statických stránek. Cílem bylo zachovat frontend kompletně staticky deployovatelný a přitom podporovat localization, theme persistence, interaktivní consultation flow, campaign attribution a bezpečnou komunikaci s externím backendem. Výsledkem je lehký Next.js web, který v runtime nepotřebuje Node.js server, ale v browseru se stále chová jako moderní aplikace.",
+          "role": [
+            "Web jsem navrhl a postavil end to end, od vizuální struktury a responsive komponent přes localization, browser-side state a accessibility až po contact workflow. Použil jsem Next.js App Router s TypeScriptem a Tailwind CSS 4 a následně přidal Motion na vybraná místa tak, aby rozhraní působilo živěji, ale animation nebyla podmínkou použitelnosti.",
+            "Jak se projekt vyvíjel, posunul jsem contact flow od jednoduchých email linků k reusable consultation dialogu. React Hook Form nyní spravuje form state, Zod validation a normalization a next-intl poskytuje localized validation messages. Každá část tak má jasnou odpovědnost místo toho, aby se veškerá form logic postupně hromadila v jedné komponentě.",
+            "Navrhl jsem také integrační hranici pro samostatné contact API. Statický frontend sesbírá lead, doplní locale a campaign attribution, získá Cloudflare Turnstile token a odešle request na externí endpoint. Frontend a backend infrastructure se díky tomu mohou vyvíjet nezávisle na sobě."
+          ],
+          "architecture": [
+            "Aplikace se exportuje jako statické HTML, CSS a JavaScript, takže může být hostovaná bez Next.js serveru. Dynamic operations jako contact submission jsou řešené přes externí API místo Next.js server routes.",
+            "Localization je postavená na next-intl se symetrickými routes /en a /cs. Explicitní URL mají přednost před browser detection, language preference se ukládá client-side a theme state zůstává zachovaný při přepínání locale bez vzniku hydration mismatch.",
+            "Consultation experience je sdílený napříč stránkou přes React Context. Jednotlivé CTA mohou otevřít stejný native dialog bez prop drilling, zatímco dialog lifecycle zůstává oddělený od samotné implementace formuláře.",
+            "Contact form používá React Hook Form společně se Zod schema. Zod trimuje a validuje odesílané hodnoty, React Hook Form řeší field registration, validation errors a submission state a accessibility propojení chyb s inputy je řešené přes aria-invalid a aria-describedby.",
+            "Cloudflare Turnstile je integrovaný přes jeho explicit JavaScript API. Malý React wrapper načte externí script, vyrenderuje widget pomocí window.turnstile.render, předá verification token parent formuláři a při neúspěšném submission vytvoří nový widget s čerstvým tokenem.",
+            "Campaign attribution se načítá ze standardních UTM parametrů a ukládá do sessionStorage s in-memory fallbackem. Hodnoty tak následují uživatele během navigation a při odeslání contact requestu se připojí společně s aktuálním locale.",
+            "Playwright browser tests testují skutečný static export, ne pouze development server. Pokrývají localization, theme persistence, scénáře s blocked storage, navigation behaviour a browser-level JavaScript errors."
+          ],
+          "challenges": [
+            "Jedním z hlavních architectural decisions bylo zachovat web skutečně statický bez ztráty application-like behaviour. Místo přidání Next.js runtime pouze kvůli jednomu formuláři jsem oddělil frontend od budoucího contact backendu a navrhl komunikaci browseru s dedikovaným API endpointem.",
+            "Localization přinesla víc problémů než jen překlad textů. Web musí při první návštěvě zvolit správný jazyk, respektovat explicitní locale URL, pamatovat si user preference, fungovat i při nedostupném browser storage a udržet dark mode při plné locale navigation bez hydration flash.",
+            "Konzultační formulář postupně nabral validace, ochranu před duplicitním odesláním, status handling a data extrační logiku. Refactor na React Hook Form a Zod komponentu zjednodušil tím, že form state a validation mají jasně definované vlastníky, zatímco Turnstile, tracking a odesílání přes API zůstaly oddělené jako samostatné části aplikační logiky.",
+            "Integrace Turnstile vyžadovala propojit deklarativní React lifecycle s imperativním third-party API. Komponenta musí počkat na načtení externího scriptu, vyrenderovat widget do konkrétního DOM elementu, při cleanup odstranit předchozí instanci widgetu a po zneplatnění verification tokenu vygenerovat nový.",
+            "UTM tracking bylo potřeba navrhnout defensivně. Browser storage nemusí být dostupný, uloženému JSONu nelze důvěřovat a campaign values musí přežít client-side navigation. Implementace proto validuje obnovená data a používá in-memory fallback místo toho, aby tracking code mohl ovlivnit samotný contact flow."
+          ],
+          "results": [
+            "Projekt se vyvinul ze statické firemní landing page na produkčně orientovanou marketingovou aplikaci a přitom si zachoval plně statický model nasazení.",
+            "Návštěvníci mohou přepínat mezi anglickou a českou verzí, zachovat si preferenci motivu a otevřít stejný zážitek z konzultace z více částí webu bez duplikace logiky dialogu.",
+            "Kontaktní workflow nyní používá typovaný stav formuláře, validaci řízenou schématem, lokalizované chyby, ověření Turnstile, UTM atribuci a čistou integrační hranici pro externí API místo původního odesílání přes mailto.",
+            "Architektura umožňuje přidat backend nezávisle, například pomocí AWS API Gateway a Lambda, bez změny modelu statického hostingu frontendu.",
+            "Projekt mi zároveň poskytl praktické prostředí pro řešení problémů, které u jednodušších marketingových webů často nejsou vidět: chování hydratace, přístupnost, selhání úložiště prohlížeče, životní cyklus skriptů třetích stran, testování statického exportu a hranice důvěry mezi klientem a serverem."
+          ]
+        }
+      },
+      {
         "name": "Hostomat",
         "description": "NestJS API pro poskytovatele ubytování, které umožňuje spravovat rezervace a sbírat registrační údaje hostů prostřednictvím bezpečných, sdílených odkazů.",
-        "tags": [
-          "NestJS",
-          "Node.js",
-          "TypeScript",
-          "MongoDB",
-          "Mongoose",
-          "Jest"
-        ],
+        "tags": ["NestJS", "Node.js", "TypeScript", "MongoDB", "Mongoose", "Jest"],
         "links": [
           {
             "name": "GitHub",
@@ -116,6 +165,7 @@
         ],
         "slug": "hostomat",
         "featured": true,
+        "context": "Osobní projekt",
         "details": {
           "overview": "Hostomat je backend aplikace pro poskytovatele ubytování, která spravuje ubytovací zařízení a rezervace a zároveň zjednodušuje registraci hostů pomocí bezpečných, sdílených registračních odkazů. Odděluje administraci pro hostitele od registračních workflow pro hosty a slouží jako základ pro automatizaci reportingu ubytovaných hostů.",
           "role": [
@@ -146,7 +196,40 @@
         }
       },
       {
+        "name": "Osobní portfolio",
+        "logo": "https://www.jakubheidtke.com/JHGradientMaroon.svg",
+        "description": "Dvojjazyčné portfolio postavené na Next.js, které kombinuje detailní příběhy projektů se static hostingem, navigací podle jazyka a persistentním nastavením motivu",
+        "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "next-intl", "Playwright"],
+        "links": [
+          { "name": "Website", "link": "https://jakubheidtke.com" },
+          { "name": "GitHub", "link": "https://github.com/kubaak/jakubheidtke.dev" }
+        ],
+        "slug": "personal-portfolio",
+        "context": "Osobní projekt",
+        "featured": true,
+        "details": {
+          "overview": "Portfolio jsem vytvořil proto, abych své práci mohl dát více kontextu, než se vejde do klasického CV. Vedle zkušeností a dovedností proto dává prostor jednotlivým projektům a příběhům o problémech, rozhodnutích při implementaci a výsledcích, které za nimi stojí. Samotný vývoj se zároveň stal příležitostí vyřešit detaily dvojjazyčné Next.js aplikace, kterou lze kompletně nasadit jako statické soubory.",
+          "role": [
+            "Web jsem vyvinul pomocí Next.js App Routeru, Reactu, TypeScriptu a Tailwind CSS a vytvořil jsem znovupoužitelné komponenty pro project cards, seznamy technologií, navigaci a case-study stránky. Obsah portfolia jsem uložil do strukturovaného JSONu, takže přidání nového projektu nebo aktualizace pracovních zkušeností automaticky využije existující stránky bez nutnosti vytvářet pokaždé nový layout.",
+            "Web jsem rozšířil o anglické a české routy, přepínání jazyků a persistentní nastavení motivu. Abych ověřil, že se tyto funkce chovají správně i po nasazení, přidal jsem Playwright testy pro výběr locale, navigaci, omezení browser storage a vygenerované statické stránky."
+          ],
+          "architecture": [
+            "Stránky se generují při build time a exportují se jako HTML, CSS a JavaScript pro static hosting. Typované content soubory obsahují portfolio data pro jednotlivé jazyky, zatímco next-intl zajišťuje společné texty uživatelského rozhraní a locale-aware navigaci. Detailní routy projektů se generují ze slugů uložených v obsahu, takže seznam projektů i jednotlivé příběhy využívají stejný datový model.",
+            "Anglické a české stránky používají explicitní URL /en a /cs. Samostatná vstupní stránka vybírá jazyk v browseru podle uložené preference, podporovaných jazyků browseru a angličtiny jako fallbacku. Oddělené root layouty zajišťují správný jazyk dokumentu v exportovaných stránkách, zatímco sdílená document komponenta řeší inicializaci motivu. Lokalizovaná metadata obsahují canonical URL a jazykové alternativy."
+          ],
+          "challenges": [
+            "Hlavní výzvou bylo zajistit, aby výběr jazyka působil přirozeně i při čistě statickém deploymentu. Pokud návštěvník otevře přímý odkaz, musí se zobrazit jazyk uvedený v URL bez ohledu na to, co naznačuje jeho browser nebo uložená preference. Automatickou detekci jsem proto ponechal pouze na root entry pointu a explicitní změna jazyka si zapamatuje uživatelovu volbu, přičemž zachová aktuální cestu, query parametry i fragment.",
+            "Preference musely fungovat i v méně ideálních situacích: browser storage může být blokovaný a přechod mezi jednotlivými locale layouty může ovlivnit inicializaci motivu. Přidal jsem proto defensivní práci se storage a sdílenou inicializaci theme a následně tyto interakce pokryl browser testy. Testování skutečného static exportu mi umožnilo ověřit přesně to chování, které návštěvník dostane na produkčním hostingu, včetně jazyka dokumentu, metadat a favicon odkazů."
+          ],
+          "results": [
+            "Výsledkem je portfolio, které propojuje stručné představení s detailnějšími příběhy projektů, pracovními zkušenostmi a historií dalšího vzdělávání. Znovupoužitelná struktura stránek umožňuje web rozšiřovat převážně změnami dat, zatímco static export udržuje deployment nezávislý na běžícím Node.js serveru.",
+            "Projekt mi zároveň poskytl praktický prostor pro propojení lokalizace, browser preferences a static renderingu. Automatizované testy nyní pokrývají i podpůrné chování, které lze při vizuální kontrole stránky snadno přehlédnout - od výběru jazyka přes navigaci až po atributy vygenerovaného dokumentu."
+          ]
+        }
+      },
+      {
         "name": "Tubester",
+        "logo": "https://tubester.app/tubester_logo.png",
         "description": "Full-stack SaaS pro tvůrce na YouTube, který využívá AI ke zlepšování metadat videí a automatizaci správy komentářů.",
         "tags": [
           ".NET",
@@ -218,14 +301,7 @@
       {
         "name": "I18n Process Tools",
         "description": "Lokalizační platforma, která synchronizuje UI labels z GitLabu a GitHubu, koordinuje bulk překlady lidmi nebo pomocí AI a doručuje hotové překlady prostřednictvím automatizovaných merge requestů a pull requestů.",
-        "tags": [
-          ".NET",
-          "Entity Framework Core",
-          "GitLab API",
-          "Octokit",
-          "React",
-          "Kubernetes"
-        ],
+        "tags": [".NET", "Entity Framework Core", "GitLab API", "Octokit", "React", "Kubernetes"],
         "slug": "i18n-process-tools",
         "links": [],
         "featured": true,
@@ -266,15 +342,7 @@
       {
         "name": "Logistics Order Service",
         "description": "High-throughput .NET služba pro zpracování logistických objednávek postavená na spolehlivém asynchronous messagingu, durable background processingu, explicitní správě transakcí a production observability.",
-        "tags": [
-          ".NET",
-          "Dapper",
-          "Kafka",
-          "Azure Service Bus",
-          "Hangfire",
-          "React",
-          "Kubernetes"
-        ],
+        "tags": [".NET", "Dapper", "Kafka", "Azure Service Bus", "Hangfire", "React", "Kubernetes"],
         "slug": "logistics-order-service",
         "links": [],
         "featured": false,
@@ -323,28 +391,14 @@
         "description": "Zlepšení služeb pro product availability a reservations pomocí refactoringu a bug fixů, zajišťující spolehlivý stock tracking a plynulé booking flow.",
         "slug": "product-availability-and-reservations",
         "links": [],
-        "tags": [
-          ".NET",
-          "Dapper",
-          "Hangfire",
-          "Kafka",
-          "Kubernetes"
-        ]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "Kubernetes"]
       },
       {
         "name": "GDPR Management",
         "description": "GDPR-compliant consent management systém, který nahradil legacy řešení a umožnil bezpečné zpracování zákaznických dat včetně expirace nebo odvolání souhlasu.",
         "slug": "gdpr-management",
         "links": [],
-        "tags": [
-          ".NET",
-          "Dapper",
-          "Hangfire",
-          "Kafka",
-          "RabbitMq",
-          "React",
-          "Kubernetes"
-        ]
+        "tags": [".NET", "Dapper", "Hangfire", "Kafka", "RabbitMq", "React", "Kubernetes"]
       }
     ]
   },
@@ -352,7 +406,7 @@
     "heading": "Zkušenosti",
     "items": [
       {
-        "role": "Independent Software Engineer – vlastní produkty",
+        "role": "Independent Software Engineer – vlastní projekty",
         "period": "listopad 2025 – současnost | Remote",
         "highlights": [
           "Návrh a vývoj full-stack SaaS produktů v .NET, NestJS, Reactu, PostgreSQL a MongoDB.",
@@ -456,48 +510,64 @@
       "heading": "Vybrané kurzy",
       "items": [
         {
+          "name": "Ultimate AWS Certified Solutions Architect Associate 2026 ",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-8e298cda-8914-482d-91ec-064e5b17e708/",
+          "topics": [
+            "AWS",
+            "EC2",
+            "Elastic Load Balancing",
+            "Auto Scaling",
+            "S3",
+            "RDS",
+            "DynamoDB",
+            "Lambda",
+            "API Gateway",
+            "IAM",
+            "VPC",
+            "CloudFront",
+            "Route 53",
+            "SQS & SNS",
+            "CloudWatch",
+            "AWS Security",
+            "High Availability & Disaster Recovery",
+            "AWS Well-Architected Framework"
+          ]
+        },
+        {
+          "name": "AZ-204 Developing Solutions for Microsoft Azure",
+          "certificateUrl": "https://www.udemy.com/certificate/UC-eaf202bd-3463-4d66-89ff-89f5da0f8c30/",
+          "topics": [
+            "Microsoft Azure",
+            "Azure App Service",
+            "Azure Functions",
+            "Azure Storage",
+            "Cosmos DB",
+            "Microsoft Entra ID",
+            "Azure Key Vault",
+            "Application Insights",
+            "API Management",
+            "Azure Containers"
+          ]
+        },
+        {
           "name": "Redis: The Complete Developer's Guide",
           "certificateUrl": "https://www.udemy.com/certificate/UC-e6689370-8d23-46e6-b984-c537e72af619/",
-          "topics": [
-            "Redis",
-            "Caching",
-            "Data Structures",
-            "Streams",
-            "Pub/Sub"
-          ]
+          "topics": ["Redis", "Caching", "Data Structures", "Streams", "Pub/Sub"]
         },
         {
           "name": "NodeJS - The Complete Guide (MVC, REST APIs, GraphQL, Deno)",
           "certificateUrl": "https://www.udemy.com/certificate/UC-62c3b77d-53c5-42b4-912e-cd362a629283/",
-          "topics": [
-            "Node.js",
-            "REST APIs",
-            "GraphQL",
-            "Authentication",
-            "Backend Development"
-          ]
+          "topics": ["Node.js", "REST APIs", "GraphQL", "Authentication", "Backend Development"]
         },
         {
           "name": "NestJS: The Complete Developer's Guide",
           "certificateUrl": "https://www.udemy.com/certificate/UC-ea6057ea-ae6a-415d-a927-395a9bc93fd5/",
-          "topics": [
-            "NestJS",
-            "TypeScript",
-            "REST APIs",
-            "Dependency Injection",
-            "Backend Architecture"
-          ]
+          "topics": ["NestJS", "TypeScript", "REST APIs", "Dependency Injection", "Backend Architecture"]
         },
         {
           "name": "The Nuts and Bolts of OAuth 2.0",
           "certificateUrl": "https://www.udemy.com/certificate/UC-e0b8385e-0e43-4444-ad76-29073e18181f/",
-          "topics": [
-            "OAuth 2.0",
-            "OpenID Connect",
-            "Authentication",
-            "Authorization",
-            "Security"
-          ]
+          "topics": ["OAuth 2.0", "OpenID Connect", "Authentication", "Authorization", "Security"]
         },
         {
           "name": "Asp.Net Core : The Complete Guide To Build RESTful Api's",
@@ -512,24 +582,12 @@
         },
         {
           "name": ".NET Core Microservices",
-          "topics": [
-            "Microservices",
-            "RabbitMQ",
-            "MongoDB",
-            "JWT",
-            "Docker Compose"
-          ],
+          "topics": ["Microservices", "RabbitMQ", "MongoDB", "JWT", "Docker Compose"],
           "certificateUrl": "https://www.udemy.com/certificate/UC-abd82dcd-51da-4b57-9949-d22f4f702c27/"
         },
         {
           "name": "SQL Server Administration Part1",
-          "topics": [
-            "SQL Server",
-            "Backup & Restore",
-            "Security",
-            "SQL Server Agent",
-            "Database Storage"
-          ],
+          "topics": ["SQL Server", "Backup & Restore", "Security", "SQL Server Agent", "Database Storage"],
           "certificateUrl": "https://www.udemy.com/certificate/UC-QOG4YRVW/"
         }
       ]

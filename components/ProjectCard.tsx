@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
@@ -11,9 +12,11 @@ interface ProjectCardProps extends Project {
   detailsHref?: string;
 }
 
-export function ProjectCard({ name, description, tags, detailsHref }: ProjectCardProps) {
+export function ProjectCard({ name, logo, description, tags, context, detailsHref }: ProjectCardProps) {
   const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
+  const contextLabel = context?.replace(/\s+(project|projekt)$/i, "");
+  const isProfessional = /^(professional|profesní)$/i.test(contextLabel ?? "");
 
   const card = (
     <Card
@@ -22,7 +25,32 @@ export function ProjectCard({ name, description, tags, detailsHref }: ProjectCar
         detailsHref ? "hover:border-brand-300 hover:shadow-xl hover:shadow-brand-900/10" : "hover:shadow-lg",
       )}
     >
-      <h3 className="text-xl font-bold tracking-tight text-gray-950">{name}</h3>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-3">
+          {logo && (
+            <Image
+              src={logo}
+              alt=""
+              width={32}
+              height={32}
+              className="size-8 shrink-0 object-contain"
+            />
+          )}
+          <h3 className="min-w-0 break-words text-xl font-bold tracking-tight text-gray-950">{name}</h3>
+        </div>
+        {context && (
+          <span
+            className={cn(
+              "max-w-[50%] shrink-0 rounded-full px-2.5 py-1 text-right text-xs font-semibold",
+              isProfessional
+                ? "bg-blue-50 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300 dark:ring-1 dark:ring-inset dark:ring-blue-300/20"
+                : "bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300 dark:ring-1 dark:ring-inset dark:ring-emerald-300/20",
+            )}
+          >
+            {contextLabel}
+          </span>
+        )}
+      </div>
 
       <p className="mt-3 text-sm leading-6 text-gray-600">{description}</p>
 

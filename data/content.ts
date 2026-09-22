@@ -36,6 +36,7 @@ export interface About {
 
 export interface Project {
   name: string;
+  logo?: string;
   slug?: string;
   description: string;
   tags: string[];

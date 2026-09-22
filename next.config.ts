@@ -5,9 +5,6 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   output: "export",
-  experimental: {
-    rootParams: true,
-  },
   images: {
     unoptimized: true,
   },

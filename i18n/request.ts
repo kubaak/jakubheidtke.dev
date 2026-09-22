@@ -5,5 +5,12 @@ import { isLocale, routing } from "./routing";
 export default getRequestConfig(async ({ locale: localeOverride }) => {
   const requested = localeOverride ?? (await getRootLocale());
   const locale = isLocale(requested) ? requested : routing.defaultLocale;
-  return { locale, messages: (await import("../messages/" + locale + ".json")).default };
+  return {
+    locale,
+    messages: (
+      await import(`../messages/${locale}.json`, {
+        with: { type: "json" },
+      })
+    ).default,
+  };
 });
