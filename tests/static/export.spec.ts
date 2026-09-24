@@ -1,8 +1,8 @@
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { test, expect } from "@playwright/test";
-import { projects } from "../../data/projects";
-import { routing } from "../../i18n/routing";
+import { projects } from "../../src/data/projects";
+import { routing } from "../../src/i18n/routing";
 
 test("every exported page declares the same root favicon in its static head", async () => {
   const files = await readdir(resolve("out"), { recursive: true });

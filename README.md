@@ -39,6 +39,31 @@ node tests/serve-export.mjs
 
 Open http://127.0.0.1:4173.
 
+## Project structure
+
+```text
+messages/
+├── en.json
+└── cs.json
+src/
+├── app/
+├── components/
+├── i18n/
+│   ├── routing.ts
+│   ├── request.ts
+│   ├── navigation.ts
+│   └── ...
+├── data/
+│   ├── projects.ts
+│   ├── experience.ts
+│   ├── learning.ts
+│   └── ...
+└── lib/
+```
+
+The `@/*` import alias resolves to `src/*`. Translation messages, public assets,
+tests and configuration files remain at the repository root.
+
 ## Localization
 
 All portfolio pages live under `/en` or `/cs`, including about, experience and

@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { routing } from "../i18n/routing";
-import { projects } from "../data/projects";
+import { routing } from "../src/i18n/routing";
+import { projects } from "../src/data/projects";
 import cs from "../messages/cs.json" with { type: "json" };
 
 const slugs = projects.map((project) => project.slug);

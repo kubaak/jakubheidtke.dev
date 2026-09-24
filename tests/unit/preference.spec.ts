@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { readPreferredLocale, storePreferredLocale } from "../../i18n/preference";
-import { routing, type Locale } from "../../i18n/routing";
+import { readPreferredLocale, storePreferredLocale } from "../../src/i18n/preference";
+import { routing, type Locale } from "../../src/i18n/routing";
 
 let values: Map<string, string>;
 let original: PropertyDescriptor | undefined;

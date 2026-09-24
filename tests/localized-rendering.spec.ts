@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { routing } from "../i18n/routing";
-import { courses } from "../data/learning";
-import { projects } from "../data/projects";
-import { navigation } from "../data/site";
+import { routing } from "../src/i18n/routing";
+import { courses } from "../src/data/learning";
+import { projects } from "../src/data/projects";
+import { navigation } from "../src/data/site";
 import en from "../messages/en.json" with { type: "json" };
 import cs from "../messages/cs.json" with { type: "json" };
 

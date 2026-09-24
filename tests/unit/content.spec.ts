@@ -1,10 +1,10 @@
 import { test, expect } from "@playwright/test";
 import { createTranslator } from "next-intl";
-import { projects } from "../../data/projects";
-import { navigation, contact } from "../../data/site";
-import { experience } from "../../data/experience";
-import { education } from "../../data/education";
-import { courses } from "../../data/learning";
+import { projects } from "../../src/data/projects";
+import { navigation, contact } from "../../src/data/site";
+import { experience } from "../../src/data/experience";
+import { education } from "../../src/data/education";
+import { courses } from "../../src/data/learning";
 import en from "../../messages/en.json" with { type: "json" };
 import cs from "../../messages/cs.json" with { type: "json" };
 

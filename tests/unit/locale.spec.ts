@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { routing, isLocale } from "../../i18n/routing";
-import { resolvePreferredLocale } from "../../i18n/preference";
+import { routing, isLocale } from "../../src/i18n/routing";
+import { resolvePreferredLocale } from "../../src/i18n/preference";
 
 test("central locale definitions", () => {
   expect(routing.locales).toEqual(["en", "cs"]);
