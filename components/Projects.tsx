@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 import { FeaturedProject } from "./FeaturedProject";
 import { Section } from "./Section";
-import type { Project } from "@/data/content";
+import type { Project } from "../data/projects";
 
 interface ProjectsProps {
   heading: string;
@@ -12,6 +12,7 @@ interface ProjectsProps {
 }
 
 export function Projects({ heading, items, className }: ProjectsProps) {
+  const copy = useTranslations("projects.items");
   const t = useTranslations("ui");
   return (
     <Section id="projects" className={cn(className)}>
@@ -19,9 +20,9 @@ export function Projects({ heading, items, className }: ProjectsProps) {
       <div className="mt-6 grid gap-6 md:grid-cols-3">
         {items.map((project, index) => (
           <FeaturedProject
-            key={project.name}
-            name={project.name}
-            description={project.description}
+            key={project.slug}
+            name={copy(`${project.slug}.name`)}
+            description={copy(`${project.slug}.description`)}
             detailsHref={`/projects/${project.slug}`}
             index={index}
           />

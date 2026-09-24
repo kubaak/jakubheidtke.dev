@@ -1,24 +1,21 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { profile } from "../data/site";
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
-import type { Profile } from "@/data/content";
 
 const MotionLink = motion.create(Link);
-
-interface HeroProps {
-  profile: Profile;
-}
 
 const rise = {
   hidden: { opacity: 0, y: 24 },
   visible: { opacity: 1, y: 0 },
 };
 
-export function Hero({ profile }: HeroProps) {
+export function Hero() {
+  const hero = useTranslations("profile.hero");
   const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
   const [photoLoaded, setPhotoLoaded] = useState(false);
@@ -38,7 +35,7 @@ export function Hero({ profile }: HeroProps) {
             className="inline-flex items-center gap-2 rounded-full border border-brand-200 bg-white/75 px-3 py-1.5 text-xs font-bold tracking-[0.14em] text-brand-700 uppercase shadow-sm"
           >
             <span className="size-2 rounded-full bg-brand-500" />
-            {profile.hero.tagline}
+            {hero("tagline")}
           </motion.p>
 
           <motion.h1
@@ -46,7 +43,7 @@ export function Hero({ profile }: HeroProps) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-2xl text-4xl leading-[0.98] font-black tracking-[-0.055em] text-gray-950 sm:text-5xl lg:text-6xl"
           >
-            <span className="text-brand-600">Full-stack</span> {t("engineer")}
+            <span className="text-brand-600">{t("fullStack")}</span> {t("engineer")}
           </motion.h1>
 
           <motion.p
@@ -54,7 +51,7 @@ export function Hero({ profile }: HeroProps) {
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 max-w-xl text-lg leading-8 text-gray-600"
           >
-            {profile.hero.description}
+            {hero("description")}
           </motion.p>
 
           <motion.div
@@ -68,7 +65,7 @@ export function Hero({ profile }: HeroProps) {
               whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-600/20 transition-colors hover:bg-brand-700"
             >
-              {profile.hero.primaryCta.label} <span aria-hidden="true">→</span>
+              {hero("primaryCta.label")} <span aria-hidden="true">→</span>
             </MotionLink>
             <motion.a
               href={profile.hero.secondaryCta.href}
@@ -76,7 +73,7 @@ export function Hero({ profile }: HeroProps) {
               whileTap={reduceMotion ? undefined : { scale: 0.98 }}
               className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white/80 px-5 py-3 text-sm font-semibold text-gray-800 transition-colors hover:border-brand-200 hover:bg-brand-50"
             >
-              {profile.hero.secondaryCta.label}
+              {hero("secondaryCta.label")}
             </motion.a>
           </motion.div>
 

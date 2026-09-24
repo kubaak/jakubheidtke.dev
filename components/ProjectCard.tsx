@@ -4,15 +4,17 @@ import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 import { Card } from "./Card";
-import type { Project } from "@/data/content";
+import type { Project } from "../data/projects";
 
-interface ProjectCardProps extends Project {
-  detailsHref?: string;
-}
-
-export function ProjectCard({ name, logo, description, tags, context, detailsHref }: ProjectCardProps) {
+export function ProjectCard({ project }: { project: Project }) {
+  const copy = useTranslations("projects.items");
+  const { slug, logo, tags } = project;
+  const name = copy(`${slug}.name`);
+  const description = copy(`${slug}.description`);
+  const context = copy.has(`${slug}.context`) ? copy(`${slug}.context`) : undefined;
+  const detailsHref = `/projects/${slug}`;
   const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
   const contextLabel = context?.replace(/\s+(project|projekt)$/i, "");
@@ -27,15 +29,7 @@ export function ProjectCard({ name, logo, description, tags, context, detailsHre
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3">
-          {logo && (
-            <Image
-              src={logo}
-              alt=""
-              width={32}
-              height={32}
-              className="size-8 shrink-0 object-contain"
-            />
-          )}
+          {logo && <Image src={logo} alt="" width={32} height={32} className="size-8 shrink-0 object-contain" />}
           <h3 className="min-w-0 break-words text-xl font-bold tracking-tight text-gray-950">{name}</h3>
         </div>
         {context && (

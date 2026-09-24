@@ -16,7 +16,7 @@ export default async function LocaleLayout({ children, params }: LocalePageProps
   const messages = await getMessages();
   return (
     <SiteDocument locale={locale}>
-      <NextIntlClientProvider messages={{ ui: messages.ui }}>{children}</NextIntlClientProvider>
+      <NextIntlClientProvider messages={{ ui: messages.ui, profile: messages.profile, projects: messages.projects, learning: messages.learning }}>{children}</NextIntlClientProvider>
     </SiteDocument>
   );
 }

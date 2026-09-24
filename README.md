@@ -48,16 +48,17 @@ supported entry in `navigator.languages`, then English. Only an explicit navbar
 language switch writes the stored preference. Storage restrictions do not prevent
 navigation. The entry page is noindex and displays only a spinner while redirecting.
 
-- `i18n/routing.ts`: supported locales, default locale and mandatory prefixes.
-- `i18n/navigation.ts`: locale-aware links, pathname and router helpers.
-- `messages/{en,cs}.json`: reusable UI strings and page metadata.
-- `data/content.{en,cs}.json`: structured portfolio data, checked against `Content`.
+- `src/i18n/routing.ts`: supported locales, default locale and mandatory prefixes.
+- `src/i18n/navigation.ts`: locale-aware links, pathname and router helpers.
+- `src/data/*.ts`: language-independent profile details, URLs, skills, project metadata, companies, employment dates, education periods and course metadata.
+- `messages/{en,cs}.json`: next-intl messages containing translated portfolio text, UI strings and page metadata. Entries use stable IDs or project slugs; every project has a localized name.
+- Pages and components import `src/data/*.ts` directly for shared values and use next-intl (`getTranslations` / `useTranslations` for strings and `getMessages` for structured copy) for translated text. There is no content merging layer. Shared collections control ordering; add matching translation keys in both locales when adding entries.
 - `data/TRANSLATION_REVIEW.md`: exact Czech case-study values awaiting review.
 
 The `(entry)` and `[locale]` layouts are separate root layouts so exported HTML
 has the correct language without client-side changes to the document. They share
-the original theme document in `components/SiteDocument.tsx`. Pages remain Server
-Components; only UI messages needed by existing client components are serialized.
+the original theme document in `src/components/SiteDocument.tsx`. Pages remain Server
+Components; the client provider includes UI, hero, project and learning translations. Project and course cards receive typed shared metadata and read their translation namespaces.
 
 This Next.js 16.2 implementation uses `setRequestLocale` on each localized page
 and layout, plus `generateStaticParams`, following the supported
@@ -67,7 +68,7 @@ server-side language detection. Project parameters are generated for each parent
 
 ## Project logos
 
-Projects in `data/content.en.json` and `data/content.cs.json` can include an
+Projects in `src/data/projects.ts` can include an
 optional `"logo": "/projects/my-project.svg"` field. Place the corresponding file
 at `public/projects/my-project.svg`. The logo appears to the left of the title in the
 project list card; omit the field to show the card without a logo.

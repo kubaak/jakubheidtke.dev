@@ -1,5 +1,6 @@
-import { getContent } from "@/data/getContent";
 import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { profile } from "../../../data/site";
+import { projects } from "../../../data/projects";
 import { pageMetadata } from "@/i18n/metadata";
 import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/Navbar";
@@ -13,12 +14,11 @@ export async function generateMetadata({ params }: LocalePageProps) {
 
 export default async function ProjectsPage({ params }: LocalePageProps) {
   const locale = await pageLocale(params);
-  const t = await getTranslations();
-  const { profile, navigation, projects, footer } = getContent(locale);
+  const t = await getTranslations({ locale });
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
-      <Navbar profile={profile} navigation={navigation} />
+      <Navbar />
 
       <main>
         <Section className="relative overflow-hidden border-b border-gray-200/80 pt-20 pb-16 sm:pt-24">
@@ -33,17 +33,19 @@ export default async function ProjectsPage({ params }: LocalePageProps) {
 
         <Section className="pt-14 pb-20">
           <div className="grid gap-6 md:grid-cols-2">
-            {projects.items.map((project, index) => (
-              <Reveal key={project.name} delay={Math.min(index * 0.06, 0.24)} className="h-full">
-                <ProjectCard {...project} detailsHref={project.slug ? `/projects/${project.slug}` : undefined} />
-              </Reveal>
-            ))}
+            {projects.map((project, index) => {
+              return (
+                <Reveal key={project.slug} delay={Math.min(index * 0.06, 0.24)} className="h-full">
+                  <ProjectCard project={project} />
+                </Reveal>
+              );
+            })}
           </div>
         </Section>
       </main>
 
       <footer className="border-t border-gray-200 bg-white py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} {profile.name}. {footer.text}
+        © {new Date().getFullYear()} {profile.name}. {t("footer.text")}
       </footer>
     </div>
   );

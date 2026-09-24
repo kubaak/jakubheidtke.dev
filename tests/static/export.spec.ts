@@ -1,6 +1,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { test, expect } from "@playwright/test";
+import { projects } from "../../data/projects";
 import { routing } from "../../i18n/routing";
 
 test("every exported page declares the same root favicon in its static head", async () => {
@@ -18,7 +19,9 @@ test("every exported page declares the same root favicon in its static head", as
     expect(icons[0]).toContain('sizes="96x96"');
     const url = new URL(href!, `https://jakubheidtke.com/${file.replace(/\.html$/, "")}`);
     expect(url.pathname).toBe("/favicon.ico");
-    expect(await readFile(resolve("out", url.pathname.slice(1)))).toEqual(await readFile(resolve("app/favicon.ico")));
+    expect(await readFile(resolve("out", url.pathname.slice(1)))).toEqual(
+      await readFile(resolve("src/app/favicon.ico")),
+    );
   }
   for (const file of ["index.html", "en.html", "cs.html"]) expect(files).toContain(file);
   expect(hrefs.size).toBe(1);
@@ -41,7 +44,14 @@ test("exported favicon is a square 96px PNG-backed ICO and crawling is allowed",
 
 // The inspected export uses en.html and en/projects.html (no trailingSlash).
 for (const locale of routing.locales) {
-  for (const route of ["", "/projects", "/learning", "/projects/tubester"]) {
+  for (const route of [
+    "",
+    "/about",
+    "/experience",
+    "/projects",
+    "/learning",
+    ...projects.map((project) => `/projects/${project.slug}`),
+  ]) {
     test(`static export contains /${locale}${route}`, async () => {
       const html = await readFile(resolve("out", `${locale}${route}.html`), "utf8");
       expect(html).toContain(`<html lang="${locale}"`);

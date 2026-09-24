@@ -2,10 +2,13 @@
 import { useTranslations } from "next-intl";
 
 import { motion, useReducedMotion } from "motion/react";
-import type { Course } from "@/data/content";
+import type { Course } from "../data/learning";
 import { Card } from "./Card";
 
-export function CourseCard({ name, topics, certificateUrl }: Course) {
+export function CourseCard({ course }: { course: Course }) {
+  const copy = useTranslations("learning.courses.items");
+  const name = copy(`${course.id}.name`);
+  const { certificateUrl, topics } = course;
   const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
   const card = (

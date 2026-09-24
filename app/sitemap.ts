@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
+import { projects } from "../data/projects";
 import { routing } from "@/i18n/routing";
 import { getPathname } from "@/i18n/navigation";
-import { getContent } from "@/data/getContent";
 import { siteUrl } from "@/i18n/metadata";
 
 export const dynamic = "force-static";
@@ -14,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "/experience",
       "/learning",
       "/projects",
-      ...getContent(locale).projects.items.flatMap((project) => (project.slug ? ["/projects/" + project.slug] : [])),
+      ...projects.flatMap((project) => (project.slug ? ["/projects/" + project.slug] : [])),
     ];
     return paths.map((href) => ({
       url: siteUrl + getPathname({ locale, href }),

@@ -1,5 +1,5 @@
-import { getContent } from "@/data/getContent";
 import { pageLocale, type LocalePageProps } from "@/i18n/server";
+import { profile, contact } from "../../data/site";
 import { pageMetadata } from "@/i18n/metadata";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -14,15 +14,14 @@ export async function generateMetadata({ params }: LocalePageProps) {
 
 export default async function Home({ params }: LocalePageProps) {
   const locale = await pageLocale(params);
-  const t = await getTranslations();
-  const { profile, navigation, contact, footer } = getContent(locale);
+  const t = await getTranslations({ locale });
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
-      <Navbar profile={profile} navigation={navigation} />
+      <Navbar />
 
       <main>
-        <Hero profile={profile} />
+        <Hero />
 
         <div className="mx-auto max-w-6xl px-4">
           <Section className="px-0">
@@ -63,18 +62,19 @@ export default async function Home({ params }: LocalePageProps) {
             <Reveal className="relative overflow-hidden rounded-3xl border border-brand-200 bg-gradient-to-br from-brand-100 via-[#fff7fa] to-white px-7 py-10 sm:px-10 sm:py-12">
               <div className="absolute -top-24 -right-20 size-64 rounded-full bg-brand-300/55 blur-3xl" />
               <div className="relative">
-                <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">{contact.heading}</h2>
+                <h2 className="mt-3 text-4xl font-black tracking-[-0.04em] text-gray-950">{t("contact.heading")}</h2>
 
-                <p className="mt-3 max-w-xl leading-7 text-gray-600">{contact.description}</p>
+                <p className="mt-3 max-w-xl leading-7 text-gray-600">{t("contact.description")}</p>
 
                 <div className="mt-7 flex flex-wrap gap-3">
-                  {contact.links.map((link) => (
+                  {contact.map((link) => (
                     <a
                       key={link.href}
                       href={link.href}
                       className="rounded-xl border border-brand-200 bg-white/80 px-4 py-2.5 text-sm font-semibold text-brand-700 shadow-sm transition hover:-translate-y-0.5 hover:border-brand-300 hover:bg-white hover:text-brand-900"
                     >
-                      {link.label} <span aria-hidden="true">→</span>
+                      {t(`contact.links.${link.id as "email" | "github" | "linkedin"}`)}{" "}
+                      <span aria-hidden="true">→</span>
                     </a>
                   ))}
                 </div>
@@ -85,7 +85,7 @@ export default async function Home({ params }: LocalePageProps) {
       </main>
 
       <footer className="border-t border-gray-200 bg-white py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} {profile.name}. {footer.text}
+        © {new Date().getFullYear()} {profile.name}. {t("footer.text")}
       </footer>
     </div>
   );

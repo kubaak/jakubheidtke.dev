@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { routing } from "../i18n/routing";
-import en from "../data/content.en.json" with { type: "json" };
-import cs from "../data/content.cs.json" with { type: "json" };
+import { projects } from "../data/projects";
+import cs from "../messages/cs.json" with { type: "json" };
 
-const slugs = en.projects.items.map((project) => project.slug);
+const slugs = projects.map((project) => project.slug);
 const paths = ["", "/projects", "/learning", "/about", "/experience", ...slugs.map((slug) => "/projects/" + slug)];
 
 for (const locale of routing.locales) {
@@ -170,7 +170,7 @@ test("root is noindex; removed/unsupported routes return 404; sitemap contains a
   const sitemap = await (await request.get("/sitemap.xml")).text();
   for (const locale of routing.locales)
     for (const path of paths) expect(sitemap).toContain(`https://jakubheidtke.com/${locale}${path}`);
-  expect(cs.projects.items.map((project) => project.slug)).toEqual(slugs);
+  expect(Object.keys(cs.projects.items)).toEqual(slugs);
 });
 
 test("direct Czech URL respects URL over English browser and storage", async ({ page }) => {
@@ -213,7 +213,7 @@ for (const source of ["explicit", "system"] as const) {
     }
     const root = page.locator("html");
     await expect(root).toHaveClass(/dark/);
-    const background = await page.locator("body").evaluate(element => getComputedStyle(element).backgroundColor);
+    const background = await page.locator("body").evaluate((element) => getComputedStyle(element).backgroundColor);
     for (const [label, url] of [
       ["Switch to Czech", "/cs/projects/tubester"],
       ["Přepnout do angličtiny", "/en/projects/tubester"],

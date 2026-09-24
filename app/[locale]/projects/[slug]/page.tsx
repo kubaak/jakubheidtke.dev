@@ -1,38 +1,44 @@
 import type { Metadata } from "next";
+import { profile } from "../../../../data/site";
+import { projects } from "../../../../data/projects";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
-import { getContent } from "@/data/getContent";
 import { pageLocale } from "@/i18n/server";
-import { isLocale, type Locale } from "@/i18n/routing";
+import { isLocale } from "@/i18n/routing";
 import { localizedMetadata } from "@/i18n/metadata";
 import { getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/Navbar";
 import { Section } from "@/components/Section";
 import { TechnologyList } from "@/components/TechnologyList";
 import { ProjectLinks } from "@/components/ProjectLinks";
-import type { Project } from "@/data/content";
 
-function getProject(locale: Locale, slug: string): Project | undefined {
-  return getContent(locale).projects.items.find((project) => project.slug === slug);
+function getProject(slug: string) {
+  return projects.find((project) => project.slug === slug);
 }
 
 export const dynamicParams = false;
 
 export function generateStaticParams({ params }: { params: { locale: string } }) {
   if (!isLocale(params.locale)) notFound();
-  return getContent(params.locale).projects.items.flatMap(({ slug }) => (slug ? [{ slug }] : []));
+  return projects.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
   const locale = await pageLocale(params);
-  const project = getProject(locale, slug);
+  const project = getProject(slug);
 
   if (!project) {
     notFound();
   }
 
-  return localizedMetadata(locale, `/projects/${slug}`, project.name, project.description);
+  const copy = await getTranslations({ locale, namespace: "projects.items" });
+  return localizedMetadata(
+    locale,
+    `/projects/${slug}`,
+    copy(`${project.slug}.name`),
+    copy(`${project.slug}.description`),
+  );
 }
 
 interface ProjectPageProps {
@@ -66,19 +72,23 @@ function DetailSection({ title, items }: DetailSectionProps) {
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const locale = await pageLocale(params);
-  const project = getProject(locale, slug);
+  const project = getProject(slug);
 
   if (!project) {
     notFound();
   }
 
-  const { profile, navigation, footer } = getContent(locale);
-  const t = await getTranslations("ui");
-  const details = project.details ?? { overview: project.description };
+  const copy = await getTranslations({ locale, namespace: "projects.items" });
+  const footer = await getTranslations({ locale, namespace: "footer" });
+  const t = await getTranslations({ locale, namespace: "ui" });
+  const detailItems = (
+    section: "role" | "architecture" | "challenges" | "decisions" | "results",
+  ): string[] | undefined =>
+    copy.has(`${project.slug}.details.${section}`) ? copy.raw(`${project.slug}.details.${section}`) : undefined;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
-      <Navbar profile={profile} navigation={navigation} />
+      <Navbar />
 
       <main>
         <Section className="pt-10 pb-8">
@@ -91,25 +101,31 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-12">
             <div>
-              {project.context && (
-                <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">{project.context}</p>
+              {copy.has(`${project.slug}.context`) && (
+                <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">
+                  {copy(`${project.slug}.context`)}
+                </p>
               )}
 
-              <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{project.name}</h1>
+              <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{copy(`${project.slug}.name`)}</h1>
 
-              <ProjectLinks links={project.links} />
+              <ProjectLinks project={project} />
 
               <div className="mt-12">
                 <section className="border-t pt-8 pb-8">
                   <h2 className="text-2xl font-bold">{t("overview")}</h2>
-                  <p className="mt-4 max-w-3xl leading-relaxed text-gray-700">{details.overview}</p>
+                  <p className="mt-4 max-w-3xl leading-relaxed text-gray-700">
+                    {copy.has(`${project.slug}.details.overview`)
+                      ? copy(`${project.slug}.details.overview`)
+                      : copy(`${project.slug}.description`)}
+                  </p>
                 </section>
 
-                <DetailSection title={t("role")} items={details.role} />
-                <DetailSection title={t("architecture")} items={details.architecture} />
-                <DetailSection title={t("challenges")} items={details.challenges} />
-                <DetailSection title={t("decisions")} items={details.decisions} />
-                <DetailSection title={t("results")} items={details.results} />
+                <DetailSection title={t("role")} items={detailItems("role")} />
+                <DetailSection title={t("architecture")} items={detailItems("architecture")} />
+                <DetailSection title={t("challenges")} items={detailItems("challenges")} />
+                <DetailSection title={t("decisions")} items={detailItems("decisions")} />
+                <DetailSection title={t("results")} items={detailItems("results")} />
               </div>
             </div>
 
@@ -122,7 +138,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </main>
 
       <footer className="border-t py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} {profile.name}. {footer.text}
+        © {new Date().getFullYear()} {profile.name}. {footer("text")}
       </footer>
     </div>
   );
