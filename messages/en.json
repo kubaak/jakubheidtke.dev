@@ -26,7 +26,6 @@
     "items": {
       "plainlysmart": {
         "description": "Bilingual marketing website for a custom software business, built as a fully static Next.js application with localized content, interactive consultation flows, bot protection and campaign attribution",
-        "context": "Personal Project",
         "details": {
           "overview": "PlainlySmart started as a simple marketing website for a custom software business, but I deliberately treated it as a production application rather than a collection of static pages. The goal was to keep the frontend completely statically deployable while still supporting localization, theme persistence, interactive consultation flows, campaign attribution and secure communication with an external backend. The result is a lightweight Next.js site that does not require a Node.js server at runtime, while still behaving like a modern application in the browser.",
           "role": [
@@ -65,7 +64,6 @@
       },
       "hostomat": {
         "description": "NestJS API for accommodation providers to manage bookings and collect guest registration details through secure, shareable links",
-        "context": "Personal Project",
         "details": {
           "overview": "Hostomat is a backend application for accommodation providers that manages accommodations and bookings while simplifying guest registration through secure, shareable registration links. It separates host-facing administration from guest-facing registration flows and is designed as a foundation for automating accommodation reporting workflows.",
           "role": [
@@ -101,7 +99,6 @@
       },
       "personal-portfolio": {
         "description": "Bilingual portfolio built with Next.js, combining detailed project stories with static hosting, language-aware navigation and persistent theme preferences",
-        "context": "Personal Project",
         "details": {
           "overview": "I built this portfolio to give my work more context than a CV can provide. Alongside experience and skills, it brings individual projects into focus through stories about the problems, implementation choices and outcomes behind them. Building it also became an opportunity to work through the details of a bilingual Next.js application that can be deployed entirely as static files.",
           "role": [
@@ -129,7 +126,6 @@
       },
       "tubester": {
         "description": "Full-stack SaaS for YouTube creators that uses AI to improve video metadata and automate comment management",
-        "context": "Personal Project",
         "details": {
           "overview": "Tubester is a full-stack SaaS for YouTube creators that combines AI-assisted video optimisation with automated comment management. It integrates directly with YouTube to synchronise channel data, improve video metadata, generate contextual comment replies, and manage creator workflows from a single application.",
           "role": [
@@ -171,7 +167,6 @@
       },
       "i18n-process-tools": {
         "description": "Localization platform that synchronizes UI labels from GitLab and GitHub, coordinates bulk human or AI-assisted translation, and delivers completed translations through automated merge and pull requests.",
-        "context": "Professional Project",
         "details": {
           "overview": "I18n Process Tools streamlined the full localization lifecycle: it collected labels from GitLab and GitHub repositories, tracked their translation state, grouped work into bulk requests, and converted completed translations into reviewable source-control changes.",
           "role": [
@@ -209,7 +204,6 @@
       },
       "logistics-order-service": {
         "description": "High-throughput .NET service for logistics order processing, built around reliable asynchronous messaging, durable background work, explicit transaction control, and production observability.",
-        "context": "Professional Project",
         "details": {
           "overview": "A high-throughput logistics order-processing service designed for reliable data changes and resilient event-driven workflows. The service combines Dapper-based data access, Azure Service Bus and Kafka messaging, durable background tasks, and New Relic observability.",
           "role": [
@@ -428,6 +422,8 @@
     "primaryNav": "Primary navigation",
     "mobileNav": "Mobile navigation",
     "logo": "Jakub Heidtke logo",
+    "personal": "Personal",
+    "professional": "Professional",
     "learnMore": "Learn more",
     "projectDetails": "View details for {name}",
     "certificate": "View completion certificate for {name}",

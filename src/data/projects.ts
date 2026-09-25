@@ -1,5 +1,16 @@
-export interface ProjectLink { type: "website" | "github" | "frontend" | "backend"; href: string; }
-export interface ProjectMetadata { slug: string; logo?: string; tags: string[]; featured?: boolean; links: ProjectLink[]; }
+export interface ProjectLink {
+  type: "website" | "github" | "frontend" | "backend";
+  href: string;
+}
+export type ProjectType = "personal" | "professional";
+export interface ProjectMetadata {
+  slug: string;
+  logo?: string;
+  tags: string[];
+  featured?: boolean;
+  links: ProjectLink[];
+  type: ProjectType;
+}
 
 export const projects = [
   {
@@ -14,56 +25,49 @@ export const projects = [
       "React Hook Form",
       "Zod",
       "Cloudflare Turnstile",
-      "Playwright"
+      "Playwright",
+      "AWS",
+      "Serverless",
+      "CDK",
+      "CloudFormation",
     ],
     featured: true,
     links: [
       {
         type: "website",
-        href: "https://plainlysmart.com"
-      }
-    ]
+        href: "https://plainlysmart.com",
+      },
+    ],
+    type: "personal" as const,
   },
   {
     slug: "hostomat" as const,
-    tags: [
-      "NestJS",
-      "Node.js",
-      "TypeScript",
-      "MongoDB",
-      "Mongoose",
-      "Jest"
-    ],
+    tags: ["NestJS", "Node.js", "TypeScript", "MongoDB", "Mongoose", "Jest"],
     featured: true,
     links: [
       {
         type: "github",
-        href: "https://github.com/kubaak/hostomat-api"
-      }
-    ]
+        href: "https://github.com/kubaak/hostomat-api",
+      },
+    ],
+    type: "professional" as const,
   },
   {
     slug: "personal-portfolio" as const,
     logo: "https://www.jakubheidtke.com/JHGradientMaroon.svg",
-    tags: [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "next-intl",
-      "Playwright"
-    ],
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "next-intl", "Playwright"],
     featured: true,
     links: [
       {
         type: "website",
-        href: "https://jakubheidtke.com"
+        href: "https://jakubheidtke.com",
       },
       {
         type: "frontend",
-        href: "https://github.com/kubaak/jakubheidtke.dev"
-      }
-    ]
+        href: "https://github.com/kubaak/jakubheidtke.dev",
+      },
+    ],
+    type: "personal" as const,
   },
   {
     slug: "tubester" as const,
@@ -84,23 +88,24 @@ export const projects = [
       "Kubernetes",
       "Prometheus",
       "Loki",
-      "Grafana"
+      "Grafana",
     ],
     featured: true,
     links: [
       {
         type: "website",
-        href: "https://tubester.app"
+        href: "https://tubester.app",
       },
       {
         type: "frontend",
-        href: "https://github.com/kubaak/tubester-client"
+        href: "https://github.com/kubaak/tubester-client",
       },
       {
         type: "backend",
-        href: "https://github.com/kubaak/tubester"
-      }
-    ]
+        href: "https://github.com/kubaak/tubester",
+      },
+    ],
+    type: "professional" as const,
   },
   {
     slug: "i18n-process-tools" as const,
@@ -112,10 +117,11 @@ export const projects = [
       "Entity Framework Core",
       "GitLab API",
       "Octokit",
-      "Kubernetes"
+      "Kubernetes",
     ],
     featured: true,
-    links: []
+    links: [],
+    type: "professional" as const,
   },
   {
     slug: "logistics-order-service" as const,
@@ -128,39 +134,24 @@ export const projects = [
       "Kafka",
       "Azure Service Bus",
       "Hangfire",
-      "Kubernetes"
+      "Kubernetes",
     ],
     featured: false,
-    links: []
+    links: [],
+    type: "professional" as const,
   },
   {
     slug: "product-availability-and-reservations" as const,
-    tags: [
-      ".NET",
-      "TypeScript",
-      "React",
-      "Dapper",
-      "Hangfire",
-      "Kafka",
-      "Kubernetes"
-    ],
-    links: []
+    tags: [".NET", "TypeScript", "React", "Dapper", "Hangfire", "Kafka", "Kubernetes"],
+    links: [],
+    type: "professional" as const,
   },
   {
     slug: "gdpr-management" as const,
-    tags: [
-      ".NET",
-      "TypeScript",
-      "React",
-      "React Hook Form",
-      "Dapper",
-      "Hangfire",
-      "Kafka",
-      "RabbitMq",
-      "Kubernetes"
-    ],
-    links: []
-  }
+    tags: [".NET", "TypeScript", "React", "React Hook Form", "Dapper", "Hangfire", "Kafka", "RabbitMq", "Kubernetes"],
+    links: [],
+    type: "professional" as const,
+  },
 ] satisfies ProjectMetadata[];
 
 export type ProjectSlug = (typeof projects)[number]["slug"];

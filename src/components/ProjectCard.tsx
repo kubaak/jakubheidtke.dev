@@ -10,15 +10,14 @@ import type { Project } from "../data/projects";
 
 export function ProjectCard({ project }: { project: Project }) {
   const copy = useTranslations("projects.items");
-  const { slug, logo, tags } = project;
+  const t = useTranslations("ui");
+  const { slug, logo, tags, type } = project;
   const name = copy(`${slug}.name`);
   const description = copy(`${slug}.description`);
-  const context = copy.has(`${slug}.context`) ? copy(`${slug}.context`) : undefined;
   const detailsHref = `/projects/${slug}`;
-  const t = useTranslations("ui");
   const reduceMotion = useReducedMotion();
-  const contextLabel = context?.replace(/\s+(project|projekt)$/i, "");
-  const isProfessional = /^(professional|profesní)$/i.test(contextLabel ?? "");
+  const typeLabel = t(type);
+  const isProfessional = type === "professional";
 
   const card = (
     <Card
@@ -32,18 +31,16 @@ export function ProjectCard({ project }: { project: Project }) {
           {logo && <Image src={logo} alt="" width={32} height={32} className="size-8 shrink-0 object-contain" />}
           <h3 className="min-w-0 break-words text-xl font-bold tracking-tight text-gray-950">{name}</h3>
         </div>
-        {context && (
-          <span
-            className={cn(
-              "max-w-[50%] shrink-0 rounded-full px-2.5 py-1 text-right text-xs font-semibold",
-              isProfessional
-                ? "bg-blue-50 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300 dark:ring-1 dark:ring-inset dark:ring-blue-300/20"
-                : "bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300 dark:ring-1 dark:ring-inset dark:ring-emerald-300/20",
-            )}
-          >
-            {contextLabel}
-          </span>
-        )}
+        <span
+          className={cn(
+            "max-w-[50%] shrink-0 rounded-full px-2.5 py-1 text-right text-xs font-semibold",
+            isProfessional
+              ? "bg-blue-50 text-blue-700 dark:bg-blue-400/10 dark:text-blue-300 dark:ring-1 dark:ring-inset dark:ring-blue-300/20"
+              : "bg-emerald-50 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-300 dark:ring-1 dark:ring-inset dark:ring-emerald-300/20",
+          )}
+        >
+          {typeLabel}
+        </span>
       </div>
 
       <p className="mt-3 text-sm leading-6 text-gray-600">{description}</p>
@@ -66,7 +63,7 @@ export function ProjectCard({ project }: { project: Project }) {
             aria-hidden="true"
             className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
           >
-            →
+→
           </span>
         </div>
       )}
@@ -93,3 +90,4 @@ export function ProjectCard({ project }: { project: Project }) {
     </motion.div>
   );
 }
+

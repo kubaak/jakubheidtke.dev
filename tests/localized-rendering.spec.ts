@@ -19,19 +19,19 @@ for (const locale of routing.locales) {
         }),
       ).toBeVisible();
       await expect(page).toHaveTitle(t.meta[route].title + (route === "home" ? "" : " | Jakub Heidtke"));
-      await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", t.meta[route].description);
+      await expect(page.locator('\'meta[name="description"]\'')).toHaveAttribute("content", t.meta[route].description);
     });
   }
 
   test(`${locale} project loads localized case study`, async ({ page }) => {
     const translation = t.projects.items.tubester;
+    const project = projects.find((p) => p.slug === "tubester")!;
     await page.goto(`/${locale}/projects/tubester`);
     await expect(page.getByRole("heading", { name: translation.name, exact: true })).toBeVisible();
     await expect(page.getByRole("heading", { name: t.ui.overview, exact: true })).toBeVisible();
-    expect(translation.context).toBeTruthy();
-    await expect(page.getByText(translation.context!, { exact: true })).toBeVisible();
+    await expect(page.getByText(t.ui[project.type], { exact: true })).toBeVisible();
     await expect(page).toHaveTitle(`${translation.name} | Jakub Heidtke`);
-    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", translation.description);
+    await expect(page.locator('\'meta[name="description"]\'')).toHaveAttribute("content", translation.description);
   });
 
   for (const item of navigation) {
@@ -56,7 +56,7 @@ for (const locale of routing.locales) {
       for (const tag of project.tags) await expect(technologies.getByText(tag, { exact: true })).toBeVisible();
       for (const link of project.links) {
         await expect(page.locator(`main a[href="${link.href}"]`)).toHaveText(
-          (copy.links as Record<string, string>)[link.type] + "→",
+          (copy.links as Record<string, string>)[link.type] + "\u2192",
         );
       }
     });
@@ -79,10 +79,10 @@ for (const locale of routing.locales) {
   test(`${locale} employment dates preserve their original localized presentation`, async ({ page }) => {
     await page.goto(`/${locale}/experience`);
     await expect(
-      page.getByText(locale === "en" ? "Nov 2025 - Present" : "listopad 2025 – současnost", { exact: true }),
+      page.getByText(locale === "en" ? "Nov 2025 - Present" : "listopad 2025 \u2013 sou\u010dastnost", { exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByText(locale === "en" ? "Jan 2023 - Aug 2025" : "leden 2023 – srpen 2025", { exact: true }),
+      page.getByText(locale === "en" ? "Jan 2023 - Aug 2025" : "leden 2023 \u2013 srpen 2025", { exact: true }),
     ).toBeVisible();
   });
 }

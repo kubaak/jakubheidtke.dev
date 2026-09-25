@@ -26,7 +26,6 @@
     "items": {
       "plainlysmart": {
         "description": "Dvojjazyčný marketingový web pro custom software business, postavený jako plně statická Next.js aplikace s lokalizovaným obsahem, interaktivním consultation flow, bot protection a campaign attribution",
-        "context": "Osobní projekt",
         "details": {
           "overview": "PlainlySmart začal jako jednoduchý marketingový web pro custom software business, ale od začátku jsem k němu přistupoval spíš jako k production aplikaci než jen jako k sadě statických stránek. Cílem bylo zachovat frontend kompletně staticky deployovatelný a přitom podporovat localization, theme persistence, interaktivní consultation flow, campaign attribution a bezpečnou komunikaci s externím backendem. Výsledkem je lehký Next.js web, který v runtime nepotřebuje Node.js server, ale v browseru se stále chová jako moderní aplikace.",
           "role": [
@@ -65,7 +64,6 @@
       },
       "hostomat": {
         "description": "NestJS API pro poskytovatele ubytování, které umožňuje spravovat rezervace a sbírat registrační údaje hostů prostřednictvím bezpečných, sdílených odkazů.",
-        "context": "Osobní projekt",
         "details": {
           "overview": "Hostomat je backend aplikace pro poskytovatele ubytování, která spravuje ubytovací zařízení a rezervace a zároveň zjednodušuje registraci hostů pomocí bezpečných, sdílených registračních odkazů. Odděluje administraci pro hostitele od registračních workflow pro hosty a slouží jako základ pro automatizaci reportingu ubytovaných hostů.",
           "role": [
@@ -102,7 +100,6 @@
       "personal-portfolio": {
         "name": "Osobní portfolio",
         "description": "Dvojjazyčné portfolio postavené na Next.js, které kombinuje detailní příběhy projektů se static hostingem, navigací podle jazyka a persistentním nastavením motivu",
-        "context": "Osobní projekt",
         "details": {
           "overview": "Portfolio jsem vytvořil proto, abych své práci mohl dát více kontextu, než se vejde do klasického CV. Vedle zkušeností a dovedností proto dává prostor jednotlivým projektům a příběhům o problémech, rozhodnutích při implementaci a výsledcích, které za nimi stojí. Samotný vývoj se zároveň stal příležitostí vyřešit detaily dvojjazyčné Next.js aplikace, kterou lze kompletně nasadit jako statické soubory.",
           "role": [
@@ -129,7 +126,6 @@
       },
       "tubester": {
         "description": "Full-stack SaaS pro tvůrce na YouTube, který využívá AI ke zlepšování metadat videí a automatizaci správy komentářů.",
-        "context": "Osobní projekt",
         "details": {
           "overview": "Tubester je full-stack SaaS pro tvůrce na YouTube, který kombinuje AI-assisted optimalizaci videí s automatizovanou správou komentářů. Integruje se přímo s YouTube, synchronizuje data kanálu, pomáhá zlepšovat metadata videí, generuje kontextové odpovědi na komentáře a umožňuje spravovat workflow tvůrce z jediné aplikace.",
           "role": [
@@ -171,7 +167,6 @@
       },
       "i18n-process-tools": {
         "description": "Lokalizační platforma, která synchronizuje UI labels z GitLabu a GitHubu, koordinuje bulk překlady lidmi nebo pomocí AI a doručuje hotové překlady prostřednictvím automatizovaných merge requestů a pull requestů.",
-        "context": "Profesní projekt",
         "details": {
           "overview": "I18n Process Tools zjednodušil celý localization lifecycle: sbíral labels z GitLab a GitHub repositories, sledoval jejich translation state, seskupoval práci do bulk requestů a převáděl dokončené překlady na reviewable změny ve source control.",
           "role": [
@@ -209,7 +204,6 @@
       },
       "logistics-order-service": {
         "description": "High-throughput .NET služba pro zpracování logistických objednávek postavená na spolehlivém asynchronous messagingu, durable background processingu, explicitní správě transakcí a production observability.",
-        "context": "Profesní projekt",
         "details": {
           "overview": "High-throughput služba pro zpracování logistických objednávek navržená pro spolehlivé změny dat a resilient event-driven workflow. Kombinuje Dapper-based data access, messaging přes Azure Service Bus a Kafka, durable background tasks a New Relic observability.",
           "role": [
@@ -428,6 +422,8 @@
     "primaryNav": "Hlavní navigace",
     "mobileNav": "Mobilní navigace",
     "logo": "Logo Jakuba Heidtkeho",
+    "personal": "Osobní",
+    "professional": "Profesní",
     "learnMore": "Zjistit více",
     "projectDetails": "Zobrazit podrobnosti projektu {name}",
     "certificate": "Zobrazit certifikát o absolvování kurzu {name}",

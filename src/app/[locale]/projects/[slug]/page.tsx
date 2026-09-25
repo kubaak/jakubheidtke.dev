@@ -96,16 +96,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             href="/projects"
             className="inline-flex text-sm font-medium text-gray-600 hover:text-brand-700 hover:underline"
           >
-            ← {t("allProjects")}
+            back {t("allProjects")}
           </Link>
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-12">
             <div>
-              {copy.has(`${project.slug}.context`) && (
-                <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">
-                  {copy(`${project.slug}.context`)}
-                </p>
-              )}
+              <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">
+                {t(project.type)}
+              </p>
 
               <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{copy(`${project.slug}.name`)}</h1>
 
@@ -138,7 +136,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       </main>
 
       <footer className="border-t py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} {profile.name}. {footer("text")}
+        copyright {new Date().getFullYear()} {profile.name}. {footer("text")}
       </footer>
     </div>
   );
