@@ -18,6 +18,10 @@ export default async function LearningPage({ params }: LocalePageProps) {
   const locale = await pageLocale(params);
   const t = await getTranslations({ locale });
   const messages = await getMessages({ locale });
+  const certificationCopy: {
+    heading: string;
+    items?: Record<string, { name: string }>;
+  } = messages.learning.certifications;
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#fffafc] text-gray-900">
@@ -42,31 +46,34 @@ export default async function LearningPage({ params }: LocalePageProps) {
           </Reveal>
 
           <div className="mt-7 space-y-4">
-            {education.map(({ id, period }, index) => (
-              <Reveal key={id} delay={index * 0.06}>
-                <article className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg hover:shadow-brand-900/5">
-                  <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                    <div>
-                      <h3 className="text-lg font-bold tracking-tight text-gray-950">
-                        {t(`education.items.${id}.school`)}
-                      </h3>
+            {education.map(({ id, period }, index) => {
+              const copy = messages.education.items[id];
+              return (
+                <Reveal key={id} delay={index * 0.06}>
+                  <article className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-lg hover:shadow-brand-900/5">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold tracking-tight text-gray-950">
+                          {t(`education.items.${id}.school`)}
+                        </h3>
 
-                      <p className="mt-1 font-medium text-brand-700">
-                        {t.has(`education.items.${id}.degree`) ? t(`education.items.${id}.degree`) : null}
-                      </p>
+                        <p className="mt-1 font-medium text-brand-700">
+                          {"degree" in copy ? copy.degree : null}
+                        </p>
+                      </div>
+
+                      <p className="shrink-0 text-sm font-medium text-gray-500">{period}</p>
                     </div>
 
-                    <p className="shrink-0 text-sm font-medium text-gray-500">{period}</p>
-                  </div>
-
-                  {t.has(`education.items.${id}.description`) && (
-                    <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600">
-                      {t(`education.items.${id}.description`)}
-                    </p>
-                  )}
-                </article>
-              </Reveal>
-            ))}
+                    {t.has(`education.items.${id}.description`) && (
+                      <p className="mt-3 max-w-3xl text-sm leading-6 text-gray-600">
+                        {t(`education.items.${id}.description`)}
+                      </p>
+                    )}
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
         </Section>
 
@@ -89,7 +96,7 @@ export default async function LearningPage({ params }: LocalePageProps) {
                     </p>
 
                     <h3 className="mt-1 text-lg font-semibold">
-                      {messages.learning.certifications.items?.[certification.id]?.name}
+                      {certificationCopy.items?.[certification.id]?.name}
                     </h3>
 
                     {certification.skills && certification.skills.length > 0 && (

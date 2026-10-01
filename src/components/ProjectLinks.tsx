@@ -1,12 +1,13 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import type { Project } from "../data/projects";
+import { useMessages } from "next-intl";
+import type { Project, ProjectLink } from "../data/projects";
 import { motion, useReducedMotion } from "motion/react";
 
 export function ProjectLinks({ project }: { project: Project }) {
   const { links, slug } = project;
-  const t = useTranslations("projects.items");
+  const messages = useMessages();
+  const labels: Partial<Record<ProjectLink["type"], string>> = messages.projects.items[slug].links;
   const reduceMotion = useReducedMotion();
 
   if (links.length === 0) {
@@ -26,7 +27,7 @@ export function ProjectLinks({ project }: { project: Project }) {
           transition={{ type: "spring", stiffness: 360, damping: 24 }}
           className="inline-flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-600"
         >
-          {t(`${slug}.links.${type}`)}
+          {labels[type]}
           <span aria-hidden="true">→</span>
         </motion.a>
       ))}

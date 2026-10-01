@@ -2,9 +2,21 @@ export interface ProjectLink {
   type: "website" | "github" | "frontend" | "backend";
   href: string;
 }
+
+export type ProjectSlug =
+  | "plainlysmart"
+  | "hostomat"
+  | "personal-portfolio"
+  | "tubester"
+  | "i18n-process-tools"
+  | "logistics-order-service"
+  | "product-availability-and-reservations"
+  | "gdpr-management";
+
 export type ProjectType = "personal" | "professional";
-export interface ProjectMetadata {
-  slug: string;
+
+export interface Project {
+  slug: ProjectSlug;
   logo?: string;
   tags: string[];
   featured?: boolean;
@@ -12,9 +24,9 @@ export interface ProjectMetadata {
   type: ProjectType;
 }
 
-export const projects = [
+export const projects: Project[] = [
   {
-    slug: "plainlysmart" as const,
+    slug: "plainlysmart",
     logo: "https://plainlysmart.com/icon.svg?icon.2dfw3bn2t1fcx.svg",
     tags: [
       "Next.js",
@@ -38,10 +50,10 @@ export const projects = [
         href: "https://plainlysmart.com",
       },
     ],
-    type: "personal" as const,
+    type: "personal",
   },
   {
-    slug: "hostomat" as const,
+    slug: "hostomat",
     tags: ["NestJS", "Node.js", "TypeScript", "MongoDB", "Mongoose", "Jest"],
     featured: true,
     links: [
@@ -50,10 +62,10 @@ export const projects = [
         href: "https://github.com/kubaak/hostomat-api",
       },
     ],
-    type: "professional" as const,
+    type: "personal",
   },
   {
-    slug: "personal-portfolio" as const,
+    slug: "personal-portfolio",
     logo: "https://www.jakubheidtke.com/JHGradientMaroon.svg",
     tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "next-intl", "Playwright"],
     featured: true,
@@ -67,10 +79,10 @@ export const projects = [
         href: "https://github.com/kubaak/jakubheidtke.dev",
       },
     ],
-    type: "personal" as const,
+    type: "personal",
   },
   {
-    slug: "tubester" as const,
+    slug: "tubester",
     logo: "https://tubester.app/tubester_logo.png",
     tags: [
       ".NET",
@@ -105,10 +117,10 @@ export const projects = [
         href: "https://github.com/kubaak/tubester",
       },
     ],
-    type: "professional" as const,
+    type: "personal",
   },
   {
-    slug: "i18n-process-tools" as const,
+    slug: "i18n-process-tools",
     tags: [
       ".NET",
       "TypeScript",
@@ -121,10 +133,10 @@ export const projects = [
     ],
     featured: true,
     links: [],
-    type: "professional" as const,
+    type: "professional",
   },
   {
-    slug: "logistics-order-service" as const,
+    slug: "logistics-order-service",
     tags: [
       ".NET",
       "TypeScript",
@@ -138,22 +150,18 @@ export const projects = [
     ],
     featured: false,
     links: [],
-    type: "professional" as const,
+    type: "professional",
   },
   {
-    slug: "product-availability-and-reservations" as const,
+    slug: "product-availability-and-reservations",
     tags: [".NET", "TypeScript", "React", "Dapper", "Hangfire", "Kafka", "Kubernetes"],
     links: [],
-    type: "professional" as const,
+    type: "professional",
   },
   {
-    slug: "gdpr-management" as const,
+    slug: "gdpr-management",
     tags: [".NET", "TypeScript", "React", "React Hook Form", "Dapper", "Hangfire", "Kafka", "RabbitMq", "Kubernetes"],
     links: [],
-    type: "professional" as const,
+    type: "professional",
   },
-] satisfies ProjectMetadata[];
-
-export type ProjectSlug = (typeof projects)[number]["slug"];
-
-export type Project = (typeof projects)[number];
+];

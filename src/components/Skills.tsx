@@ -62,7 +62,7 @@ const brandedSkills: Record<string, SkillIcon> = {
   Moq: { icon: SiMoq, color: "#5B5B5B" },
   xUnit: { src: "/skills/xunit.svg" },
   NUnit: { src: "/skills/nunit.svg" },
-  "React.js": { icon: SiReact, color: "#61DAFB" },
+  React: { icon: SiReact, color: "#61DAFB" },
   MongoDB: { icon: SiMongodb, color: "#47A248" },
   Redis: { icon: SiRedis, color: "#FF4438" },
   Mongoose: { icon: SiMongoose, color: "#880000" },
@@ -93,7 +93,7 @@ const brandedSkills: Record<string, SkillIcon> = {
 const skillGroups = [
   { label: "Languages", skills: ["C#", "JavaScript", "TypeScript"] },
   { label: "Backend development", skills: [".NET", "ASP.NET Core", "Node.js", "Nest.js", "Express.js"] },
-  { label: "Frontend development", skills: ["React.js", "Next.js", "Vite", "Tailwind CSS"] },
+  { label: "Frontend development", skills: ["React", "Next.js", "Vite", "Tailwind CSS"] },
   {
     label: "Data & persistence",
     skills: [
@@ -250,7 +250,11 @@ function SkillCarousel({ label, skills, sequence, reduceMotion }: SkillCarouselP
                     }}
                     transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 24 }}
                     className="absolute top-0 left-1/2 -ml-6"
-                    style={{ backfaceVisibility: "hidden", transformStyle: "preserve-3d", zIndex: 10 - Math.abs(offset) }}
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transformStyle: "preserve-3d",
+                      zIndex: 10 - Math.abs(offset),
+                    }}
                   >
                     <SkillCard skill={skill} iconOnly />
                   </motion.div>

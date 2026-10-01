@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { pageLocale } from "@/i18n/server";
 import { isLocale } from "@/i18n/routing";
 import { localizedMetadata } from "@/i18n/metadata";
-import { getTranslations } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { Navbar } from "@/components/Navbar";
 import { Section } from "@/components/Section";
 import { TechnologyList } from "@/components/TechnologyList";
@@ -81,10 +81,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const copy = await getTranslations({ locale, namespace: "projects.items" });
   const footer = await getTranslations({ locale, namespace: "footer" });
   const t = await getTranslations({ locale, namespace: "ui" });
-  const detailItems = (
-    section: "role" | "architecture" | "challenges" | "decisions" | "results",
-  ): string[] | undefined =>
-    copy.has(`${project.slug}.details.${section}`) ? copy.raw(`${project.slug}.details.${section}`) : undefined;
+  const messages = await getMessages({ locale });
+  const projectCopy = messages.projects.items[project.slug];
+  const details: {
+    overview?: string;
+    role?: string[];
+    architecture?: string[];
+    challenges?: string[];
+    decisions?: string[];
+    results?: string[];
+  } | undefined = "details" in projectCopy ? projectCopy.details : undefined;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
@@ -113,17 +119,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <section className="border-t pt-8 pb-8">
                   <h2 className="text-2xl font-bold">{t("overview")}</h2>
                   <p className="mt-4 max-w-3xl leading-relaxed text-gray-700">
-                    {copy.has(`${project.slug}.details.overview`)
-                      ? copy(`${project.slug}.details.overview`)
-                      : copy(`${project.slug}.description`)}
+                    {details?.overview ?? copy(`${project.slug}.description`)}
                   </p>
                 </section>
 
-                <DetailSection title={t("role")} items={detailItems("role")} />
-                <DetailSection title={t("architecture")} items={detailItems("architecture")} />
-                <DetailSection title={t("challenges")} items={detailItems("challenges")} />
-                <DetailSection title={t("decisions")} items={detailItems("decisions")} />
-                <DetailSection title={t("results")} items={detailItems("results")} />
+                <DetailSection title={t("role")} items={details?.role} />
+                <DetailSection title={t("architecture")} items={details?.architecture} />
+                <DetailSection title={t("challenges")} items={details?.challenges} />
+                <DetailSection title={t("decisions")} items={details?.decisions} />
+                <DetailSection title={t("results")} items={details?.results} />
               </div>
             </div>
 
