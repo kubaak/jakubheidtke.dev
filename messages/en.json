@@ -166,80 +166,113 @@
         "name": "Tubester"
       },
       "i18n-process-tools": {
-        "description": "Localization platform that synchronizes UI labels from GitLab and GitHub, coordinates bulk human or AI-assisted translation, and delivers completed translations through automated merge and pull requests.",
+        "description": "Localization platform that synchronizes UI labels from GitLab and GitHub repositories, manages bulk translation workflows, and writes completed React, .NET and Kotlin resources back through automated merge or pull requests.",
         "details": {
-          "overview": "I18n Process Tools streamlined the full localization lifecycle: it collected labels from GitLab and GitHub repositories, tracked their translation state, grouped work into bulk requests, and converted completed translations into reviewable source-control changes.",
+          "overview": "I18n Process Tools automated the localization lifecycle across multiple application repositories. It discovered and parsed localization resources, synchronized labels with persisted state, identified content requiring translation, grouped work into bulk requests, and turned completed translations into reviewable source-control changes. I was an early core contributor to the backend and later contributed extensively to the React frontend, working on the project from its foundational synchronization and data-model work through its GitHub migration and expansion to 30+ languages.",
           "role": [
-            "Designed the core concept for the i18n backend, including repository synchronization, translation-state tracking, and bulk translation workflows.",
-            "Implemented the GitLab integration for importing localization files and creating merge requests with translated values.",
-            "Led the migration to GitHub and added GitHub support during the company repository migration.",
-            "One of two developers who built the React frontend for managing localization workflows."
+            "Early core contributor to the .NET backend, implementing foundational repository synchronization, project initialization, translation-state tracking, and bulk translation workflow infrastructure.",
+            "Implemented the original GitLab integration for discovering and parsing localization resources, synchronizing repository changes, and creating merge requests containing translated files.",
+            "Built and evolved the synchronization and bulk workflow, including Dirty, Pending and Translated label states, selectable target languages, label context, validation, and translation callback processing.",
+            "Introduced GitHub support with an abstraction over Git providers, Octokit-based repository operations, OAuth authentication and persisted user access tokens during the company's migration from GitLab.",
+            "Contributed to backend search, filtering, paging, authorization, validation, integration testing, Azure authentication and deployment hardening.",
+            "One of two developers contributing to the React frontend, where I implemented selectable translation languages, custom AG Grid components, label context, reusable API error handling, form validation and support for 30+ languages."
           ],
           "architecture": [
-            ".NET backend with Entity Framework Core data access",
-            "React frontend for managing projects, labels, and translation requests",
-            "GitLab API and GitHub/Octokit integrations for repository synchronization and delivery",
-            "Bulk translation integration with Notino's Localization Service and TargetProcess",
-            "Optional AI-assisted translation path",
-            "Kubernetes deployment"
+            "ASP.NET Core backend with application, domain, integration and persistence layers",
+            "Entity Framework Core with SQL Server persistence for projects, files, labels, bulks, mutations and translation state",
+            "Resource-specific parsing and generation for React JSON, .NET RESX and Kotlin XML localization files",
+            "React 19 and TypeScript frontend using TanStack Query, React Hook Form, AG Grid and generated Orval API clients",
+            "Git provider abstraction supporting GitLab APIs and an Octokit-based GitHub implementation",
+            "Bulk integration with Notino's Localization Service and TargetProcess, with callback-based translation processing and optional automated translation paths",
+            "Azure AD authentication, Azure Workload Identity, Docker and Kubernetes deployment"
           ],
           "challenges": [
-            "Synchronizing localization files and label changes across repositories and markets.",
-            "Tracking whether each label was untranslated, awaiting translation, or completed.",
-            "Migrating repository automation from GitLab to GitHub without disrupting translation delivery."
+            "Keeping persisted localization state synchronized with changing repository files across multiple projects, languages and resource formats.",
+            "Tracking individual labels through untranslated, pending and translated states while allowing users to request only selected target languages.",
+            "Handling localization edge cases such as duplicate keys, default-language conflicts, special characters, missing target files and differences between JSON, RESX and XML resources.",
+            "Extending repository automation from GitLab to GitHub without changing the higher-level localization workflow.",
+            "Presenting large language and label sets in the frontend while keeping selection, validation and API error handling understandable."
           ],
           "decisions": [
-            "Model translation as an explicit workflow with Dirty, Pending, and Translated states. This added synchronization complexity but made missing, in-progress, and completed translations visible and prevented duplicate requests.",
-            "Deliver completed translations through dedicated branches and automated merge or pull requests. This required reliable repository integrations, but kept changes reviewable, auditable, and aligned with standard engineering workflows.",
-            "Abstract repository operations to support both GitLab and GitHub. Supporting platform-specific APIs increased implementation effort, but allowed the workflow to survive the company-wide repository migration."
+            "Model translation as an explicit state machine around Dirty, Pending and Translated labels. The additional state management made synchronization more complex, but made outstanding and in-progress translation work deterministic and prevented duplicate requests.",
+            "Separate localization-resource handling by format instead of embedding parsing and generation logic directly into the synchronization workflow. This allowed the same workflow to support React JSON, .NET RESX and Kotlin XML resources.",
+            "Deliver generated translations through dedicated branches and automated merge or pull requests rather than modifying repositories directly. This kept localization changes reviewable, auditable and consistent with normal engineering workflows.",
+            "Abstract source-control operations behind a Git provider layer when adding GitHub support. The provider-specific implementation added complexity, but allowed the localization workflow to remain largely independent of GitLab or GitHub.",
+            "Use generated TypeScript API clients together with TanStack Query and reusable UI components for the frontend translation workflow, keeping API contracts typed while isolating grid selection, validation and error-handling concerns."
           ],
           "results": [
-            "Automated the workflow from repository labels to translation requests and reviewable translated changes.",
+            "Automated the workflow from repository synchronization through translation requests, callbacks and reviewable translated source changes.",
+            "Supported localization resources across React JSON, .NET RESX and Kotlin XML projects.",
             "Enabled translation delivery through both GitLab merge requests and GitHub pull requests.",
-            "Provided a scalable, consistent process for localized UI content across multiple markets."
+            "Expanded the frontend and translation workflow to support 30+ languages with per-language selection.",
+            "Established a consistent localization workflow that could be reused across multiple application repositories and markets."
           ]
         },
         "links": {},
         "name": "I18n Process Tools"
       },
       "logistics-order-service": {
-        "description": "High-throughput .NET service for logistics order processing, built around reliable asynchronous messaging, durable background work, explicit transaction control, and production observability.",
+        "description": "Event-driven .NET logistics platform for order fulfillment and warehouse operations, built around durable background processing, reliable Kafka and Azure Service Bus messaging, explicit transaction control, and operational tooling.",
         "details": {
-          "overview": "A high-throughput logistics order-processing service designed for reliable data changes and resilient event-driven workflows. The service combines Dapper-based data access, Azure Service Bus and Kafka messaging, durable background tasks, and New Relic observability.",
+          "overview": "A reliability-focused logistics platform supporting order fulfillment, packing, shipping and warehouse operations. The system combines transactional SQL data changes with durable background work, Kafka and Azure Service Bus messaging, dead-letter processing, scheduled jobs and production observability. I contributed across the backend and React operations UI, from reusable messaging and persistent-task infrastructure to end-to-end logistics workflows such as customs processing and transport outage management.",
           "role": [
-            "Developed reliable messaging and background-processing capabilities for a .NET logistics service.",
-            "Built reusable Azure Service Bus publishing and consumer infrastructure based on CloudEvents.",
-            "Implemented a SQL-backed persistent-task framework with durable state, retries, and recovery.",
-            "Migrated the team from a custom Kafka integration to the company-standard messaging library and helped harden its initial rollout.",
-            "Used Dapper with explicit transaction control in reliability-critical data-access paths."
+            "Designed and implemented a SQL-backed persistent-task mechanism for durable background work, including worker processing, retries, failure reprocessing and deadlock-prevention improvements.",
+            "Led major messaging improvements, including Azure Service Bus CloudEvent infrastructure and the migration from custom Kafka integration to the company-standard messaging library with persistent dead-letter handling and reprocessing.",
+            "Implemented end-to-end event-driven logistics flows spanning Kafka consumers, application logic, persistence, durable tasks, outbound commands, infrastructure configuration and integration tests.",
+            "Contributed to order fulfillment, packing, package allocation, transport outages, archiving, authentication and operational infrastructure across the backend.",
+            "Implemented frontend functionality for transport outage management and per-country feature toggles using React, TypeScript, React Hook Form and AG Grid.",
+            "Contributed to frontend infrastructure including generated OpenAPI clients, authentication, user permissions, multi-environment configuration and localized operational interfaces."
           ],
           "architecture": [
-            ".NET service for logistics order processing",
-            "Dapper-based data access with explicit transaction boundaries",
-            "Azure Service Bus publishers and consumers using CloudEvents",
-            "Dynamic CloudEvent type resolution and dispatch to typed handlers",
-            "Kafka integration through the company-standard Notino.Messaging library",
-            "SQL-backed persistent tasks with atomic batch claiming, retries, and zombie recovery",
-            "Hangfire background processing",
-            "Structured logs, metrics, and production observability through New Relic"
+            "ASP.NET Core APIs and worker services for logistics and warehouse workflows",
+            "SQL Server persistence with explicit transaction boundaries for reliability-critical operations",
+            "SQL-backed persistent tasks with scheduled Hangfire processing, retries, reprocessing and concurrent worker coordination",
+            "Kafka and Confluent messaging through the company-standard messaging library with persistent dead-letter handling",
+            "Azure Service Bus publishers and consumers using CloudEvents and typed message handlers",
+            "React 19 and TypeScript operations UI using TanStack Query, React Hook Form, AG Grid and Orval-generated API clients",
+            "Role-based frontend and backend authorization for operational functionality",
+            "Kubernetes deployment, workload identity, environment-specific configuration, health checks, metrics and New Relic observability"
           ],
           "challenges": [
-            "Process high volumes of logistics orders while preserving consistency across data changes and asynchronous work.",
-            "Handle transient messaging failures safely without creating duplicate side effects.",
-            "Prevent slow or failing downstream consumers from blocking message-topic processing.",
-            "Adopt a new Kafka library while addressing early performance and memory issues."
+            "Keep database changes and asynchronous follow-up work consistent so that successful business operations could not silently lose required background processing.",
+            "Safely retry failed background and messaging work without creating duplicate side effects or permanently blocking message processing.",
+            "Coordinate concurrent workers processing durable tasks while avoiding duplicate claims, abandoned work and database deadlocks.",
+            "Migrate production Kafka workloads from custom infrastructure to a shared messaging library while addressing early concurrency, performance and operational issues.",
+            "Implement logistics workflows that crossed message consumers, domain logic, SQL persistence, background workers and external integrations.",
+            "Build operational UI workflows that remained manageable across multiple countries, transports, permissions and environment-specific configurations."
           ],
           "decisions": [
-            "Used an explicit event-type registry and typed handlers for predictable, safe message processing, where new event types require an intentional code change.",
-            "Used durable tasks to decouple message acknowledgement from slower downstream processing, allowing failed work to be retried without blocking message consumption. Tasks and related database changes were persisted in the same transaction to prevent lost follow-up work.",
-            "Used atomic batch claiming for persistent tasks to support concurrent high-throughput workers without losing durable task state."
+            "Persist slower follow-up work as durable tasks instead of completing everything synchronously inside message handlers. Related business changes and tasks could be stored within the same transaction, preventing successful data changes from losing required downstream work.",
+            "Process persistent tasks through scheduled workers with explicit task state, retries and recovery. Atomic task claiming allowed multiple workers to operate concurrently while later deadlock-prevention changes hardened the processing model.",
+            "Persist failed Kafka messages and reprocess them through dedicated dead-letter workflows rather than relying only on immediate retries. This made failures recoverable and observable without blocking normal message consumption.",
+            "Use explicit event contracts and typed handlers for Kafka and Azure Service Bus integrations. This made supported event types intentional and kept transport-specific concerns separated from application processing.",
+            "Generate frontend API clients from OpenAPI contracts and build operational screens around reusable React forms and AG Grid components. This kept frontend/backend contracts typed while supporting complex country-specific editing and validation."
           ],
           "results": [
-            "Reliable Azure Service Bus event delivery and processing with typed CloudEvent handlers, retries, logging, and metrics.",
-            "Durable background-task execution with retries and recovery from abandoned or zombie work.",
-            "Improved correctness through atomic task-and-data persistence, alongside more resilient downstream processing.",
-            "First-team adoption of the company-standard Kafka library, contributing performance and memory improvements during rollout.",
-            "A reliability-focused, observable logistics order-processing service."
+            "Established durable background processing with persisted state, retries, recovery and protection against abandoned or concurrently claimed work.",
+            "Migrated Kafka processing to the company-standard messaging platform and added persistent dead-letter storage, reprocessing, health checks and operational metrics.",
+            "Implemented reusable Azure Service Bus CloudEvent infrastructure for publishing and consuming logistics events.",
+            "Delivered end-to-end event-driven logistics functionality spanning message ingestion, business logic, SQL persistence, background execution, outbound commands and integration tests.",
+            "Extended operational tooling with transport outage management, country-specific feature configuration and role-aware React interfaces.",
+            "Improved the service's operational resilience through authentication, workload identity, environment configuration, health monitoring and production observability."
+          ],
+          "highlights": [
+            {
+              "name": "Persistent Tasks",
+              "description": "SQL-backed durable background processing with transactional task creation, concurrent workers, retries, reprocessing and deadlock prevention."
+            },
+            {
+              "name": "Messaging & Dead-Letter Processing",
+              "description": "Kafka and Azure Service Bus infrastructure with CloudEvents, typed handlers, persistent dead-letter storage, reprocessing and operational metrics."
+            },
+            {
+              "name": "Customs Processing",
+              "description": "End-to-end event-driven workflow from Kafka customs events through persistence and durable task execution to outbound shipping commands."
+            },
+            {
+              "name": "Transport Outages",
+              "description": "Full-stack operational workflow for managing carrier outages with batch forms, country-aware transport selection, backend processing and notifications."
+            }
           ]
         },
         "links": {},
@@ -427,6 +460,7 @@
     "learnMore": "Learn more",
     "projectDetails": "View details for {name}",
     "certificate": "View completion certificate for {name}",
+    "back": "back to",
     "allProjects": "All projects",
     "viewAll": "View all projects",
     "overview": "Overview",

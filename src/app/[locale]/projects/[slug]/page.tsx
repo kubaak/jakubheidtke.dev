@@ -83,14 +83,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const t = await getTranslations({ locale, namespace: "ui" });
   const messages = await getMessages({ locale });
   const projectCopy = messages.projects.items[project.slug];
-  const details: {
-    overview?: string;
-    role?: string[];
-    architecture?: string[];
-    challenges?: string[];
-    decisions?: string[];
-    results?: string[];
-  } | undefined = "details" in projectCopy ? projectCopy.details : undefined;
+  const details:
+    | {
+        overview?: string;
+        role?: string[];
+        architecture?: string[];
+        challenges?: string[];
+        decisions?: string[];
+        results?: string[];
+      }
+    | undefined = "details" in projectCopy ? projectCopy.details : undefined;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-brand-50 to-white text-gray-900">
@@ -102,14 +104,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             href="/projects"
             className="inline-flex text-sm font-medium text-gray-600 hover:text-brand-700 hover:underline"
           >
-            back {t("allProjects")}
+            {t("back")} {t("allProjects")}
           </Link>
 
           <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_14rem] lg:gap-12">
             <div>
-              <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">
-                {t(project.type)}
-              </p>
+              <p className="text-sm font-semibold tracking-wider text-brand-600 uppercase">{t(project.type)}</p>
 
               <h1 className="mt-3 text-4xl leading-tight font-extrabold sm:text-5xl">{copy(`${project.slug}.name`)}</h1>
 

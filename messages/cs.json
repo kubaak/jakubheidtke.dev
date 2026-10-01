@@ -166,80 +166,113 @@
         "name": "Tubester"
       },
       "i18n-process-tools": {
-        "description": "Lokalizační platforma, která synchronizuje UI labels z GitLabu a GitHubu, koordinuje bulk překlady lidmi nebo pomocí AI a doručuje hotové překlady prostřednictvím automatizovaných merge requestů a pull requestů.",
+        "description": "Lokalizační platforma, která synchronizuje UI texty z GitLab a GitHub repozitářů, spravuje hromadné překladové workflow a zapisuje dokončené překlady pro React, .NET a Kotlin zpět prostřednictvím automatizovaných merge nebo pull requestů.",
         "details": {
-          "overview": "I18n Process Tools zjednodušil celý localization lifecycle: sbíral labels z GitLab a GitHub repositories, sledoval jejich translation state, seskupoval práci do bulk requestů a převáděl dokončené překlady na reviewable změny ve source control.",
+          "overview": "I18n Process Tools automatizoval celý lokalizační proces napříč více aplikačními repozitáři. Vyhledával a parsoval lokalizační soubory, synchronizoval texty s uloženým stavem, identifikoval obsah vyžadující překlad, seskupoval práci do hromadných překladových požadavků a převáděl dokončené překlady na změny připravené ke kontrole ve zdrojovém kódu. Byl jsem jedním z prvních klíčových vývojářů backendu a později jsem výrazně přispíval také do React frontendu. Na projektu jsem pracoval od základní synchronizace a datového modelu až po migraci na GitHub a rozšíření podpory na více než 30 jazyků.",
           "role": [
-            "Navrhl jsem základní koncept i18n backendu, včetně repository synchronization, tracking translation state a bulk translation workflows.",
-            "Implementoval jsem GitLab integraci pro import lokalizačních souborů a vytváření merge requestů s přeloženými hodnotami.",
-            "Vedl jsem migraci na GitHub a doplnil podporu GitHubu během firemní migrace repositories.",
-            "Byl jsem jedním ze dvou vývojářů, kteří vytvořili React frontend pro správu localization workflows."
+            "Jako jeden z prvních klíčových vývojářů .NET backendu jsem implementoval základní synchronizaci repozitářů, inicializaci projektů, sledování stavu překladů a infrastrukturu pro hromadné překladové workflow.",
+            "Implementoval jsem původní integraci s GitLabem pro vyhledávání a parsování lokalizačních souborů, synchronizaci změn v repozitáři a vytváření merge requestů s přeloženými soubory.",
+            "Vytvořil a dále rozvíjel jsem synchronizační a překladové workflow včetně stavů Dirty, Pending a Translated, volby cílových jazyků, kontextu překladových textů, validací a zpracování callbacků s dokončenými překlady.",
+            "Během firemní migrace z GitLabu jsem přidal podporu GitHubu včetně abstrakce nad Git providery, práce s repozitářem přes Octokit, OAuth autentizace a perzistence uživatelských access tokenů.",
+            "Přispíval jsem také k backendovému vyhledávání, filtrování, stránkování, autorizaci, validacím, integračním testům, Azure autentizaci a hardeningu deploymentu.",
+            "Jako jeden ze dvou vývojářů jsem přispíval také do React frontendu, kde jsem implementoval výběr cílových jazyků, vlastní AG Grid komponenty, kontext překladových textů, znovupoužitelný error handling pro API, validaci formulářů a podporu více než 30 jazyků."
           ],
           "architecture": [
-            ".NET backend s data access přes Entity Framework Core",
-            "React frontend pro správu projektů, labels a translation requestů",
-            "GitLab API a GitHub/Octokit integrace pro synchronizaci repositories a doručování změn",
-            "Bulk translation integrace s Notino Localization Service a TargetProcess",
-            "Volitelný AI-assisted translation flow",
-            "Kubernetes deployment"
+            "ASP.NET Core backend rozdělený do aplikační, doménové, integrační a perzistentní vrstvy",
+            "Entity Framework Core se SQL Serverem pro ukládání projektů, souborů, textů, překladových balíků, změn a stavů překladů",
+            "Specializované parsování a generování lokalizačních souborů pro React JSON, .NET RESX a Kotlin XML",
+            "React 19 a TypeScript frontend využívající TanStack Query, React Hook Form, AG Grid a API klienty generované pomocí Orvalu",
+            "Abstrakce nad Git providery s podporou GitLab API a GitHub implementací založenou na Octokitu",
+            "Hromadná integrace s interní Localization Service a TargetProcess s callbackovým zpracováním překladů a podporou volitelných automatizovaných překladových cest",
+            "Azure AD autentizace, Azure Workload Identity, Docker a deployment do Kubernetes"
           ],
           "challenges": [
-            "Synchronizovat lokalizační soubory a změny labels napříč repositories a trhy.",
-            "Sledovat, zda je každý label untranslated, awaiting translation nebo completed.",
-            "Migrovat repository automation z GitLabu na GitHub bez narušení doručování překladů."
+            "Udržet uložený stav lokalizací synchronizovaný s měnícími se soubory v repozitářích napříč více projekty, jazyky a formáty zdrojů.",
+            "Sledovat jednotlivé texty ve stavech čekajících na překlad, rozpracovaných a dokončených překladů a zároveň umožnit uživatelům požadovat pouze vybrané cílové jazyky.",
+            "Řešit okrajové případy lokalizací, jako jsou duplicitní klíče, konflikty výchozího jazyka, speciální znaky, chybějící cílové soubory a rozdíly mezi JSON, RESX a XML zdroji.",
+            "Rozšířit automatizaci práce s repozitáři z GitLabu na GitHub bez nutnosti měnit vyšší úroveň lokalizačního workflow.",
+            "Přehledně zobrazit velké množství jazyků a lokalizačních textů ve frontendu a současně zachovat srozumitelný výběr, validaci a zpracování API chyb."
           ],
           "decisions": [
-            "Modelovat překlad jako explicitní workflow se stavy Dirty, Pending a Translated. Přidalo to složitost synchronizace, ale zviditelnilo chybějící, rozpracované a dokončené překlady a zabránilo duplicate requestům.",
-            "Doručovat dokončené překlady přes samostatné branches a automatizované merge requesty nebo pull requesty. Vyžadovalo to spolehlivé repository integrace, ale změny zůstaly reviewable, auditable a sladěné se standardním engineering workflow.",
-            "Abstrahovat repository operations tak, aby podporovaly GitLab i GitHub. Podpora platform-specific APIs zvýšila implementační náročnost, ale umožnila workflow přežít celofiremní migraci repositories."
+            "Modelovat překlad jako explicitní workflow nad stavy Dirty, Pending a Translated. Dodatečná správa stavů zvýšila komplexitu synchronizace, ale umožnila jednoznačně určit, které překlady chybí, které se právě zpracovávají a zabránit duplicitním požadavkům.",
+            "Oddělit zpracování jednotlivých lokalizačních formátů místo přímého zabudování parsování a generování souborů do synchronizačního workflow. Stejný proces tak mohl podporovat React JSON, .NET RESX i Kotlin XML zdroje.",
+            "Doručovat vygenerované překlady prostřednictvím samostatných branches a automatizovaných merge nebo pull requestů namísto přímých změn v repozitářích. Lokalizační změny tak zůstaly kontrolovatelné, dohledatelné a v souladu se standardním vývojovým workflow.",
+            "Při přidávání podpory GitHubu abstrahovat operace nad source controlem za společnou Git provider vrstvu. Implementace specifická pro jednotlivé platformy zvýšila komplexitu, ale umožnila zachovat lokalizační workflow do značné míry nezávislé na GitLabu nebo GitHubu.",
+            "Ve frontendu používat generované TypeScript API klienty společně s TanStack Query a znovupoužitelnými UI komponentami. API kontrakty tak zůstaly typově bezpečné a logika gridů, validace a zpracování chyb byla oddělena do samostatných částí."
           ],
           "results": [
-            "Automatizoval jsem workflow od repository labels přes translation requesty až po reviewable změny s hotovými překlady.",
-            "Umožnil jsem doručování překladů přes GitLab merge requesty i GitHub pull requesty.",
-            "Vytvořil jsem škálovatelný a konzistentní proces pro lokalizovaný UI content napříč více trhy."
+            "Automatizoval proces od synchronizace repozitáře přes vytvoření překladových požadavků a zpracování callbacků až po změny ve zdrojovém kódu připravené ke kontrole.",
+            "Podporoval lokalizační zdroje projektů postavených na React JSON, .NET RESX a Kotlin XML.",
+            "Umožnil doručovat překlady prostřednictvím GitLab merge requestů i GitHub pull requestů.",
+            "Rozšířil frontend a překladové workflow na více než 30 jazyků s možností výběru jednotlivých cílových jazyků.",
+            "Pomohl vytvořit jednotný lokalizační proces použitelný napříč více aplikačními repozitáři a trhy."
           ]
         },
         "links": {},
         "name": "I18n Process Tools"
       },
       "logistics-order-service": {
-        "description": "High-throughput .NET služba pro zpracování logistických objednávek postavená na spolehlivém asynchronous messagingu, durable background processingu, explicitní správě transakcí a production observability.",
+        "description": "Event-driven .NET logistická platforma pro zpracování objednávek a skladové operace, postavená na spolehlivém background processingu, Kafka a Azure Service Bus messagingu, explicitním řízení transakcí a provozních nástrojích.",
         "details": {
-          "overview": "High-throughput služba pro zpracování logistických objednávek navržená pro spolehlivé změny dat a resilient event-driven workflow. Kombinuje Dapper-based data access, messaging přes Azure Service Bus a Kafka, durable background tasks a New Relic observability.",
+          "overview": "Logistická platforma zaměřená na spolehlivost, podporující zpracování objednávek, balení, expedici a skladové operace. Systém kombinuje transakční změny v SQL s odolným background processingem, Kafka a Azure Service Bus messagingem, zpracováním dead-letter zpráv, plánovanými úlohami a produkční observabilitou. Přispíval jsem napříč backendem i React frontendem pro provozní nástroje – od znovupoužitelné messaging infrastruktury a persistent tasks až po end-to-end logistická workflow, například zpracování celních případů nebo správu výpadků dopravy.",
           "role": [
-            "Vyvíjel jsem spolehlivý messaging a background processing pro .NET logistickou službu.",
-            "Vybudoval jsem znovupoužitelnou infrastrukturu pro Azure Service Bus publishing a consumers založenou na CloudEvents.",
-            "Implementoval jsem SQL-backed persistent-task framework s durable state, retries a recovery.",
-            "Migroval jsem tým z vlastní Kafka integrace na company-standard messaging library a pomohl stabilizovat její počáteční rollout.",
-            "V reliability-critical data-access paths jsem používal Dapper s explicitní správou transakcí."
+            "Navrhl a implementoval jsem mechanismus persistent tasks uložených v SQL pro odolné zpracování na pozadí, včetně worker processingu, retries, opakovaného zpracování selhaných úloh a následných úprav pro prevenci deadlocků.",
+            "Významně jsem se podílel na rozvoji messagingu, včetně Azure Service Bus CloudEvent infrastruktury a migrace z vlastní Kafka integrace na firemní messaging knihovnu s perzistentním dead-letter zpracováním a reprocessingem.",
+            "Implementoval jsem end-to-end event-driven logistická workflow zahrnující Kafka consumery, aplikační logiku, perzistenci, persistent tasks, odchozí příkazy, konfiguraci infrastruktury a integrační testy.",
+            "Na backendu jsem přispíval k fulfillmentu objednávek, balení, alokaci balíků, výpadkům dopravy, archivaci, autentizaci a provozní infrastruktuře.",
+            "Ve frontendu jsem implementoval funkcionalitu pro správu výpadků dopravy a feature toggles specifické pro jednotlivé země pomocí Reactu, TypeScriptu, React Hook Form a AG Gridu.",
+            "Přispíval jsem také k frontendové infrastruktuře, včetně generovaných OpenAPI klientů, autentizace, uživatelských oprávnění, konfigurace pro více prostředí a lokalizovaných provozních rozhraní."
           ],
           "architecture": [
-            ".NET služba pro zpracování logistických objednávek",
-            "Dapper-based data access s explicitními transaction boundaries",
-            "Azure Service Bus publishers a consumers využívající CloudEvents",
-            "Dynamické CloudEvent type resolution a dispatch do typed handlers",
-            "Kafka integrace přes company-standard Notino.Messaging library",
-            "SQL-backed persistent tasks s atomic batch claiming, retries a zombie recovery",
-            "Hangfire background processing",
-            "Structured logs, metrics a production observability přes New Relic"
+            "ASP.NET Core API a worker services pro logistická a skladová workflow",
+            "SQL Server perzistence s explicitními hranicemi transakcí pro operace kritické z pohledu spolehlivosti",
+            "Persistent tasks uložené v SQL s plánovaným Hangfire processingem, retries, reprocessingem a koordinací souběžně běžících workerů",
+            "Kafka a Confluent messaging prostřednictvím firemní messaging knihovny s perzistentním dead-letter zpracováním",
+            "Azure Service Bus publishers a consumers využívající CloudEvents a typované message handlery",
+            "Provozní frontend v Reactu 19 a TypeScriptu využívající TanStack Query, React Hook Form, AG Grid a API klienty generované pomocí Orvalu",
+            "Role-based autorizace na frontendu i backendu pro provozní funkcionalitu",
+            "Deployment do Kubernetes, workload identity, konfigurace specifická pro jednotlivá prostředí, health checks, metriky a observabilita pomocí New Relic"
+          ],
+          "highlights": [
+            {
+              "name": "Persistent Tasks",
+              "description": "Odolný background processing založený na SQL s transakčním vytvářením úloh, souběžnými workery, retries, reprocessingem a prevencí deadlocků."
+            },
+            {
+              "name": "Messaging & Dead-Letter Processing",
+              "description": "Kafka a Azure Service Bus infrastruktura s CloudEvents, typovanými handlery, perzistentním dead-letter úložištěm, reprocessingem a provozními metrikami."
+            },
+            {
+              "name": "Customs Processing",
+              "description": "End-to-end event-driven workflow od Kafka událostí pro celní případy přes aplikační logiku a perzistenci až po persistent task execution a odchozí příkazy do shipping systému."
+            },
+            {
+              "name": "Transport Outages",
+              "description": "Full-stack provozní workflow pro správu výpadků dopravy s hromadnými formuláři, výběrem doprav podle země, backendovým zpracováním a notifikacemi."
+            }
           ],
           "challenges": [
-            "Zpracovávat vysoké objemy logistických objednávek a zároveň zachovat konzistenci mezi změnami dat a asynchronní prací.",
-            "Bezpečně zvládat transient messaging failures bez vytváření duplicate side effects.",
-            "Zabránit pomalým nebo chybujícím downstream consumers v blokování zpracování message topicu.",
-            "Adoptovat novou Kafka library a zároveň řešit počáteční performance a memory issues."
+            "Udržet databázové změny a navazující asynchronní práci konzistentní tak, aby úspěšná business operace nemohla tiše ztratit požadované následné zpracování.",
+            "Bezpečně opakovat selhané background a messaging operace bez vytváření duplicitních vedlejších efektů nebo trvalého blokování zpracování zpráv.",
+            "Koordinovat více workerů zpracovávajících persistent tasks a přitom zabránit duplicitnímu převzetí úloh, opuštěné práci a databázovým deadlockům.",
+            "Migrovat produkční Kafka workloady z vlastní infrastruktury na sdílenou messaging knihovnu a současně řešit počáteční problémy se souběhem, výkonem a provozem.",
+            "Implementovat logistická workflow procházející přes message consumery, doménovou logiku, SQL perzistenci, background workery a externí integrace.",
+            "Vytvářet provozní UI workflow, která zůstala přehledná napříč více zeměmi, dopravci, oprávněními a konfiguracemi jednotlivých prostředí."
           ],
           "decisions": [
-            "Použil jsem explicitní event-type registry a typed handlers pro předvídatelné a bezpečné zpracování zpráv, kde přidání nového event type vyžaduje vědomou změnu kódu.",
-            "Použil jsem durable tasks k oddělení message acknowledgement od pomalejšího downstream processingu, takže neúspěšnou práci lze retryovat bez blokování message consumption. Tasks a související změny databáze se ukládaly ve stejné transakci, aby se neztratila navazující práce.",
-            "Použil jsem atomic batch claiming pro persistent tasks, aby concurrent high-throughput workers mohli pracovat bez ztráty durable task state."
+            "Pomalejší navazující operace ukládat jako persistent tasks namísto jejich synchronního dokončování přímo uvnitř message handlerů. Související business změny a úlohy tak bylo možné uložit v rámci stejné transakce a zabránit situaci, kdy úspěšná změna dat ztratí požadované následné zpracování.",
+            "Zpracovávat persistent tasks pomocí plánovaných workerů s explicitním stavem úlohy, retries a recovery mechanismem. Atomické přebírání úloh umožnilo bezpečný souběh více workerů a pozdější úpravy pro prevenci deadlocků dále zvýšily odolnost tohoto modelu.",
+            "Perzistovat selhané Kafka zprávy a zpracovávat je prostřednictvím samostatného dead-letter workflow namísto spoléhání pouze na okamžité retries. Selhání tak zůstala obnovitelná a pozorovatelná, aniž by blokovala běžné zpracování zpráv.",
+            "Používat explicitní event kontrakty a typované handlery pro Kafka a Azure Service Bus integrace. Podporované typy událostí tak byly definované záměrně a transportní logika zůstala oddělená od aplikačního zpracování.",
+            "Generovat frontendové API klienty z OpenAPI kontraktů a stavět provozní obrazovky na znovupoužitelných React formulářích a AG Grid komponentách. Frontendové a backendové kontrakty tak zůstaly typově bezpečné i při podpoře komplexní editace a validace specifické pro jednotlivé země."
           ],
           "results": [
-            "Spolehlivý Azure Service Bus event delivery a processing s typed CloudEvent handlers, retries, loggingem a metrics.",
-            "Durable background-task execution s retries a recovery z opuštěných nebo zombie tasks.",
-            "Lepší correctness díky atomic task-and-data persistence a zároveň resilientnějšímu downstream processingu.",
-            "První týmové nasazení company-standard Kafka library, včetně příspěvků ke zlepšení performance a memory během rolloutu.",
-            "Reliability-focused a observable služba pro zpracování logistických objednávek."
+            "Vytvořil odolný background processing s perzistentním stavem, retries, recovery a ochranou proti opuštěným nebo souběžně převzatým úlohám.",
+            "Migroval Kafka processing na firemní messaging platformu a doplnil perzistentní dead-letter úložiště, reprocessing, health checks a provozní metriky.",
+            "Implementoval znovupoužitelnou Azure Service Bus CloudEvent infrastrukturu pro publikování a zpracování logistických událostí.",
+            "Dodal end-to-end event-driven logistickou funkcionalitu zahrnující příjem zpráv, business logiku, SQL perzistenci, background execution, odchozí příkazy a integrační testy.",
+            "Rozšířil provozní nástroje o správu výpadků dopravy, konfiguraci feature toggles podle zemí a React rozhraní respektující uživatelské role.",
+            "Zvýšil provozní odolnost služby prostřednictvím autentizace, workload identity, konfigurace jednotlivých prostředí, health monitoringu a produkční observability."
           ]
         },
         "links": {},
@@ -427,6 +460,7 @@
     "learnMore": "Zjistit více",
     "projectDetails": "Zobrazit podrobnosti projektu {name}",
     "certificate": "Zobrazit certifikát o absolvování kurzu {name}",
+    "back": "zpět na",
     "allProjects": "Všechny projekty",
     "viewAll": "Zobrazit všechny projekty",
     "overview": "Přehled",
