@@ -279,14 +279,300 @@
         "name": "Logistics Order Service"
       },
       "product-availability-and-reservations": {
-        "description": "Zlepšení služeb pro product availability a reservations pomocí refactoringu a bug fixů, zajišťující spolehlivý stock tracking a plynulé booking flow.",
+        "description": "Event-driven .NET reservation orchestrator, který koordinuje workflow dostupnosti a rezervací produktů napříč HTTP API, SQL Serverem, Kafka CloudEvents, AR Core službami a odolným Hangfire processingem.",
+        "details": {
+          "overview": "Product Availability & Reservations koordinoval rezervační workflow mezi API klienty, Finance eventy, warehouse a product-catalog systémy a AR Core službami pro jednotlivá distribuční centra. Kombinoval synchronní HTTP orchestration se stavem rezervací uloženým v SQL, Kafka CloudEvents, explicitním řízením souběhu, odolnými retries a pravidelnými background joby. Výrazně jsem přispíval k rezervačním workflow, podpoře split reservations, ochraně proti zastaralým zprávám, lockingu, Hangfire infrastruktuře, observability a refaktoringu mapování accounting warehouses na distribution centers.",
+          "role": [
+            "Implementoval jsem reservation workflow zohledňující accounting warehouse, která koordinovala API handlery, SQL stav rezervace, resolution distribučního centra a synchronní volání AR Core.",
+            "Vytvořil jsem end-to-end funkcionalitu SplitReservationAw včetně MediatR command handleru, validace, lockingu zdrojové a cílové rezervace, Dapper/SQL přístupu, integrace s AR Core a automatizovaných testů.",
+            "Implementoval a rozšiřoval jsem Kafka-driven workflow pro aktualizace množství a expirace interních rezervací, včetně změn lokálního stavu, koordinace s AR Core, retries a publikování response eventů.",
+            "Přidal jsem SQL-backed řízení souběhu a ochranu proti zastaralým zprávám pomocí reservation locků, expirace locků a timestamp gates pro out-of-order interní rezervační zprávy.",
+            "Zavedl a dále rozvíjel Hangfire processing se SQL storage pro odolné retries a recurring expiration joby, včetně zabezpečeného dashboardu a monitoringu neúspěšných jobů.",
+            "Zlepšil jsem zpracování expirovaných rezervací a observability pomocí per-reservation expiration eventů, New Relic custom eventů a transaction instrumentation.",
+            "Refaktoroval jsem resolution accounting warehouses a distribution centers, čímž se zjednodušily reservation a availability handlery a odstranila část starší lookup logiky.",
+            "Přispíval jsem také k Azure identity, Core-service HTTP client infrastruktuře, Kubernetes konfiguraci a local-development setupu."
+          ],
+          "architecture": [
+            "ASP.NET Core API s MediatR command handlery pro reservation a availability operace",
+            "Dapper-style SQL přístup a SQL Server perzistence pro metadata rezervací, locky a message timestampy",
+            "Synchronní HTTP integrace s AR Core službami vybíranými podle distribution center",
+            "Kafka CloudEvents přes Notino.Messaging pro interní reservation commandy, product changes a response eventy",
+            "SQL-backed reservation locking s lock IDs a expirací pro souběžné operace",
+            "Timestamp gates zabraňující zastaralým nebo out-of-order interním reservation zprávám přepsat novější stav",
+            "Hangfire se SQL Server storage pro retries, recurring expiration processing a durable background work",
+            "New Relic instrumentation pro background failures, expiration eventy a transaction visibility",
+            "Azure Workload Identity, deployment do Kubernetes a GitLab CI"
+          ],
+          "highlights": [
+            {
+              "name": "Split Reservations",
+              "description": "End-to-end split-reservation workflow s lockingem zdrojové a cílové rezervace, validací accounting warehouse, kontrolou konzistence distribution center, integrací s AR Core a automatizovanými testy."
+            },
+            {
+              "name": "Concurrency Control",
+              "description": "SQL-backed reservation locky s lock ID a expirací umožňující více instancím služby bezpečně koordinovat změny rezervací a zotavit se z opuštěných locků."
+            },
+            {
+              "name": "Stale Message Protection",
+              "description": "Timestamp-based gating pro Kafka-driven aktualizace rezervací zabraňuje tomu, aby byly starší nebo out-of-order zprávy zpracovány jako nejnovější stav."
+            },
+            {
+              "name": "Durable Processing",
+              "description": "Hangfire-backed retries a recurring processing expirovaných rezervací se SQL storage, monitoringem konečných selhání a zpracováním response eventů."
+            },
+            {
+              "name": "Reservation Orchestration",
+              "description": "Koordinace mezi API requesty, lokálním SQL stavem, mapováním accounting warehouse na distribution center, AR Core HTTP voláními a Kafka response eventy."
+            }
+          ],
+          "challenges": [
+            "Koordinovat stav rezervace napříč lokální SQL perzistencí, synchronními AR Core voláními a asynchronními Kafka zprávami bez distribuované transakce.",
+            "Zabránit souběžným requestům nebo event handlerům, aby nekonzistentně měnily stejnou rezervaci.",
+            "Zpracovat out-of-order interní rezervační eventy tak, aby starší zprávy nemohly přepsat novější stav rezervace.",
+            "Bezpečně rozdělit rezervaci při současném lockingu zdrojové i cílové rezervace a ověření, že obě zůstávají ve stejném distribution center.",
+            "Obnovit asynchronní zpracování rezervací po transient failures bez ztráty původního command contextu nebo tichého zahazování požadované práce.",
+            "Zpracovávat expirace rezervací ve větším objemu a zároveň zabránit opakovanému zpracování rezervací, které už byly vyřešené."
+          ],
+          "decisions": [
+            "Použít SQL-backed locky s explicitním lock ID a expirací místo process-local synchronizace. Reservation operace tak zůstaly koordinované napříč více instancemi služby a mohly se zotavit i v případě, že proces skončil během držení locku.",
+            "Chránit Kafka-driven aktualizace interních rezervací pomocí perzistentních message timestampů. Příchozí command starší než poslední známý timestamp mohl být odmítnut ještě před změnou aktuálního stavu rezervace.",
+            "Použít Hangfire pro retryable a recurring práci místo držení retry logiky přímo uvnitř Kafka handlerů. Transient failures tak zůstaly durable přes restart procesu a zároveň bylo možné provozně sledovat neúspěšné background joby.",
+            "Resolvit accounting warehouses přes centralizovanou DistributionCenterService místo udržování více product-variant lookup cest. Reservation handlery se tím zjednodušily a výběr distribution center byl konzistentní.",
+            "Ponechat AR Core volání synchronní uvnitř reservation API workflow a kolem nich perzistovat lokální koordinační stav. API tak mohlo vracet okamžitou odpověď a současně zachovat concurrency control na úrovni rezervace.",
+            "Publikovat explicitní success nebo failure response eventy pro interní reservation commandy místo spoléhání pouze na implicitní acknowledgement model."
+          ],
+          "results": [
+            "Dodal accounting-warehouse-aware reservation a split-reservation workflow pokrývající API, SQL perzistenci, concurrency control, AR Core integraci a automatizované testy.",
+            "Zvýšil konzistenci asynchronních aktualizací rezervací pomocí SQL lockingu, expirace locků a ochrany proti zastaralým zprávám.",
+            "Přidal durable retry a recurring background-processing capabilities přes Hangfire s provozním monitoringem selhání.",
+            "Rozšířil Kafka-driven interní reservation workflow o aktualizace množství a expirace s publikováním response eventů.",
+            "Zjednodušil resolution distribution centers a odstranil starší accounting-warehouse lookup komplexitu z reservation handlerů.",
+            "Zlepšil provozní přehled pomocí New Relic eventů pro failed jobs, expirované rezervace a background-processing behavior."
+          ]
+        },
         "links": {},
-        "name": "Product Availability and Reservations"
+        "name": "Product Availability & Reservations"
       },
       "gdpr-management": {
         "description": "GDPR-compliant consent management systém, který nahradil legacy řešení a umožnil bezpečné zpracování zákaznických dat včetně expirace nebo odvolání souhlasu.",
         "links": {},
         "name": "GDPR Management"
+      },
+      "order-store-service": {
+        "description": "Event-driven .NET služba, která vytváří a zpřístupňuje perzistentní projekci objednávky z distribuovaných business událostí, vyhodnocuje připravenost pro skladové vychystání a publikuje navazující události ve chvíli, kdy jsou k dispozici všechny požadované informace.",
+        "details": {
+          "overview": "Order Store Service udržoval konsolidovaný pohled na objednávky sestavený z událostí produkovaných více systémy, včetně vytvoření objednávky, plateb, přiřazení dopravce, rezervace skladu, reklamací, dokumentů a změn zákaznických údajů. REST API zpřístupňovalo takto nasbíraný stav, zatímco asynchronní workflow vyhodnocovala, zda už dorazilo dost informací pro pokračování dalšího zpracování. Výrazně jsem přispíval k rozvoji služby, včetně workflow pro autorizaci objednávky k vychystání, logistického a zákaznického obohacování dat, databázového řízení souběhu, optimalizace EF Core a SQL a infrastruktury pro integrační testování asynchronních toků.",
+          "role": [
+            "Implementoval jsem hlavní end-to-end workflow pro autorizaci objednávky k vychystání, které zpracovávalo příkazy, ukládalo stav připravenosti, validovalo požadovaná data objednávky a po splnění všech podmínek publikovalo OrderAuthorizedForPickingEvent.",
+            "Vytvořil a rozšiřoval jsem obohacování objednávek o data z událostí týkajících se dopravce, pickup pointů, doručení, picking instrukcí, rezervace skladu a odhadů plateb včetně perzistence, mappingu a integračních testů.",
+            "Implementoval jsem lokální projekci zákazníka aktualizovanou událostmi a synchronní fallback do Online služby v případech, kdy požadovaná zákaznická data ještě nebyla dostupná lokálně.",
+            "Navrhl jsem databázové locking mechanismy pro souběžné zpracování událostí nad stejnými objednávkami a zákazníky napříč více instancemi služby.",
+            "Optimalizoval jsem výkon EF Core a SQL Serveru pomocí split a no-tracking query cest, úprav repository vrstvy, indexace a odstranění nákladného ORM chování.",
+            "Rozšířil jsem komplexní zpracování reklamací a vratek pro bundle produkty, náhrady a vztahy mezi původními a generovanými položkami objednávky.",
+            "Vytvořil a stabilizoval jsem testovací infrastrukturu pro asynchronní consume-and-publish workflow, včetně fake publisherů a synchronizace kolem publikovaných událostí.",
+            "Provedl jsem migraci celého solution na .NET 6, včetně aplikačních projektů, testů, Docker runtime konfigurace a CI/CD."
+          ],
+          "architecture": [
+            "ASP.NET Core REST API zpřístupňující perzistentní projekce objednávek, customer orders a historie",
+            "Event-driven consumers zpracovávající příkazy a integrační události přes Oriflame messaging platformu nad Azure Service Bus",
+            "EF Core se SQL Serverem pro ukládání projekcí objednávek, stavů, logistických dat, zákaznických informací, plateb, dokumentů a synchronizačního stavu",
+            "Event Hub publishers pro publikování navazujících událostí pro objednávky a warehouse-management systémy",
+            "Vyhodnocování připravenosti na základě uložených stavů přijatých eventů a commandů před publikováním závislých navazujících událostí",
+            "Databázové order a customer locky pro koordinaci souběžného zpracování napříč horizontálně škálovanými instancemi služby",
+            "Polly-based retry policies s předáním neúspěšných zpráv do dead-letter queue messaging platformy",
+            "Application Insights telemetry, audit logging, health checks a deployment do AKS přes Azure DevOps a GitOps"
+          ],
+          "highlights": [
+            {
+              "name": "Picking Authorization",
+              "description": "End-to-end asynchronní orchestrace, která shromažďuje stav objednávky, platby, dopravce, skladu, dokumentů a zákazníka a až poté publikuje OrderAuthorizedForPickingEvent do navazujících skladových systémů."
+            },
+            {
+              "name": "Order Projection",
+              "description": "Perzistentní pohled na objednávku sestavovaný postupně z integračních událostí pokrývajících logistiku, platby, reklamace, produkty, zákazníky, dokumenty a skladové operace."
+            },
+            {
+              "name": "Concurrency Control",
+              "description": "Databázové locking mechanismy pro objednávky a zákazníky umožňující více instancím služby bezpečně zpracovávat související události a omezit konfliktní souběžné změny."
+            },
+            {
+              "name": "Database Performance",
+              "description": "Optimalizace EF Core a SQL Serveru pomocí split a no-tracking queries, refaktoringu repository vrstvy, návrhu indexů a odstranění nákladného lazy-loading chování."
+            },
+            {
+              "name": "Async Integration Testing",
+              "description": "Testovací infrastruktura pro spolehlivé ověřování consume-persist-publish workflow, včetně pozorovatelných fake publisherů a oprav synchronizace při souběžném zpracování událostí."
+            }
+          ],
+          "challenges": [
+            "Sestavit konzistentní projekci objednávky z událostí přicházejících nezávisle, potenciálně v různém pořadí a z více upstream systémů.",
+            "Určit, kdy už bylo nasbíráno dost distribuovaného stavu pro bezpečnou autorizaci objednávky k vychystání bez závislosti na jednom synchronním requestu.",
+            "Zpracovat více událostí pro stejnou objednávku nebo zákazníka souběžně napříč horizontálně škálovanými instancemi služby.",
+            "Udržet stále bohatší graf objednávky výkonný i s rostoucím množstvím uložených vazeb a požadavků na API retrieval.",
+            "Zpracovat nekompletní nebo volitelné části event payloadů a zároveň zachovat dostatek stavu pro downstream publishing a API consumerům.",
+            "Deterministicky testovat asynchronní workflow, kde zpracování jedné zprávy může vést k databázovým změnám a následnému publikování dalších událostí."
+          ],
+          "decisions": [
+            "Ukládat přijaté eventy a commandy jako explicitní stav objednávky a vyhodnocovat připravenost nad tímto nasbíraným stavem. Downstream akce tak mohly čekat na požadované informace bez nutnosti spojovat upstream systémy do synchronního orchestračního řetězce.",
+            "Použít databázové order a customer locky místo process-local synchronizace. Protože služba běžela ve více instancích v AKS, koordinace musela fungovat napříč procesy.",
+            "Ukládat obohacená data objednávky, jako jsou údaje o dopravci, pickup pointu, skladu, platbách a zákazníkovi, lokálně. Projekce objednávky tak byla použitelná pro API i downstream publishery bez nutnosti opakovaně dotazovat všechny zdrojové služby.",
+            "Použít synchronní fallback do Online služby pouze v případě, že požadovaná zákaznická data chyběla v lokální event-driven projekci. Běžný asynchronní tok tak zůstal zachovaný a zároveň existovala cesta pro doplnění nekompletního stavu.",
+            "Optimalizovat sdílené EF Core repository cesty pomocí split queries, no-tracking čtení a cílených indexů místo spoléhání na implicitní ORM loading. Tím se snížilo množství zbytečné práce nad databází u rozsáhlých order grafů.",
+            "Vytvořit specializovanou test publisher infrastrukturu, aby integrační testy mohly přímo sledovat asynchronně publikované události a ověřovat celé consume-persist-publish workflow."
+          ],
+          "results": [
+            "Dodal event-driven workflow pro autorizaci vychystání, které propojovalo příjem zpráv, perzistentní stav připravenosti, zákaznické a logistické obohacení, konstrukci downstream události a její publikování.",
+            "Rozšířil projekci objednávky o logistická, platební, zákaznická a skladová data potřebná pro API a navazující fulfillment procesy.",
+            "Zvýšil spolehlivost souběžného zpracování událostí pomocí databázové koordinace nad objednávkami a zákazníky.",
+            "Zlepšil charakteristiky databázového přístupu pomocí optimalizace EF Core queries, návrhu indexů a úprav repository vrstvy.",
+            "Doplnil regression coverage pro komplexní scénáře objednávek, včetně vratek bundle produktů, náhrad a asynchronního publikování událostí.",
+            "Posílil technický základ služby pomocí znovupoužitelné infrastruktury pro asynchronní integrační testy, produkční observability a migrace celého solution na .NET 6."
+          ]
+        },
+        "links": {},
+        "name": "Order Store Service"
+      },
+      "camunda-sink": {
+        "description": "Konfigurovatelná .NET integrační služba, která zpracovává business události z Azure Service Bus a směruje je do Camundy jako correlation messages, signals nebo asynchronní aktualizace process variables.",
+        "details": {
+          "overview": "Camunda Sink propojoval event-driven business systémy s Camunda workflow. Zpracovával nakonfigurované události z firemní messaging platformy, převáděl je na integrační vzory specifické pro Camundu a řešil korelaci, retries, timeouty, tenant pravidla a reprocessing selhaných událostí. Výrazně jsem přispíval k architektuře a dalšímu rozvoji služby, včetně restrukturalizace projektů, dynamické konfigurace, registrace handlerů, multi-tenant chování, back-office nástrojů, asynchronního global-message processingu, zvýšení spolehlivosti a modernizace platformy.",
+          "role": [
+            "Restrukturalizoval jsem službu do samostatných API, application, consumer, data a worker projektů a přidal Web API pro provozní konfiguraci.",
+            "Implementoval jsem konfiguraci eventů uloženou v Azure Blob Storage s automatickým pollingem a reloadem při změně, což umožnilo upravovat event routing bez redeploymentu služby.",
+            "Vytvořil jsem dynamickou registraci event handlerů a handler factory schopnou směrovat nakonfigurované event typy na correlation-message, signal nebo global-message processing.",
+            "Rozšířil jsem Camunda integraci o asynchronní global-message processing, který aktualizoval proměnné napříč přihlášenými process instances a sledoval dokončení Camunda batch operací.",
+            "Implementoval jsem tenant-aware zpracování eventů a konfigurovatelné potlačení zpracování pro vybrané tenanty, včetně API, back-office a audit logiky.",
+            "Zvýšil jsem spolehlivost pomocí rozdílných Polly retry policies, timeout handlingu, circuit-breaker chování a bezpečnějšího ukládání a reprocessingu selhaných událostí.",
+            "Vytvořil jsem Blazor back-office aplikaci a generovaného API klienta pro prohlížení a správu konfigurace zpracovávaných eventů.",
+            "Implementoval jsem maintenance službu pro čištění expirovaných záznamů v Dead Events Storage a souvisejících blobů, včetně integračních testů nad Azurite a podpory CI/CD.",
+            "Migroval jsem multi-project službu a související deployment tooling na .NET 7."
+          ],
+          "architecture": [
+            ".NET worker services zpracovávající business eventy a commandy přes Ori.Messaging nad Azure Service Bus",
+            "ASP.NET Core Web API pro prohlížení a úpravu konfigurace zpracovávaných eventů",
+            "Dynamická event handler factory podporující Camunda correlation messages, signals a global variable updates",
+            "Integrace přes Camunda OpenAPI klienta pro message correlation, signal delivery a asynchronní batch aktualizace process variables",
+            "Runtime konfigurace uložená v Azure Blob Storage s detekcí změn pomocí ETag a propagací změn přes IOptionsMonitor",
+            "Azure Table Storage, Blob Storage a Queue Storage pro ukládání a reprocessing selhaných eventů",
+            "Polly retry a circuit-breaker policies s chováním přizpůsobeným jednotlivým integračním scénářům",
+            "Server-side Blazor back-office UI s generovaným API klientem",
+            "Application Insights telemetry, audit logging, Docker a Azure DevOps CI/CD"
+          ],
+          "highlights": [
+            {
+              "name": "Dynamic Event Routing",
+              "description": "Konfiguračně řízená registrace handlerů, která mapuje příchozí business eventy na Camunda correlation messages, signals nebo global-message processing bez nutnosti hardcodovat každou cestu přímo ve workeru."
+            },
+            {
+              "name": "Runtime Configuration",
+              "description": "Konfigurace eventů uložená v Azure Blob Storage s detekcí změn pomocí ETag, automatickým reloadem a opětovnou registrací consumerů bez redeploymentu služby."
+            },
+            {
+              "name": "Global Messages",
+              "description": "Asynchronní Camunda integrační vzor, který aktualizuje proměnné napříč přihlášenými process instances, sleduje dokončení batch operací a řeší dlouhotrvající chyby odděleně od běžných correlation messages."
+            },
+            {
+              "name": "Multi-Tenant Processing",
+              "description": "Tenant-aware konverze eventů a konfigurovatelné potlačení zpracování pro jednotlivé tenanty, které umožňuje operátorům vypnout zpracování vybraných tenantů bez deaktivace handleru jako celku."
+            },
+            {
+              "name": "Reliability & Recovery",
+              "description": "Retry, timeout, circuit-breaker a Dead Events Storage workflow přizpůsobená jednotlivým režimům Camunda processingu, včetně bezpečnějšího reprocessingu a čištění selhaných eventů."
+            }
+          ],
+          "challenges": [
+            "Směrovat velké množství event typů do různých Camunda integračních vzorů a přitom zachovat chování konfigurovatelné bez velkého množství event-specific infrastruktury.",
+            "Aplikovat změny konfigurace za běhu bez redeploymentu služby a bez ponechání consumerů registrovaných se zastaralými definicemi handlerů.",
+            "Zpracovat Camunda operace s velmi rozdílnými charakteristikami – od synchronních correlation messages až po dlouhotrvající signals a asynchronní batch aktualizace.",
+            "Vyhnout se nebezpečným retries v situacích, kdy Camunda mohla pokračovat ve zpracování i po timeoutu a opakovaný request by mohl způsobit duplicitní side effects.",
+            "Podporovat multi-tenant zpracování eventů a zároveň umožnit dynamicky potlačit zpracování pro vybrané tenanty na úrovni konfigurace.",
+            "Uchovat data o selhaných eventech pro analýzu a reprocessing a zároveň bezpečně řídit životní cyklus metadat a souvisejících blob payloadů."
+          ],
+          "decisions": [
+            "Modelovat zpracování eventů pomocí konfigurovatelných handler typů namísto samostatných hardcoded pipeline pro každý event. Handler factory na základě event typu a konfigurace zvolila correlation-message, signal nebo global-message processing.",
+            "Uložit konfiguraci zpracovávaných eventů do Azure Blob Storage a sledovat změny pomocí ETag. To umožnilo provozní změny routingu bez rebuildování nebo redeploymentu služby.",
+            "Při změně konfigurace restartovat a znovu registrovat event consumery namísto pokusu měnit aktivní registrace handlerů za běhu. Runtime chování tak zůstalo synchronizované s aktuální konfigurací.",
+            "Zpracovávat dlouhotrvající Camunda signals a global-message operace odlišně od standardních correlation messages. Některé timeout scénáře byly záměrně přesunuty do Dead Events Storage namísto automatického retry, aby se snížilo riziko duplicitního zpracování na straně Camundy.",
+            "Spouštět global-message delivery asynchronně a sledovat dokončení Camunda batch operací, protože aktualizace více přihlášených process instances mohla přesáhnout běžnou dobu zpracování message handleru.",
+            "Oddělit cleanup selhaných eventů do samostatného maintenance procesu a mazat blob payloady až po úspěšném odstranění odpovídajících metadat ze storage, čímž se snížilo riziko nekonzistentního cleanupu."
+          ],
+          "results": [
+            "Umožnil konfiguračně řízené směrování business eventů do několika různých Camunda integračních vzorů.",
+            "Umožnil měnit konfiguraci zpracovávaných eventů za běhu prostřednictvím Blob Storage-backed konfigurace a dynamické re-registrace consumerů.",
+            "Rozšířil integraci nad rámec přímé message correlation o tenant-aware signals a asynchronní aktualizace process variables.",
+            "Zvýšil produkční spolehlivost pomocí retry, timeout a failed-event handlingu přizpůsobeného různým typům Camunda operací.",
+            "Poskytl interní provozní nástroje pro prohlížení a správu event konfigurace prostřednictvím Web API a Blazor back office.",
+            "Doplnil lifecycle management pro failed-event storage prostřednictvím samostatné maintenance služby s integračními testy.",
+            "Modernizoval architekturu a runtime služby prostřednictvím restrukturalizace projektů a migrace na .NET 7."
+          ]
+        },
+        "links": {},
+        "name": "Camunda Sink"
+      },
+      "camunda-source": {
+        "description": "Event-driven .NET worker, který převádí Camunda external tasks na typované business eventy a commandy a asynchronně je publikuje prostřednictvím firemní messaging platformy.",
+        "details": {
+          "overview": "Camunda Source tvořil Camunda-to-messaging část integrační vrstvy workflow. Polloval Camunda external tasks, podle konfigurace určoval odpovídající event nebo command kontrakt, převáděl process variables na silně typované zprávy, publikoval je přes Event Hub a následně dokončoval odpovídající Camunda tasky. Moje hlavní příspěvky se soustředily na rozšíření vytváření kontraktů za hranici primitivních hodnot, podporu rekonstrukce vnořených objektů z Camunda variables a přidání warehouse a order command flow do integrace.",
+          "role": [
+            "Implementoval jsem podporu rekonstrukce komplexních a vnořených vlastností messaging kontraktů z Camunda task variables pomocí JSON deserializace, reflection a rekurzivní konverze.",
+            "Rozšířil jsem worker tak, aby Camunda tasky mohly vytvářet kontrakty, jejichž statické Create metody vyžadovaly komplexní object graph místo pouze primitivních parametrů.",
+            "Přidal jsem Camunda-to-messaging podporu pro AuthorizeOrderForPickingCommand včetně topic konfigurace a integrace messaging kontraktu.",
+            "Přidal jsem podporu publikování GenerateOrderSummaryCommand z Camunda external tasks.",
+            "Zlepšil jsem audit logging pro non-tenant eventy tím, že dostaly konzistentní global tenant context.",
+            "Přispíval jsem také k dependency a platform maintenance, včetně upgradů messaging balíčků, odstranění AutoMapperu a cleanupu deployment konfigurace."
+          ],
+          "architecture": [
+            ".NET hosted worker pollující Camunda external tasks přes Camunda REST API",
+            "Konfiguračně řízené mapování mezi Camunda topic names a Oriflame event nebo command kontrakty",
+            "Reflection-based vytváření kontraktů pomocí statických Create metod",
+            "Rekurzivní konverze primitivních i komplexních Camunda variables na silně typované parametry kontraktů",
+            "Publikování přes Event Hub prostřednictvím firemní Ori.Messaging infrastruktury",
+            "Polly retry handling kolem dokončování Camunda tasků a reportování selhání",
+            "Omezené souběžné zpracování načtených external tasks",
+            "Application Insights telemetry, audit logging, Docker a Azure DevOps CI/CD"
+          ],
+          "highlights": [
+            {
+              "name": "Complex Contract Mapping",
+              "description": "Rekurzivní převod JSON-based Camunda variables na vnořené silně typované messaging kontrakty pomocí reflection nad jejich Create metodami."
+            },
+            {
+              "name": "External Task Processing",
+              "description": "Camunda external tasks se fetchují a lockují, mapují na nakonfigurované message kontrakty, asynchronně publikují přes Event Hub a po úspěšném zpracování dokončují."
+            },
+            {
+              "name": "Warehouse Commands",
+              "description": "Přidání Camunda-to-messaging podpory pro warehouse workflow, například AuthorizeOrderForPickingCommand a GenerateOrderSummaryCommand."
+            },
+            {
+              "name": "Bounded Concurrency",
+              "description": "Background processing sleduje aktivní práci a omezuje počet načtených tasků podle nakonfigurované kapacity, takže umožňuje paralelní zpracování bez neomezeného množství in-flight práce."
+            }
+          ],
+          "challenges": [
+            "Převést volně strukturované Camunda task variables na silně typované messaging kontrakty, jejichž pravidla konstrukce byla definována statickými Create metodami.",
+            "Podporovat vnořené object graphy a komplexní vlastnosti kontraktů a zároveň zachovat stejný mapping model používaný pro primitivní parametry.",
+            "Koordinovat publikování zprávy a dokončení Camunda tasku, přestože tyto dvě operace netvoří jednu společnou transakci.",
+            "Zabránit neomezenému paralelnímu zpracování při kontinuálním pollování Camundy pro nové external tasks.",
+            "Zachovat traceability a correlation mezi Camunda process instances a zprávami publikovanými do downstream systémů."
+          ],
+          "decisions": [
+            "Resolvit messaging kontrakty z nakonfigurovaných Camunda topic names místo hardcodování vytváření zpráv do jednotlivých worker flow. Worker tak zůstal generický a nové command nebo event mapování bylo možné přidávat hlavně přes konfiguraci a contract packages.",
+            "Vytvářet komplexní hodnoty kontraktů rekurzivní inspekcí statických Create metod místo obcházení doménového construction modelu přímým nastavováním properties. Vygenerované zprávy tak zůstaly v souladu s konvencemi sdílených messaging kontraktů.",
+            "Deserializovat komplexní Camunda variables z JSON a mapovat jejich členy case-insensitively na vnořené parametry kontraktů. Integrace tak podporovala komplexní process variables bez nutnosti vytvářet custom converter pro každý typ kontraktu.",
+            "Publikovat zprávu před dokončením Camunda external tasku, aby při selhání konverze nebo publikování zůstal task dostupný pro retry. Protože publishing a completion nejsou atomické, zůstává v případě opakovaného selhání completion po úspěšném publish možná duplicitní publikace.",
+            "Omezit souběžné zpracování pomocí nakonfigurované kapacity tasků místo načítání neomezeného množství Camunda tasků."
+          ],
+          "results": [
+            "Odstranil zásadní omezení integrace tím, že Camunda tasky mohly vytvářet eventy a commandy obsahující vnořené komplexní properties.",
+            "Umožnil warehouse a order workflow publikovat silně typované commandy z Camundy do sdílené messaging platformy.",
+            "Zachoval generický, konfiguračně řízený external-task processing model místo zavádění command-specific worker implementací.",
+            "Zlepšil konzistenci auditu pro global a non-tenant messages.",
+            "Přispěl k širší asynchronní integrační vrstvě propojující Camunda workflow execution s downstream business službami."
+          ]
+        },
+        "links": {},
+        "name": "Camunda Source"
       }
     }
   },

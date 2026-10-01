@@ -279,14 +279,300 @@
         "name": "Logistics Order Service"
       },
       "product-availability-and-reservations": {
-        "description": "Improved product availability and reservation services through refactoring and bug fixes, ensuring dependable stock tracking and seamless booking flows.",
+        "description": "Event-driven .NET reservation orchestrator coordinating product availability and reservation workflows across HTTP APIs, SQL Server, Kafka CloudEvents, AR Core services, and durable Hangfire processing.",
+        "details": {
+          "overview": "Product Availability & Reservations orchestrated reservation workflows between API clients, Finance events, warehouse and product-catalog systems, and AR Core services for individual distribution centers. It combined synchronous HTTP orchestration with SQL-backed reservation state, Kafka CloudEvents, explicit concurrency control, durable retries and recurring background jobs. I contributed substantially to reservation workflows, split-reservation support, stale-message protection, locking, Hangfire infrastructure, observability and distribution-center/accounting-warehouse refactoring.",
+          "role": [
+            "Implemented accounting-warehouse-aware reservation workflows coordinating API handlers, SQL reservation state, distribution-center resolution and synchronous AR Core calls.",
+            "Built the SplitReservationAw feature end to end, including MediatR command handling, validation, source and target reservation locking, Dapper/SQL access, AR Core integration and automated tests.",
+            "Implemented and extended Kafka-driven internal reservation quantity and expiration update workflows, including local state changes, AR Core coordination, retries and response-event publishing.",
+            "Added SQL-backed concurrency and stale-message protection using reservation locks, lock expiry and timestamp gates for out-of-order internal reservation messages.",
+            "Introduced and evolved Hangfire SQL-backed processing for durable retries and recurring reservation-expiration jobs, including secured dashboard and failed-job monitoring.",
+            "Improved reservation-expiration processing and observability through per-reservation expiration events, New Relic custom events and transaction instrumentation.",
+            "Refactored accounting-warehouse and distribution-center resolution to simplify reservation and availability handlers and remove older lookup complexity.",
+            "Contributed to Azure identity, Core-service HTTP client infrastructure, Kubernetes configuration and local-development setup."
+          ],
+          "architecture": [
+            "ASP.NET Core APIs with MediatR command handlers for reservation and availability operations",
+            "Dapper-style SQL access and SQL Server persistence for reservation metadata, locks and message timestamps",
+            "Synchronous HTTP integration with AR Core services selected by distribution center",
+            "Kafka CloudEvents through Notino.Messaging for internal reservation commands, product changes and response events",
+            "SQL-backed reservation locking with lock IDs and expiry for concurrent operations",
+            "Timestamp gates preventing stale or out-of-order internal reservation messages from overwriting newer state",
+            "Hangfire with SQL Server storage for retries, recurring expiration processing and durable background work",
+            "New Relic instrumentation for background failures, expiration events and transaction visibility",
+            "Azure Workload Identity, Kubernetes deployment and GitLab CI"
+          ],
+          "highlights": [
+            {
+              "name": "Split Reservations",
+              "description": "End-to-end split-reservation workflow with source and target locking, accounting-warehouse validation, distribution-center consistency checks, AR Core integration and automated tests."
+            },
+            {
+              "name": "Concurrency Control",
+              "description": "SQL-backed reservation locks with lock IDs and expiry, allowing concurrent service instances to coordinate reservation mutations safely and recover from abandoned locks."
+            },
+            {
+              "name": "Stale Message Protection",
+              "description": "Timestamp-based gating for Kafka-driven reservation updates prevents older or out-of-order messages from being processed as the latest state."
+            },
+            {
+              "name": "Durable Processing",
+              "description": "Hangfire-backed retries and recurring reservation-expiration processing with SQL storage, final-failure monitoring and response-event handling."
+            },
+            {
+              "name": "Reservation Orchestration",
+              "description": "Coordination across API requests, local SQL state, accounting-warehouse-to-distribution-center mapping, AR Core HTTP calls and Kafka response events."
+            }
+          ],
+          "challenges": [
+            "Coordinate reservation state across local SQL persistence, synchronous AR Core calls and asynchronous Kafka messages without a distributed transaction.",
+            "Prevent concurrent requests or event handlers from modifying the same reservation inconsistently.",
+            "Handle out-of-order internal reservation events without allowing older messages to overwrite more recent reservation state.",
+            "Safely split reservations while locking both source and target reservations and ensuring they remain within the same distribution center.",
+            "Recover asynchronous reservation processing after transient failures without losing the original command context or silently dropping required work.",
+            "Process reservation expiration at scale while avoiding repeatedly handling reservations that had already been settled."
+          ],
+          "decisions": [
+            "Use SQL-backed locks with explicit lock IDs and expiry rather than process-local synchronization. This allowed reservation operations to remain coordinated across multiple service instances and recover when a process died while holding a lock.",
+            "Protect Kafka-driven internal reservation updates with persisted message timestamps. Incoming commands older than the latest successfully observed timestamp could be rejected before changing current reservation state.",
+            "Use Hangfire for retryable and recurring work instead of keeping retries inside Kafka handlers. This made transient failures durable across process restarts and allowed operational visibility into failed background jobs.",
+            "Resolve accounting warehouses through a centralized distribution-center service rather than maintaining multiple product-variant lookup paths. This simplified reservation handlers and made distribution-center selection consistent.",
+            "Keep AR Core calls synchronous inside reservation API workflows while persisting local coordination state around them. This provided immediate reservation responses while still enforcing reservation-level concurrency.",
+            "Publish explicit success or failure response events for internal reservation commands rather than relying on an implicit acknowledgement model."
+          ],
+          "results": [
+            "Delivered accounting-warehouse-aware reservation and split-reservation workflows spanning API, SQL persistence, concurrency control, AR Core integration and automated tests.",
+            "Improved consistency of asynchronous reservation updates through SQL locking, lock expiry and stale-message protection.",
+            "Added durable retry and recurring background-processing capabilities through Hangfire with operational failure monitoring.",
+            "Extended Kafka-driven internal reservation flows for quantity and expiration updates with response-event publishing.",
+            "Simplified distribution-center resolution and removed older accounting-warehouse lookup complexity from reservation handlers.",
+            "Improved operational visibility through New Relic events for failed jobs, expired reservations and background-processing behavior."
+          ]
+        },
         "links": {},
-        "name": "Product Availability and Reservations"
+        "name": "Product Availability & Reservations"
       },
       "gdpr-management": {
         "description": "Delivered a GDPR-compliant consent management system by replacing a legacy solution, enabling secure handling of customer data and honoring consent expiry or revocation.",
         "links": {},
         "name": "GDPR Management"
+      },
+      "order-store-service": {
+        "description": "Event-driven .NET service that builds and serves a persisted order projection from distributed business events, coordinates warehouse picking readiness, and publishes downstream events once required order state is complete.",
+        "details": {
+          "overview": "Order Store Service maintained a consolidated view of orders assembled from events produced by multiple systems, including order creation, payments, courier assignment, warehouse reservation, claims, documents and customer changes. REST APIs exposed the accumulated state, while asynchronous workflows evaluated whether enough information had arrived to continue downstream processing. I contributed extensively to the service, including the order-picking authorization flow, logistics and customer enrichment, database-backed concurrency control, EF Core and SQL performance improvements, and asynchronous integration-test infrastructure.",
+          "role": [
+            "Implemented a major end-to-end order-picking authorization workflow that consumed commands, persisted readiness state, validated required order data and published OrderAuthorizedForPickingEvent when all prerequisites were satisfied.",
+            "Built and extended order enrichment from courier, pickup-point, delivery, picking-instruction, warehouse-reservation and invoice-payment events, including persistence, mappings and integration tests.",
+            "Implemented a local customer projection with event-driven updates and a synchronous fallback to the Online service when required customer data was not yet available locally.",
+            "Designed database-backed locking for concurrent order and customer event processing across multiple service instances.",
+            "Improved EF Core and SQL Server performance through split and no-tracking query paths, repository optimizations, indexing and removal of expensive ORM behavior.",
+            "Extended complex claim and return handling for bundled products, replacements and relationships between original and generated order items.",
+            "Built and stabilized test infrastructure for asynchronous consume-and-publish workflows, including fake publishers and synchronization around published events.",
+            "Performed a cross-solution migration to .NET 6 covering application projects, tests, Docker runtime configuration and CI/CD."
+          ],
+          "architecture": [
+            "ASP.NET Core REST API exposing persisted order, customer-order and history projections",
+            "Event-driven consumers processing commands and integration events from the Oriflame messaging platform over Azure Service Bus",
+            "EF Core with SQL Server for order projections, statuses, logistics data, customer information, payments, documents and synchronization state",
+            "Event Hub publishers for downstream order and warehouse-management events",
+            "Readiness evaluation based on persisted event and command statuses before publishing dependent downstream events",
+            "Database-backed order and customer locks for coordinating concurrent processing across horizontally scaled service instances",
+            "Polly-based retry policies with failed message handling delegated to the messaging platform dead-letter queue",
+            "Application Insights telemetry, audit logging, health checks and AKS deployment through Azure DevOps and GitOps"
+          ],
+          "highlights": [
+            {
+              "name": "Picking Authorization",
+              "description": "End-to-end asynchronous orchestration that collects order, payment, courier, stock, document and customer state before publishing an OrderAuthorizedForPickingEvent to downstream warehouse systems."
+            },
+            {
+              "name": "Order Projection",
+              "description": "A persisted order view assembled incrementally from integration events covering logistics, payments, claims, products, customers, documents and warehouse operations."
+            },
+            {
+              "name": "Concurrency Control",
+              "description": "Database-backed locking for orders and customers, allowing multiple service instances to process related events while reducing conflicting concurrent updates."
+            },
+            {
+              "name": "Database Performance",
+              "description": "EF Core and SQL Server optimization through split and no-tracking queries, repository refactoring, index design and removal of expensive lazy-loading behavior."
+            },
+            {
+              "name": "Async Integration Testing",
+              "description": "Test infrastructure for reliably verifying consume-persist-publish workflows, including observable fake publishers and synchronization fixes for concurrent event processing."
+            }
+          ],
+          "challenges": [
+            "Build a coherent order projection from events arriving independently and potentially in different orders from multiple upstream systems.",
+            "Determine when enough distributed state had been collected to safely authorize an order for warehouse picking without relying on one synchronous request.",
+            "Handle multiple events for the same order or customer concurrently across horizontally scaled service instances.",
+            "Keep increasingly rich order graphs performant as persisted relationships and API retrieval requirements grew.",
+            "Handle incomplete or optional event payloads while preserving enough state for downstream publishing and API consumers.",
+            "Test asynchronous workflows deterministically when consuming one message could eventually result in persistence changes and additional published events."
+          ],
+          "decisions": [
+            "Track received events and commands as persisted order statuses and evaluate readiness against that accumulated state. This allowed downstream actions to wait for required information without coupling upstream systems into a synchronous orchestration chain.",
+            "Use database-backed order and customer locks rather than process-local synchronization. Because multiple service instances ran in AKS, coordination had to remain effective across process boundaries.",
+            "Persist enriched order data such as courier details, pickup points, warehouse information, payments and customer data locally. This made the order projection useful to APIs and downstream publishers without repeatedly querying every originating service.",
+            "Use a synchronous Online-service fallback only when required customer information was missing from the local event-driven projection. This preserved the normal asynchronous flow while providing a recovery path for incomplete customer state.",
+            "Optimize shared EF Core repository paths with split queries, no-tracking reads and targeted indexes instead of relying on implicit ORM loading behavior. This reduced unnecessary database work on large order graphs.",
+            "Create dedicated test publisher infrastructure so integration tests could observe asynchronous downstream events directly and verify complete consume-persist-publish flows."
+          ],
+          "results": [
+            "Delivered an event-driven picking-authorization workflow spanning message consumption, persisted readiness state, customer and logistics enrichment, downstream event construction and publishing.",
+            "Expanded the order projection with logistics, payment, customer and warehouse information required by APIs and downstream fulfillment processes.",
+            "Improved reliability of concurrent event processing through database-level coordination for orders and customers.",
+            "Improved database access characteristics through EF Core query optimization, index design and repository-level performance work.",
+            "Added regression coverage for complex order scenarios including bundled-product returns, replacements and asynchronous publishing.",
+            "Strengthened the platform through reusable asynchronous integration-test infrastructure, production observability and a cross-solution migration to .NET 6."
+          ]
+        },
+        "links": {},
+        "name": "Order Store Service"
+      },
+      "camunda-sink": {
+        "description": "Configurable .NET integration service that consumes business events from Azure Service Bus and routes them into Camunda as correlation messages, signals, or asynchronous process-variable updates.",
+        "details": {
+          "overview": "Camunda Sink connected event-driven business systems with Camunda workflows. It consumed configured events from the company messaging platform, transformed them into Camunda-specific integration patterns, and handled correlation, retries, timeouts, tenant rules and failed-event reprocessing. I contributed extensively to its architecture and evolution, including project restructuring, dynamic configuration, handler registration, multi-tenant behavior, back-office tooling, asynchronous global-message processing, reliability improvements and platform modernization.",
+          "role": [
+            "Restructured the service into separate API, application, consumer, data and worker projects and introduced a Web API surface for operational configuration.",
+            "Implemented Azure Blob Storage-backed event configuration with automatic polling and reload-on-change behavior, allowing event routing changes without redeploying the service.",
+            "Built dynamic event handler registration and a handler factory capable of routing configured event types to correlation-message, signal or global-message processing.",
+            "Extended the Camunda integration with asynchronous global-message processing that updates variables across subscribed process instances and monitors Camunda batch completion.",
+            "Implemented tenant-aware event processing and configurable tenant suppression, including API, back-office and audit behavior.",
+            "Improved reliability through differentiated Polly retry policies, timeout handling, circuit-breaker behavior and safer failed-event storage and reprocessing.",
+            "Built a Blazor back-office application and generated API client for inspecting and managing handled-event configuration.",
+            "Implemented a maintenance service for cleaning expired Dead Events Storage records and associated blobs, including Azurite-backed integration tests and CI/CD support.",
+            "Migrated the multi-project service and deployment tooling to .NET 7."
+          ],
+          "architecture": [
+            ".NET worker services consuming business events and commands through Ori.Messaging over Azure Service Bus",
+            "ASP.NET Core Web API for viewing and updating handled-event configuration",
+            "Dynamic event handler factory supporting Camunda correlation messages, signals and global variable updates",
+            "Camunda OpenAPI client integration for message correlation, signal delivery and asynchronous process-variable batch updates",
+            "Azure Blob Storage-backed runtime configuration with ETag-based reload detection and IOptionsMonitor change propagation",
+            "Azure Table Storage, Blob Storage and Queue Storage for failed-event persistence and reprocessing",
+            "Polly retry and circuit-breaker policies with integration-specific timeout and retry behavior",
+            "Server-side Blazor back-office UI with generated API client",
+            "Application Insights telemetry, audit logging, Docker and Azure DevOps CI/CD"
+          ],
+          "highlights": [
+            {
+              "name": "Dynamic Event Routing",
+              "description": "Configuration-driven handler registration that maps incoming business events to Camunda correlation messages, signals or global-message processing without hard-coding every route into the worker."
+            },
+            {
+              "name": "Runtime Configuration",
+              "description": "Azure Blob Storage-backed event configuration with ETag-based change detection, automatic reload and consumer re-registration without redeploying the service."
+            },
+            {
+              "name": "Global Messages",
+              "description": "Asynchronous Camunda integration pattern that updates variables across subscribed process instances, monitors batch completion and handles long-running failures separately from normal correlation messages."
+            },
+            {
+              "name": "Multi-Tenant Processing",
+              "description": "Tenant-aware event conversion and configurable per-tenant suppression, allowing operators to disable processing for selected tenants while keeping handlers active globally."
+            },
+            {
+              "name": "Reliability & Recovery",
+              "description": "Retry, timeout, circuit-breaker and Dead Events Storage workflows tailored to different Camunda processing modes, including safer reprocessing and cleanup of failed events."
+            }
+          ],
+          "challenges": [
+            "Route many event types into different Camunda integration patterns while keeping behavior configurable and avoiding large amounts of event-specific infrastructure code.",
+            "Apply configuration changes at runtime without redeploying the service or leaving consumers registered with stale handler definitions.",
+            "Handle Camunda operations with very different execution characteristics, from synchronous correlation messages to long-running signals and asynchronous batch updates.",
+            "Avoid unsafe retries for operations where Camunda could still be processing a timed-out request and retrying could create duplicate side effects.",
+            "Support multi-tenant event processing while allowing selected tenants to be suppressed dynamically at configuration level.",
+            "Preserve failed-event data for investigation and reprocessing while safely managing the lifecycle of metadata and associated blob payloads."
+          ],
+          "decisions": [
+            "Model event handling as configurable handler types rather than implementing separate hard-coded pipelines for every event. A handler factory resolved event and handler type into correlation-message, signal or global-message processing.",
+            "Store handled-event configuration in Azure Blob Storage and monitor ETags for changes. This enabled operational routing changes without rebuilding or redeploying the service.",
+            "Restart and re-register event consumers when configuration changed instead of attempting to mutate active handler registrations in place. This kept runtime behavior aligned with the latest configuration.",
+            "Treat long-running Camunda signals and global-message operations differently from standard correlation messages. Some timeout scenarios were deliberately moved to Dead Events Storage rather than retried automatically to reduce the risk of duplicate Camunda-side work.",
+            "Run global-message delivery asynchronously and monitor Camunda batch completion because updating multiple subscribed process instances could outlive the normal message-handler execution window.",
+            "Keep failed-event cleanup as a separate maintenance process and delete blob payloads only after the corresponding storage metadata had been removed successfully, reducing the risk of inconsistent cleanup."
+          ],
+          "results": [
+            "Enabled configuration-driven routing of business events into multiple Camunda integration patterns.",
+            "Allowed handled-event configuration to be changed at runtime through Blob Storage-backed configuration and dynamic consumer re-registration.",
+            "Extended the integration beyond direct message correlation to tenant-aware signals and asynchronous process-variable updates.",
+            "Improved production reliability with tailored retry, timeout and failed-event handling for different Camunda operations.",
+            "Provided internal operational tooling for inspecting and managing event configuration through a Web API and Blazor back office.",
+            "Added lifecycle management for failed-event storage through a dedicated maintenance service with integration-test coverage.",
+            "Modernized the service architecture and runtime through project restructuring and migration to .NET 7."
+          ]
+        },
+        "links": {},
+        "name": "Camunda Sink"
+      },
+      "camunda-source": {
+        "description": "Event-driven .NET worker that converts Camunda external tasks into typed business events and commands and publishes them asynchronously through the company messaging platform.",
+        "details": {
+          "overview": "Camunda Source formed the Camunda-to-messaging side of the workflow integration layer. It polled Camunda external tasks, resolved configured event or command contracts, converted process variables into strongly typed messages, published them through Event Hub, and completed the corresponding Camunda tasks. My strongest contributions focused on extending contract creation beyond primitive values, enabling nested object reconstruction from Camunda variables, and adding warehouse and order command flows to the integration.",
+          "role": [
+            "Implemented support for reconstructing complex and nested messaging contract properties from Camunda task variables using JSON deserialization, reflection and recursive conversion.",
+            "Extended the worker so Camunda tasks could create contracts whose static Create methods required complex object graphs instead of only primitive parameters.",
+            "Added Camunda-to-messaging support for AuthorizeOrderForPickingCommand, including topic configuration and messaging contract integration.",
+            "Added publishing support for GenerateOrderSummaryCommand from Camunda external tasks.",
+            "Improved audit logging for non-tenant events by assigning them a consistent global tenant context.",
+            "Contributed to dependency and platform maintenance, including messaging package upgrades, AutoMapper removal and deployment-configuration cleanup."
+          ],
+          "architecture": [
+            ".NET hosted worker polling Camunda external tasks through the Camunda REST API",
+            "Configuration-driven mapping between Camunda topic names and Oriflame event or command contracts",
+            "Reflection-based contract creation using static Create methods",
+            "Recursive conversion of primitive and complex Camunda variables into strongly typed contract parameters",
+            "Event Hub publishing through the company Ori.Messaging infrastructure",
+            "Polly retry handling around Camunda task completion and failure reporting",
+            "Bounded concurrent processing of fetched external tasks",
+            "Application Insights telemetry, audit logging, Docker and Azure DevOps CI/CD"
+          ],
+          "highlights": [
+            {
+              "name": "Complex Contract Mapping",
+              "description": "Recursive conversion of JSON-based Camunda variables into nested strongly typed messaging contracts using reflection over contract Create methods."
+            },
+            {
+              "name": "External Task Processing",
+              "description": "Camunda external tasks are fetched and locked, mapped to configured message contracts, published asynchronously through Event Hub and completed after successful processing."
+            },
+            {
+              "name": "Warehouse Commands",
+              "description": "Added Camunda-to-messaging support for warehouse workflows such as AuthorizeOrderForPickingCommand and GenerateOrderSummaryCommand."
+            },
+            {
+              "name": "Bounded Concurrency",
+              "description": "Background task processing tracks active work and limits fetched tasks based on configured capacity, allowing parallel processing without unbounded in-flight work."
+            }
+          ],
+          "challenges": [
+            "Convert loosely structured Camunda task variables into strongly typed messaging contracts whose construction rules were defined by static Create methods.",
+            "Support nested object graphs and complex contract properties while preserving the same mapping model used for primitive parameters.",
+            "Coordinate message publication and Camunda task completion even though the two operations do not form a shared transaction.",
+            "Avoid unbounded parallel processing while continuously polling Camunda for new external tasks.",
+            "Preserve traceability and correlation between Camunda process instances and the messages published to downstream systems."
+          ],
+          "decisions": [
+            "Resolve message contracts from configured Camunda topic names instead of hard-coding message creation into each worker path. This kept the worker generic and allowed new command or event mappings to be introduced primarily through configuration and contract packages.",
+            "Build complex contract values by inspecting static Create methods recursively rather than bypassing the domain contract construction model with direct property assignment. This kept generated messages aligned with the conventions of the shared messaging contracts.",
+            "Deserialize complex Camunda variables from JSON and map their members case-insensitively to nested contract parameters. This generalized the integration beyond primitive process variables without requiring a custom converter for each contract type.",
+            "Publish the message before completing the Camunda external task so failed conversion or publication leaves the task available for retry. Because publishing and completion are not atomic, duplicate publication remains a possible failure mode if task completion repeatedly fails after a successful publish.",
+            "Limit concurrent processing using configured task capacity rather than fetching an unrestricted number of Camunda tasks."
+          ],
+          "results": [
+            "Removed a major limitation in the integration by enabling Camunda tasks to create events and commands containing nested complex properties.",
+            "Enabled warehouse and order workflows to publish strongly typed commands from Camunda into the shared messaging platform.",
+            "Preserved a generic, configuration-driven external-task processing model rather than introducing command-specific worker implementations.",
+            "Improved audit consistency for global and non-tenant messages.",
+            "Contributed to the broader asynchronous integration layer connecting Camunda workflow execution with downstream business services."
+          ]
+        },
+        "links": {},
+        "name": "Camunda Source"
       }
     }
   },
