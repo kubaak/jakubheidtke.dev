@@ -2,6 +2,7 @@ export type CourseId =
   | "aws-solutions-architect"
   | "azure-developer"
   | "redis"
+  | "typescript"
   | "nodejs"
   | "nestjs"
   | "oauth"
@@ -68,6 +69,20 @@ export const courses: Course[] = [
     id: "redis",
     certificateUrl: "https://www.udemy.com/certificate/UC-e6689370-8d23-46e6-b984-c537e72af619/",
     topics: ["Redis", "Caching", "Data Structures", "Streams", "Pub/Sub"],
+  },
+  {
+    id: "typescript",
+    certificateUrl: "https://www.udemy.com/certificate/UC-28e18d07-1e1e-4196-952e-85bc8b31f5e7/",
+    topics: [
+      "TypeScript",
+      "Type System",
+      "Interfaces & Generics",
+      "Classes & Inheritance",
+      "Decorators",
+      "Design Patterns",
+      "React & Redux",
+      "Express.js",
+    ],
   },
   {
     id: "nodejs",

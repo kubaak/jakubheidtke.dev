@@ -682,6 +682,9 @@
         "redis": {
           "name": "Redis: The Complete Developer's Guide"
         },
+        "typescript": {
+          "name": "Typescript: The Complete Developer's Guide"
+        },
         "nodejs": {
           "name": "NodeJS - The Complete Guide (MVC, REST APIs, GraphQL, Deno)"
         },

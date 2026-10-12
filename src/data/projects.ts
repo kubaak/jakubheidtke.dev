@@ -111,14 +111,6 @@ export const projects: Project[] = [
         type: "website",
         href: "https://tubester.app",
       },
-      {
-        type: "frontend",
-        href: "https://github.com/kubaak/tubester-client",
-      },
-      {
-        type: "backend",
-        href: "https://github.com/kubaak/tubester",
-      },
     ],
     type: "personal",
   },
