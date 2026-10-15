@@ -88,6 +88,11 @@ export const projects: Project[] = [
     slug: "tubester",
     logo: "https://tubester.app/tubester_logo.png",
     tags: [
+      "TypeScript",
+      "Node.js",
+      "NestJS",
+      "BullMq",
+      "TypeORM",
       ".NET",
       "C#",
       "React",
