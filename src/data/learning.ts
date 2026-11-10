@@ -3,6 +3,7 @@ export type CourseId =
   | "azure-developer"
   | "redis"
   | "typescript"
+  | "react"
   | "nodejs"
   | "nestjs"
   | "oauth"
@@ -83,6 +84,11 @@ export const courses: Course[] = [
       "React & Redux",
       "Express.js",
     ],
+  },
+  {
+    id: "react",
+    certificateUrl: "https://www.udemy.com/certificate/UC-119e995a-d32c-426e-9287-2c641905a28b/",
+    topics: ["React", "Next.js", "Redux"],
   },
   {
     id: "nodejs",

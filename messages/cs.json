@@ -686,6 +686,9 @@
         "typescript": {
           "name": "Typescript: The Complete Developer's Guide"
         },
+        "react": {
+          "name": "React - The Complete Guide (incl. Next.js, Redux)"
+        },
         "nodejs": {
           "name": "NodeJS - The Complete Guide (MVC, REST APIs, GraphQL, Deno)"
         },
